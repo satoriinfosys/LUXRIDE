@@ -7,16 +7,24 @@ export default function Nav() {
   const pathname = usePathname();
   return (
     <>
+      <li>
+        <Link href="/fleet-list">Our Fleet</Link>
+      </li>
+      <li>
+        <Link href="/service-grid">Services</Link>
+      </li>
+      <li>
+        <Link href="/blog-grid">Blogs</Link>
+      </li>
       {menuItems.map((elm, i) => (
         <li key={i} className="has-children">
           <a
-            className={`active ${
-              elm.subMenu.some(
-                (elm3) => pathname.split("/")[1] == elm3.link.split("/")[1]
-              )
-                ? "active-link"
-                : ""
-            } `}
+            className={`active ${elm.subMenu.some(
+              (elm3) => pathname.split("/")[1] == elm3.link.split("/")[1]
+            )
+              ? "active-link"
+              : ""
+              } `}
           >
             {elm.title}
           </a>
@@ -38,6 +46,10 @@ export default function Nav() {
           </ul>
         </li>
       ))}
+
+      <li>
+        <Link href="/about">About</Link>
+      </li>
 
       <li>
         <Link href="/contact">Contact</Link>
