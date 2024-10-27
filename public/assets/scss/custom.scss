@@ -265,3 +265,25 @@
 .searchLocations {
   color: #626262 !important;
 }
+
+
+.sticky {
+  position: absolute; /* or 'fixed' based on your layout */
+  top: 0; /* Adjust as necessary */
+  left: 0; /* Adjust as necessary */
+  background-color: white; /* Ensure it stands out */
+  padding: 0 4px; /* Add padding for spacing */
+  transition: all 0.2s ease-in-out; /* Smooth transition for any movement */
+}
+
+.form-check-input {
+  width: 20px; /* Adjust size as necessary */
+  height: 20px; /* Adjust size as necessary */
+}
+
+.form-check-label {
+  top:0 !important;
+  margin-left: 10px; /* Space between checkbox and label */
+}
+
+

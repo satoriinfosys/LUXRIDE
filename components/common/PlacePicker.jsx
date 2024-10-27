@@ -4,7 +4,7 @@ import Image from "next/image";
 import debounce from "lodash.debounce";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
-import { serviceLocation } from "@/app/_state/states";
+import { bookingDetails } from "@/app/_state/states";
 
 export default function PlacePicker({ type }) {
   const [isActive, setIsActive] = useState(false);
@@ -12,7 +12,7 @@ export default function PlacePicker({ type }) {
   const [locations, setLocations] = useState([]); // For locations fetched from API
   const [searchTerm, setSearchTerm] = useState(""); // For search input field
   const [isLoading, setIsLoading] = useState(false);
-  const [locationData, setLocationData] = useRecoilState(serviceLocation); // Recoil state for 'from' and 'to' locations
+  const [bookingData, setBookingDetails] = useRecoilState(bookingDetails); // Recoil state for 'from' and 'to' locations
   const inputRef = useRef();
 
   // Fetch locations from API
@@ -71,12 +71,12 @@ export default function PlacePicker({ type }) {
 
   // Set default selected location from Recoil state on component mount
   useEffect(() => {
-    if (type === "from" && locationData.from.name) {
-      setSelectedLocation(locationData.from.name);
-    } else if (type === "to" && locationData.to.name) {
-      setSelectedLocation(locationData.to.name);
+    if (type === "from" && bookingData.from.name) {
+      setSelectedLocation(bookingData.from.name);
+    } else if (type === "to" && bookingData.to.name) {
+      setSelectedLocation(bookingData.to.name);
     }
-  }, [type, locationData]);
+  }, [type, bookingData]);
 
   return (
     <>
@@ -92,9 +92,9 @@ export default function PlacePicker({ type }) {
           if (value && selectedLocation) {
             setSelectedLocation(""); // Clear selected location when typing starts
             if (type === "from") {
-              setLocationData((prev) => ({ ...prev, from: { id: "", name: "" } })); // Clear Recoil 'from'
+              setBookingDetails((prev) => ({ ...prev, from: { id: "", name: "" } })); // Clear Recoil 'from'
             } else if (type === "to") {
-              setLocationData((prev) => ({ ...prev, to: { id: "", name: "" } })); // Clear Recoil 'to'
+              setBookingDetails((prev) => ({ ...prev, to: { id: "", name: "" } })); // Clear Recoil 'to'
             }
           }
           setSearchTerm(value); // Update searchTerm when typing
@@ -117,9 +117,9 @@ export default function PlacePicker({ type }) {
                 // Update Recoil state with the selected location's id and name
                 const locationInfo = { id: elm.id, name: elm.name };
                 if (type === "from") {
-                  setLocationData((prev) => ({ ...prev, from: locationInfo }));
+                  setBookingDetails((prev) => ({ ...prev, from: locationInfo }));
                 } else if (type === "to") {
-                  setLocationData((prev) => ({ ...prev, to: locationInfo }));
+                  setBookingDetails((prev) => ({ ...prev, to: locationInfo }));
                 }
               }}
               className="item-location"

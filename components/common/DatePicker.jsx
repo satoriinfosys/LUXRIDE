@@ -2,21 +2,21 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-multi-date-picker";
 import { useRecoilState } from "recoil";
-import { serviceLocation } from "@/app/_state/states";
+import { bookingDetails } from "@/app/_state/states";
 
 export default function DatePickerComponent() {
-  const [locationData, setLocationData] = useRecoilState(serviceLocation); 
+  const [bookingData, setBookingDetails] = useRecoilState(bookingDetails); 
   const [value, setValue] = useState(new Date());
 
   useEffect(() => {
-    if (locationData.date) {
-      setValue(new Date(locationData.date)); 
+    if (bookingData.date) {
+      setValue(new Date(bookingData.date)); 
     }
-  }, [locationData.date]);
+  }, [bookingData.date]);
 
   const handleDateChange = (newDate) => {
     setValue(newDate); 
-    setLocationData((prev) => ({ ...prev, date: newDate }));
+    setBookingDetails((prev) => ({ ...prev, date: newDate }));
   };
 
   return (
