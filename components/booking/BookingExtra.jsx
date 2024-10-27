@@ -136,9 +136,6 @@ export default function BookingExtra() {
                   </div>
                 </div>
 
-
-
-
                 <div className="col-lg-6">
                   <div className="form-group form-check">
                     <input
@@ -211,8 +208,10 @@ export default function BookingExtra() {
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="form-group">
+                      <label className="form-label" htmlFor="clientRequest">
+                        Enter Your Request
+                      </label>
                       <textarea
-                        defaultValue={"Enter Your Request"}
                         value={bookingData.clientRequest} // Use controlled input
                         onChange={handleInputChange} // Update on change
                         className="form-control"
