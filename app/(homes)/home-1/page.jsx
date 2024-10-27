@@ -1,45 +1,39 @@
-import Footer1 from "@/components/footers/Footer1";
-import Header1 from "@/components/headers/Header1";
-import MobailHeader1 from "@/components/headers/MobailHeader1";
-import Blogs from "@/components/homes/common/blogs/Blogs2";
-import Cta from "@/components/homes/common/cta/Cta";
+import Footer2 from "@/components/footers/Footer2";
+import Header2 from "@/components/headers/Header2";
 
-import Facts from "@/components/common/facts/Facts";
-import Faq from "@/components/homes/home-1/Faq";
-import Features from "@/components/common/features/Features";
-import Feet from "@/components/homes/home-1/Feet";
-import Hero from "@/components/homes/home-1/Hero";
-import Partners from "@/components/common/partners/Partners";
-import Process from "@/components/common/process/Process";
-import Service from "@/components/homes/home-1/Service";
-import Testimonials from "@/components/common/testimonials/Testimonials2";
-import DownloadApp from "@/components/common/downloadApp/DownloadApp";
+import Blogs from "@/components/homes/common/blogs/Blogs";
+import DownloadApp from "@/components/homes/home-2/DownloadApp";
+import Facts from "@/components/homes/home-2/Facts";
+import Feet from "@/components/homes/home-2/Feet";
+import Hero from "@/components/homes/home-2/Hero";
+import Partners from "@/components/homes/common/partners/Partners2";
+import Process from "@/components/common/process/Process2";
+import Service from "@/components/homes/home-2/Service";
+import Testimonials from "@/components/homes/home-2/Testimonials";
+import MobailHeader1 from "@/components/headers/MobailHeader1";
 export const metadata = {
   title:
-    "Home 1 || Lixride Chauffeur Limousine Transport and Car Hire Nextjs Template",
+    "Home 2 || Lixride Chauffeur Limousine Transport and Car Hire Nextjs Template",
   description:
     "Lixride Chauffeur Limousine Transport and Car Hire Nextjs Template",
 };
-export default function Home() {
+
+export default function page() {
   return (
     <>
-      <Header1 /> <MobailHeader1 />
-      <MobailHeader1 />
+      <Header2 /> <MobailHeader1 />
       <main className="main">
         <Hero />
-        <Partners />
-        <Feet />
         <Process />
-        <Features />
-        <Facts />
         <Service />
+        <Feet />
+        <Facts />
         <Testimonials />
-        <Cta />
         <Blogs />
-        <Faq />
+        <Partners />
         <DownloadApp />
       </main>
-      <Footer1 />
+      <Footer2 />
     </>
   );
 }
