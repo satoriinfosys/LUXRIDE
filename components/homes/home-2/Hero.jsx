@@ -115,7 +115,7 @@ export default function Hero() {
                     </div>
                     <div className="search-inputs">
                       <label className="text-14 color-grey">From</label>
-                      <PlacePicker />
+                      <PlacePicker type="from"/>
                     </div>
                   </div>
                   <div className="search-item search-to">
@@ -124,7 +124,7 @@ export default function Hero() {
                     </div>
                     <div className="search-inputs">
                       <label className="text-14 color-grey">To</label>
-                      <PlacePicker />
+                      <PlacePicker type="to"/>
                     </div>
                   </div>
                   <div className="search-item search-button mb-0">
