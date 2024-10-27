@@ -147,6 +147,15 @@ export default function Hero() {
                 aria-labelledby="tab-hourly"
               >
                 <div className="box-form-search">
+                <div className="search-item search-date">
+                    <div className="search-icon">
+                      <span className="item-icon icon-date"> </span>
+                    </div>
+                    <div className="search-inputs">
+                      <label className="text-14 color-grey">Date</label>
+                      <DatePickerComponent />
+                    </div>
+                  </div>
                   <div className="search-item search-time">
                     <div className="search-icon">
                       <span className="item-icon icon-time"> </span>
@@ -156,22 +165,13 @@ export default function Hero() {
                       <TimePickerComponent />
                     </div>
                   </div>
-                  <div className="search-item search-date">
-                    <div className="search-icon">
-                      <span className="item-icon icon-date"> </span>
-                    </div>
-                    <div className="search-inputs">
-                      <label className="text-14 color-grey">Date</label>
-                      <DatePickerComponent />
-                    </div>
-                  </div>
                   <div className="search-item search-from">
                     <div className="search-icon">
                       <span className="item-icon icon-from"> </span>
                     </div>
                     <div className="search-inputs">
                       <label className="text-14 color-grey">From</label>
-                      <PlacePicker />
+                      <PlacePicker type="from" />
                     </div>
                   </div>
                   <div className="search-item search-to">
@@ -180,7 +180,7 @@ export default function Hero() {
                     </div>
                     <div className="search-inputs">
                       <label className="text-14 color-grey">To</label>
-                      <PlacePicker />
+                      <PlacePicker type="to" />
                     </div>
                   </div>
                   <div className="search-item search-button mb-0">
@@ -227,7 +227,7 @@ export default function Hero() {
                     </div>
                     <div className="search-inputs">
                       <label className="text-14 color-grey">From</label>
-                      <PlacePicker />
+                      <PlacePicker type="from" />
                     </div>
                   </div>
                   <div className="search-item search-to">
@@ -236,7 +236,7 @@ export default function Hero() {
                     </div>
                     <div className="search-inputs">
                       <label className="text-14 color-grey">To</label>
-                      <PlacePicker />
+                      <PlacePicker type="to" />
                     </div>
                   </div>
                   <div className="search-item search-button mb-0">

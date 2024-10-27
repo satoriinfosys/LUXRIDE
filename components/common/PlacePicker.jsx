@@ -69,6 +69,14 @@ export default function PlacePicker({ type }) {
     };
   }, []);
 
+  // Set default selected location from Recoil state on component mount
+  useEffect(() => {
+    if (type === "from" && locationData.from.name) {
+      setSelectedLocation(locationData.from.name);
+    } else if (type === "to" && locationData.to.name) {
+      setSelectedLocation(locationData.to.name);
+    }
+  }, [type, locationData]);
 
   return (
     <>
