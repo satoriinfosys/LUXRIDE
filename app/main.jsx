@@ -1,5 +1,4 @@
 'use client'
-import { RecoilRoot } from 'recoil'
 import Footer1 from "@/components/footers/Footer1";
 import Header1 from "@/components/headers/Header1";
 import MobailHeader1 from "@/components/headers/MobailHeader1";
@@ -22,20 +21,18 @@ export default function Main() {
     <>
       <Header1 /> <MobailHeader1 />
       <main className="main">
-        <RecoilRoot>
-          <Hero />
-          <Partners />
-          <Feet />
-          <Process />
-          <Features />
-          <Facts />
-          <Service />
-          <Testimonials />
-          <Cta />
-          <Blogs />
-          <Faq />
-          <DownloadApp />
-        </RecoilRoot>
+        <Hero />
+        <Partners />
+        <Feet />
+        <Process />
+        <Features />
+        <Facts />
+        <Service />
+        <Testimonials />
+        <Cta />
+        <Blogs />
+        <Faq />
+        <DownloadApp />
       </main>
       <Footer1 />
     </>

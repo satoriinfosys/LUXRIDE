@@ -1,129 +1,80 @@
 "use client";
 
+import { useRecoilState } from 'recoil';
+import { paymentDetailsAtom } from "@/app/_state/states";
 import { activeInputFocus } from "@/utlis/activeInputFocus";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SideBar from "./SideBar";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation"; // To handle navigation
+
 
 export default function BookingPayment() {
+  const [paymentDetails, setPaymentDetails] = useRecoilState(paymentDetailsAtom);
+  const [errors, setErrors] = useState({});
+  const router = useRouter();
+
   useEffect(() => {
     // Focus event
     activeInputFocus();
   }, []);
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setPaymentDetails((prevDetails) => ({
+      ...prevDetails,
+      [id]: value,
+    }));
+  };
+
+  const validateForm = () => {
+    let newErrors = {};
+    // Validate Cardholder Name
+    if (!paymentDetails.cardName) {
+      newErrors.cardName = "Cardholder Name is required";
+    }
+    // Validate Card Number
+    if (!paymentDetails.cardNumber || !/^\d{16}$/.test(paymentDetails.cardNumber)) {
+      newErrors.cardNumber = "Invalid Card Number. Must be 16 digits.";
+    }
+    // Validate Expiry Month
+    if (!paymentDetails.cardExpiryMonth) {
+      newErrors.cardExpiryMonth = "Month is required";
+    }
+    // Validate Expiry Year
+    if (!paymentDetails.cardExpiryYear) {
+      newErrors.cardExpiryYear = "Year is required";
+    } else if (paymentDetails.cardExpiryYear < new Date().getFullYear()) {
+      newErrors.cardExpiryYear = "Year must be greater than or equal to the current year";
+    }
+    // Validate CVV
+    if (!paymentDetails.cvv || !/^\d{3}$/.test(paymentDetails.cvv)) {
+      newErrors.cvv = "Invalid CVV. Must be 3 digits.";
+    }
+    // Validate Checkbox
+    if (!paymentDetails.agree) {
+      newErrors.agree = "You must accept the Terms & Conditions.";
+    }
+
+    return newErrors;
+  };
+
+  const handleContinueClick = () => {
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length === 0) {
+      // If no errors, navigate to booking-received
+        router.push("/booking-received");
+    } else {
+      // Set errors if there are validation issues
+      setErrors(formErrors);
+    }
+  };
+
   return (
     <div className="box-row-tab mt-50">
       <div className="box-tab-left">
         <div className="box-content-detail">
-          <h3 className="heading-24-medium color-text mb-30 wow fadeInUp">
-            Billing Address
-          </h3>
           <div className="form-contact form-comment wow fadeInUp">
-            <form onSubmit={(e) => e.preventDefault()}>
-              <div className="row">
-                <div className="col-lg-6">
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="fullname">
-                      Name
-                    </label>
-                    <input
-                      className="form-control"
-                      id="fullname"
-                      type="text"
-                      defaultValue=""
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-6">
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="lastname">
-                      Last Name
-                    </label>
-                    <input
-                      className="form-control"
-                      id="lastname"
-                      type="text"
-                      defaultValue=""
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-12">
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="company">
-                      Company
-                    </label>
-                    <input
-                      className="form-control"
-                      id="company"
-                      type="text"
-                      defaultValue=""
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-12">
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="address">
-                      Address
-                    </label>
-                    <input
-                      className="form-control"
-                      id="address"
-                      type="text"
-                      defaultValue=""
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-4 col-md-4 col-sm-12">
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="country">
-                      Country
-                    </label>
-                    <select
-                      defaultValue={"UK"}
-                      className="form-control"
-                      id="country"
-                    >
-                      <option value=""></option>
-                      <option value="UK">UK</option>
-                      <option value="USA">USA</option>
-                      <option value="VN">Vietnam</option>
-                      <option value="JP">Japan</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="col-lg-4 col-md-4 col-sm-12">
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="city">
-                      City
-                    </label>
-                    <select
-                      defaultValue={"London"}
-                      className="form-control"
-                      id="city"
-                    >
-                      <option value=""></option>
-                      <option value="London">London</option>
-                      <option value="New York">New York</option>
-                      <option value="Paris">Paris</option>
-                      <option value="Berlin">Berlin</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="col-lg-4 col-md-4 col-sm-12">
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="zipcode">
-                      ZIP / Postal code
-                    </label>
-                    <input
-                      className="form-control"
-                      id="zipcode"
-                      type="text"
-                      defaultValue="850"
-                    />
-                  </div>
-                </div>
-              </div>
-            </form>
             <div className="mt-30"></div>
             <h3 className="heading-24-medium color-text mb-30">
               Select Payment Method
@@ -132,7 +83,12 @@ export default function BookingPayment() {
               <div className="row">
                 <div className="col-lg-12">
                   <div className="form-group">
-                    <select className="form-control">
+                    <select
+                      id="cardType"
+                      className="form-control"
+                      value={paymentDetails.cardType}
+                      onChange={handleInputChange}
+                    >
                       <option value="Credit Card">Credit Card</option>
                       <option value="Paypal">Paypal</option>
                     </select>
@@ -148,74 +104,74 @@ export default function BookingPayment() {
               <div className="row">
                 <div className="col-lg-12">
                   <div className="form-group">
-                    <label className="form-label" htmlFor="cardholdername">
+                    <label className="form-label" htmlFor="cardName">
                       Card Holder Name
                     </label>
                     <input
                       className="form-control"
-                      id="cardholdername"
+                      id="cardName"
                       type="text"
-                      defaultValue=""
+                      value={paymentDetails.cardName}
+                      onChange={handleInputChange}
                     />
+                    {errors.cardName && <p className="error">{errors.cardName}</p>}
                   </div>
                 </div>
                 <div className="col-lg-12">
                   <div className="form-group">
-                    <label className="form-label" htmlFor="cardnumber">
+                    <label className="form-label" htmlFor="cardNumber">
                       Card Number
                     </label>
                     <input
                       className="form-control"
-                      id="cardnumber"
+                      id="cardNumber"
                       type="text"
-                      defaultValue=""
+                      value={paymentDetails.cardNumber}
+                      onChange={handleInputChange}
                     />
+                    {errors.cardNumber && <p className="error">{errors.cardNumber}</p>}
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-4 col-sm-12">
                   <div className="form-group">
-                    <label className="form-label" htmlFor="month">
+                    <label className="form-label" htmlFor="cardExpiryMonth">
                       Month
                     </label>
                     <select
-                      defaultValue={12}
+                      id="cardExpiryMonth"
                       className="form-control"
-                      id="month"
+                      value={paymentDetails.cardExpiryMonth}
+                      onChange={handleInputChange}
                     >
                       <option value=""></option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="4">5</option>
-                      <option value="4">6</option>
-                      <option value="4">7</option>
-                      <option value="4">8</option>
-                      <option value="4">9</option>
-                      <option value="4">10</option>
-                      <option value="4">11</option>
-                      <option value="4">12</option>
+                      {[...Array(12).keys()].map((i) => (
+                        <option key={i + 1} value={i + 1}>
+                          {i + 1}
+                        </option>
+                      ))}
                     </select>
+                    {errors.cardExpiryMonth && <p className="error">{errors.cardExpiryMonth}</p>}
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-4 col-sm-12">
                   <div className="form-group">
-                    <label className="form-label" htmlFor="year">
+                    <label className="form-label" htmlFor="cardExpiryYear">
                       Year
                     </label>
                     <select
-                      defaultValue={"2023"}
+                      id="cardExpiryYear"
                       className="form-control"
-                      id="year"
+                      value={paymentDetails.cardExpiryYear}
+                      onChange={handleInputChange}
                     >
                       <option value=""></option>
-                      <option value="2023">2023</option>
-                      <option value="2024">2024</option>
-                      <option value="2025">2025</option>
-                      <option value="2026">2026</option>
-                      <option value="2027">2027</option>
-                      <option value="2028">2028</option>
+                      {[2023, 2024, 2025, 2026, 2027, 2028].map((year) => (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      ))}
                     </select>
+                    {errors.cardExpiryYear && <p className="error">{errors.cardExpiryYear}</p>}
                   </div>
                 </div>
                 <div className="col-lg-6 col-md-4 col-sm-12">
@@ -227,8 +183,10 @@ export default function BookingPayment() {
                       className="form-control"
                       id="cvv"
                       type="text"
-                      defaultValue="850"
+                      value={paymentDetails.cvv}
+                      onChange={handleInputChange}
                     />
+                    {errors.cvv && <p className="error">{errors.cvv}</p>}
                   </div>
                 </div>
               </div>
@@ -247,10 +205,19 @@ export default function BookingPayment() {
             </p>
             <div className="mt-30">
               <label className="mb-10 mb-15" htmlFor="agree-cb">
-                <input className="cb-agree" id="agree-cb" type="checkbox" />I
+                <input className="cb-agree" id="agree-cb" type="checkbox"
+                  checked={paymentDetails.agree}
+                  onChange={(e) => {
+                    setPaymentDetails({
+                      ...paymentDetails,
+                      agree: e.target.checked,
+                    });
+                  }}
+                />I
                 accept the Terms & Conditions - Booking Conditions and Privacy
                 Policy. *
               </label>
+              {errors.agree && <p className="error">{errors.agree}</p>}
               <label htmlFor="subscriber">
                 <input
                   className="cb-subscriber"
@@ -263,9 +230,9 @@ export default function BookingPayment() {
             </div>
           </div>
           <div className="mt-30 mb-120 wow fadeInUp">
-            <Link
+            <button
               className="btn btn-primary btn-primary-big w-100"
-              href="/booking-receved"
+              onClick={handleContinueClick}
             >
               Book Now
               <svg
@@ -283,7 +250,7 @@ export default function BookingPayment() {
                   d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
                 ></path>
               </svg>
-            </Link>
+            </button>
           </div>
         </div>
       </div>

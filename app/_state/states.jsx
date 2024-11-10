@@ -24,5 +24,24 @@ export const rideSummaryState = atom({
         smoking: false,
         flightNumber: "",
         babySeatingCapacity: 1,
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        totalLuggage: 0,
+        totalSeating: 1
+    },
+});
+
+
+export const paymentDetailsAtom = atom({
+    key: 'paymentDetails',
+    default: {
+        cardType: '',
+        cardNumber: '',
+        cvv: '',
+        cardExpiryMonth: '',
+        cardExpiryYear: '',
+        cardName: ''
     },
 });

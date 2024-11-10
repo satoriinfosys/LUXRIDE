@@ -287,3 +287,24 @@
 }
 
 
+
+// validation error
+/* Style for error messages */
+.error {
+  color: red; /* Text color for errors */
+  font-size: 0.875rem; /* Slightly smaller font size */
+  margin-top: 5px; /* Space above the error message */
+}
+
+/* Optional: Style the input fields with errors */
+input:invalid,
+textarea:invalid {
+  border-color: red; /* Border color to indicate invalid input */
+}
+
+input:invalid:focus,
+textarea:invalid:focus {
+  outline: 2px solid red; /* Focus outline to emphasize the error */
+}
+
+

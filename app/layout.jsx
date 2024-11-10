@@ -5,6 +5,7 @@ import "../public/assets/scss/style.scss";
 
 import { register } from "swiper/element/bundle";
 import { usePathname } from "next/navigation";
+import { RecoilRoot } from "recoil";
 const DM_SansFont = DM_Sans({
   weight: ["400", "500", "700"],
   subsets: ["latin"],
@@ -34,7 +35,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head></head>
-      <body className={DM_SansFont.variable}>{children}</body>
+      <body className={DM_SansFont.variable}>
+        <RecoilRoot>
+          {children}
+        </RecoilRoot>
+      </body>
     </html>
   );
 }

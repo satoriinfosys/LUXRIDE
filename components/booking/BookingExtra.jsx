@@ -1,10 +1,11 @@
-"use client";
+'use client';
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import SideBar from "./SideBar";
 import { activeInputFocus } from "@/utlis/activeInputFocus";
 import Link from "next/link";
 import { rideSummaryState } from "@/app/_state/states";
+import { useRouter } from "next/navigation";
 
 const quantityItem = [
   {
@@ -20,6 +21,38 @@ const quantityItem = [
 export default function BookingExtra() {
   const [quantityItems, setquantityItems] = useState(quantityItem);
   const [bookingData, setBookingData] = useRecoilState(rideSummaryState);
+  const [errors, setErrors] = useState({});
+  const [isFormValid, setIsFormValid] = useState(false);
+  const router = useRouter(); // Initialize the router
+
+  const validate = () => {
+    const newErrors = {};
+    console.log({ bookingData })
+    // Check if the flight number is provided
+    newErrors.flightNumber = bookingData.flightNumber === "" ? "Flight number is required." : "";
+
+    // Check if the return date is provided
+    newErrors.returnDate = !bookingData.returnDate ? "Return date is required." : "";
+
+    // Check if drop-off location is provided
+    newErrors.dropOffLocation = bookingData.dropOffLocation === ""
+      ? "Drop-off location is required."
+      : "";
+
+    // Check if drop-off date is provided
+    newErrors.dropOffDate = !bookingData.dropOffDate ? "Drop-off date is required." : "";
+
+    // Check if drop-off time is provided
+    newErrors.dropOffTime = !bookingData.dropOffTime ? "Drop-off time is required." : "";
+
+    setErrors(newErrors);
+
+    // Check if the form is valid by ensuring there are no error messages
+    const formValid = Object.values(newErrors).every((error) => error === "");
+    setIsFormValid(formValid);
+
+    return formValid;
+  };
 
   const handleQuantity = (qty, i) => {
     if (qty) {
@@ -43,6 +76,15 @@ export default function BookingExtra() {
     }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      // Proceed with form submission (e.g., navigation, API call, etc.)
+      console.log("Form is valid, proceed with submission.");
+      router.push("/booking-passenger");
+    }
+  };
+
   useEffect(() => {
     activeInputFocus();
   }, []);
@@ -55,22 +97,22 @@ export default function BookingExtra() {
             Extra Options
           </h3>
           <div className="form-contact form-comment wow fadeInUp">
-            <form onSubmit={(e) => e.preventDefault()}>
+            <form onSubmit={handleSubmit}>
               <div className="row">
                 <div className="col-lg-12">
                   <div className="form-group">
-                    <label className="form-label" htmlFor="flight">
+                    <label className="form-label" htmlFor="flightNumber">
                       Flight/train number
                     </label>
                     <input
                       className="form-control"
-                      id="flight"
+                      id="flightNumber"
                       type="text"
-                      defaultValue="Example : LH83822"
-                      name="flight"
-                      value={bookingData.flight}
+                      name="flightNumber"
+                      value={bookingData.flightNumber}
                       onChange={handleInputChange}
                     />
+                    {errors.flightNumber && <p className="error">{errors.flightNumber}</p>}
                   </div>
                 </div>
 
@@ -88,6 +130,7 @@ export default function BookingExtra() {
                       value={bookingData.returnDate}
                       onChange={handleInputChange}
                     />
+                    {errors.returnDate && <p className="error">{errors.returnDate}</p>}
                   </div>
                 </div>
                 <div className="col-lg-6">
@@ -103,6 +146,7 @@ export default function BookingExtra() {
                       value={bookingData.dropOffLocation}
                       onChange={handleInputChange}
                     />
+                    {errors.dropOffLocation && <p className="error">{errors.dropOffLocation}</p>}
                   </div>
                 </div>
                 <div className="col-lg-6">
@@ -118,6 +162,7 @@ export default function BookingExtra() {
                       value={bookingData.dropOffDate}
                       onChange={handleInputChange}
                     />
+                    {errors.dropOffDate && <p className="error">{errors.dropOffDate}</p>}
                   </div>
                 </div>
                 <div className="col-lg-6">
@@ -133,6 +178,7 @@ export default function BookingExtra() {
                       value={bookingData.dropOffTime}
                       onChange={handleInputChange}
                     />
+                    {errors.dropOffTime && <p className="error">{errors.dropOffTime}</p>}
                   </div>
                 </div>
 
@@ -168,87 +214,88 @@ export default function BookingExtra() {
                   </div>
                 </div>
               </div>
-            </form>
-          </div>
 
-          <div className="list-extras wow fadeInUp">
-            {quantityItems.map((elm, i) => (
-              <div key={i} className="item-extra">
-                <div className="extra-info">
-                  <h5 className="text-20-medium color-text mb-5">
-                    {elm.name} <span className="price">${elm.price}</span>
-                  </h5>
-                  <p className="text-14 color-grey">{elm.description}</p>
-                </div>
-                <div className="extra-quantity">
-                  <span
-                    onClick={() => handleQuantity(elm.quantity - 1, i)}
-                    className="minus"
-                  >
-                    {" "}
-                  </span>
-                  <input
-                    className="form-control"
-                    onChange={(e) => handleQuantity(parseInt(e.target.value) || 0, i)}
-                    type="text"
-                    value={bookingData.babySeatingCapacity}
-                  />
-                  <span
-                    onClick={() => handleQuantity(elm.quantity + 1, i)}
-                    className="plus"
-                  ></span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-45 wow fadeInUp">
-            <div className="form-contact form-comment">
-              <form onSubmit={(e) => e.preventDefault()}>
-                <div className="row">
-                  <div className="col-lg-12">
-                    <div className="form-group">
-                      <label className="form-label" htmlFor="clientRequest">
-                        Enter Your Request
-                      </label>
-                      <textarea
-                        value={bookingData.clientRequest} // Use controlled input
-                        onChange={handleInputChange} // Update on change
+              <div className="list-extras wow fadeInUp">
+                {quantityItems.map((elm, i) => (
+                  <div key={i} className="item-extra">
+                    <div className="extra-info">
+                      <h5 className="text-20-medium color-text mb-5">
+                        {elm.name} <span className="price">${elm.price}</span>
+                      </h5>
+                      <p className="text-14 color-grey">{elm.description}</p>
+                    </div>
+                    <div className="extra-quantity">
+                      <span
+                        onClick={() => handleQuantity(elm.quantity - 1, i)}
+                        className="minus"
+                      >
+                        {" "}
+                      </span>
+                      <input
                         className="form-control"
-                        id="clientRequest"
-                        name="clientRequest"
-                        rows="5"
-                      ></textarea>
+                        onChange={(e) => handleQuantity(parseInt(e.target.value) || 0, i)}
+                        type="text"
+                        value={bookingData.babySeatingCapacity}
+                      />
+                      <span
+                        onClick={() => handleQuantity(elm.quantity + 1, i)}
+                        className="plus"
+                      ></span>
                     </div>
                   </div>
+                ))}
+              </div>
+
+              <div className="mt-45 wow fadeInUp">
+                <div className="form-contact form-comment">
+                  <form onSubmit={(e) => e.preventDefault()}>
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <div className="form-group">
+                          <label className="form-label" htmlFor="clientRequest">
+                            Enter Your Request
+                          </label>
+                          <textarea
+                            value={bookingData.clientRequest} // Use controlled input
+                            onChange={handleInputChange} // Update on change
+                            className="form-control"
+                            id="clientRequest"
+                            name="clientRequest"
+                            rows="5"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
                 </div>
-              </form>
-            </div>
-          </div>
+              </div>
 
-
-          <div className="mt-30 mb-120 wow fadeInUp">
-            <Link
-              className="btn btn-primary btn-primary-big w-100"
-              href="/booking-passenger"
-            >
-              Continue
-              <svg
-                className="icon-16 ml-5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
-                ></path>
-              </svg>
-            </Link>
+              <div className="mt-30 mb-120 wow fadeInUp">
+                <Link
+                  className="btn btn-primary btn-primary-big w-100"
+                  href="/booking-passenger"
+                  onClick={handleSubmit}
+                  disabled={!isFormValid}
+                >
+                  Continue
+                  <svg
+                    className="icon-16 ml-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
+                    ></path>
+                  </svg>
+                </Link>
+              </div>
+            </form>
           </div>
         </div>
       </div>
