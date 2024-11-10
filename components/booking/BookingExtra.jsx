@@ -29,7 +29,7 @@ export default function BookingExtra() {
 
   const router = useRouter(); // Initialize the router
   const searchParams = useSearchParams();
-  const vehicle = searchParams.get('vehicle');
+  let vehicle = searchParams.get('vehicle');
 
 
   const validate = () => {
@@ -93,6 +93,9 @@ export default function BookingExtra() {
   const getVehicleDetails = async () => {
     setIsLoading(true);
     try {
+      if(!vehicle){
+        vehicle = selectedCar.id;
+      }
       const endPoint = `/cars/${vehicle}`;
       const response = await apiService.get(endPoint);
 

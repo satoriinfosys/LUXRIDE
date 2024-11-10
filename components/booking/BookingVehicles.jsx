@@ -19,7 +19,11 @@ export default function BookingVehicles() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const book = searchParams.get('book');
+  let book = searchParams.get('book');
+
+  if(!book){
+    book = bookingData?.bookType || null;
+  }
 
   const fetchCar = async () => {
     setIsLoading(true);
