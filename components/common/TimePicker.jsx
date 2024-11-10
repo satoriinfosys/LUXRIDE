@@ -16,8 +16,11 @@ export default function TimePickerComponent() {
   }, [bookingData.time]);
 
   const handleTimeChange = (newTime) => {
-    setValue(newTime);
-    setBookingDetails((prev) => ({ ...prev, time: newTime }));
+    // Check if newTime is a Date object, and if not, convert it
+    const time = newTime instanceof Date ? newTime : new Date(newTime);
+    
+    setValue(time);
+    setBookingDetails((prev) => ({ ...prev, time: time.toISOString() })); // Store the time as an ISO string
   };
 
   return (

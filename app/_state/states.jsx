@@ -45,3 +45,8 @@ export const paymentDetailsAtom = atom({
         cardName: ''
     },
 });
+
+export const selectedCarAtom = atom({
+    key: 'selectedCar',
+    default: null
+})

@@ -11,8 +11,6 @@ export default function MobailHeader1() {
     const wrapper4 = document.body;
 
     const handleClick = (e) => {
-      console.log("first");
-
       navbarTrigger?.classList.toggle("burger-close");
       e.preventDefault();
       container?.classList.toggle("sidebar-visible");

@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { bookingDetails } from "@/app/_state/states";
 
+const accessToken = process.env.MAP_ACCESS_TOKEN || "pk.eyJ1IjoiMTIzcm9zaGFuMTIzIiwiYSI6ImNsZ2QwcGp3ZzAwN3UzbHA3eGd3cGVveG0ifQ.OcKGB8CjV8B0ZmGptJCO6g";
+
 export default function PlacePicker({ type }) {
   const [isActive, setIsActive] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(""); // Stores selected location name
@@ -15,22 +17,26 @@ export default function PlacePicker({ type }) {
   const [bookingData, setBookingDetails] = useRecoilState(bookingDetails); // Recoil state for 'from' and 'to' locations
   const inputRef = useRef();
 
-  // Fetch locations from API
   const fetchLocations = async (query) => {
     setIsLoading(true);
     try {
-      const endPoint = "/serviceArea/get-all"; // Replace with your actual API endpoint
-      const response = await apiService.post(endPoint, {
-        status: true,
-        sort: "ASC",
-        limit: 10,
-        page: 1,
-        searchTerm: query, // Use the searchTerm for the API query
-      });
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?proximity=ip&access_token=${accessToken}`
+      );
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch locations");
+      }
+  
+      const data = await response.json();
 
-      if (response.data && Array.isArray(response.data)) {
+      if (data && data.features && Array.isArray(data.features)) {
         setIsActive(true);
-        setLocations(response.data); // Use the locations array
+        const locations = data.features.map((feature) => ({
+          name: feature.place_name,
+          coordinates: feature.geometry.coordinates,
+        }));
+        setLocations(locations); // Use the locations array
       } else {
         setIsActive(false);
         setLocations([]); // Handle no results
@@ -42,6 +48,7 @@ export default function PlacePicker({ type }) {
       setIsLoading(false);
     }
   };
+  
 
   // Debounced search function to limit API calls
   const debouncedFetch = debounce((query) => {
@@ -78,6 +85,7 @@ export default function PlacePicker({ type }) {
     }
   }, [type, bookingData]);
 
+
   return (
     <>
       <input
@@ -92,9 +100,9 @@ export default function PlacePicker({ type }) {
           if (value && selectedLocation) {
             setSelectedLocation(""); // Clear selected location when typing starts
             if (type === "from") {
-              setBookingDetails((prev) => ({ ...prev, from: { id: "", name: "" } })); // Clear Recoil 'from'
+              setBookingDetails((prev) => ({ ...prev, from: {name: "", coordinates: null } })); // Clear Recoil 'from'
             } else if (type === "to") {
-              setBookingDetails((prev) => ({ ...prev, to: { id: "", name: "" } })); // Clear Recoil 'to'
+              setBookingDetails((prev) => ({ ...prev, to: {name: "", coordinates: null } })); // Clear Recoil 'to'
             }
           }
           setSearchTerm(value); // Update searchTerm when typing
@@ -113,9 +121,8 @@ export default function PlacePicker({ type }) {
                 setSelectedLocation(elm.name); // Set selected location name
                 setSearchTerm(""); // Clear search term after selecting a location
                 setIsActive(false); // Close the dropdown
-
                 // Update Recoil state with the selected location's id and name
-                const locationInfo = { id: elm.id, name: elm.name };
+                const locationInfo = { name: elm.name, coordinates: elm.coordinates };
                 if (type === "from") {
                   setBookingDetails((prev) => ({ ...prev, from: locationInfo }));
                 } else if (type === "to") {

@@ -4,8 +4,9 @@ import { useRecoilState } from "recoil";
 import SideBar from "./SideBar";
 import { activeInputFocus } from "@/utlis/activeInputFocus";
 import Link from "next/link";
-import { rideSummaryState } from "@/app/_state/states";
-import { useRouter } from "next/navigation";
+import { rideSummaryState, selectedCarAtom } from "@/app/_state/states";
+import { useRouter, useSearchParams } from "next/navigation";
+import apiService from "@/app/_api/apiService";
 
 const quantityItem = [
   {
@@ -23,11 +24,16 @@ export default function BookingExtra() {
   const [bookingData, setBookingData] = useRecoilState(rideSummaryState);
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
+  const [selectedCar, setSelectedCar] = useRecoilState(selectedCarAtom);
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter(); // Initialize the router
+  const searchParams = useSearchParams();
+  const vehicle = searchParams.get('vehicle');
+
 
   const validate = () => {
     const newErrors = {};
-    console.log({ bookingData })
     // Check if the flight number is provided
     newErrors.flightNumber = bookingData.flightNumber === "" ? "Flight number is required." : "";
 
@@ -80,14 +86,34 @@ export default function BookingExtra() {
     e.preventDefault();
     if (validate()) {
       // Proceed with form submission (e.g., navigation, API call, etc.)
-      console.log("Form is valid, proceed with submission.");
       router.push("/booking-passenger");
     }
   };
 
+  const getVehicleDetails = async () => {
+    setIsLoading(true);
+    try {
+      const endPoint = `/cars/${vehicle}`;
+      const response = await apiService.get(endPoint);
+
+      if (response) {
+        setSelectedCar(response);
+      } else {
+        setSelectedCar(null);
+      }
+    } catch (error) {
+      console.error("Error fetching car details:", error);
+      setSelectedCar(null);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
     activeInputFocus();
+    getVehicleDetails();
   }, []);
+
 
   return (
     <div className="box-row-tab mt-50">
@@ -248,25 +274,23 @@ export default function BookingExtra() {
 
               <div className="mt-45 wow fadeInUp">
                 <div className="form-contact form-comment">
-                  <form onSubmit={(e) => e.preventDefault()}>
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <div className="form-group">
-                          <label className="form-label" htmlFor="clientRequest">
-                            Enter Your Request
-                          </label>
-                          <textarea
-                            value={bookingData.clientRequest} // Use controlled input
-                            onChange={handleInputChange} // Update on change
-                            className="form-control"
-                            id="clientRequest"
-                            name="clientRequest"
-                            rows="5"
-                          ></textarea>
-                        </div>
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <div className="form-group">
+                        <label className="form-label" htmlFor="clientRequest">
+                          Enter Your Request
+                        </label>
+                        <textarea
+                          value={bookingData.clientRequest} // Use controlled input
+                          onChange={handleInputChange} // Update on change
+                          className="form-control"
+                          id="clientRequest"
+                          name="clientRequest"
+                          rows="5"
+                        ></textarea>
                       </div>
                     </div>
-                  </form>
+                  </div>
                 </div>
               </div>
 
@@ -299,7 +323,8 @@ export default function BookingExtra() {
           </div>
         </div>
       </div>
-      <SideBar />
+      {selectedCar ? <SideBar /> : <></>}
+
     </div>
   );
 }

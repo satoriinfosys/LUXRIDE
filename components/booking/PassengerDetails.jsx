@@ -94,7 +94,6 @@ export default function PassengerDetails() {
     }
   };
 
-  console.log({ bookingData });
 
   return (
     <div className="box-row-tab mt-50">

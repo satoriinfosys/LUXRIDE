@@ -1,10 +1,44 @@
+import { bookingDetails } from "@/app/_state/states";
 import DatePickerComponent from "@/components/common/DatePicker";
 import PlacePicker from "@/components/common/PlacePicker";
 import TimePickerComponent from "@/components/common/TimePicker";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useRecoilState } from "recoil";
 
 export default function Hero() {
+  const tabs = [
+    { id: "distance", label: "Distance" },
+    { id: "hourly", label: "Hourly" },
+    { id: "rate", label: "Flat Rate" },
+  ];
+
+  const [bookingData, setBookingDetails] = useRecoilState(bookingDetails);
+  const [errors, setErrors] = useState({});
+  const router = useRouter();
+
+  const [activeTab, setActiveTab] = useState(tabs[0].id);
+
+  const handleSearch = () => {
+    // Validate required fields
+    let newErrors = {};
+
+    if (!bookingData.from?.name) newErrors.from = "Please enter a starting location.";
+    if (!bookingData.to?.name) newErrors.to = "Please enter a destination.";
+    if (!bookingData.time) newErrors.time = "Please select a time.";
+    if (!bookingData.date) newErrors.date = "Please select a date.";
+
+    setErrors(newErrors);
+
+    // If no errors, proceed with navigation
+    if (Object.keys(newErrors).length === 0) {
+      // Navigate to the desired route, e.g., `/results`
+      router.push(`/booking-vehicle?book=${activeTab}`);
+    }
+  };
+
   return (
     <section className="section banner-home2 mb-50">
       <div className="box-banner-homepage-2">
@@ -47,211 +81,87 @@ export default function Hero() {
           <div className="box-search-tabs wow fadeInUp">
             <div className="head-tabs">
               <ul className="nav nav-tabs nav-tabs-search" role="tablist">
-                <li>
-                  <a
-                    className="active"
-                    href="#tab-distance"
-                    data-bs-toggle="tab"
-                    role="tab"
-                    aria-controls="tab-distance"
-                    aria-selected="true"
-                  >
-                    Distance
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#tab-hourly"
-                    data-bs-toggle="tab"
-                    role="tab"
-                    aria-controls="tab-hourly"
-                    aria-selected="false"
-                  >
-                    Hourly
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#tab-rate"
-                    data-bs-toggle="tab"
-                    role="tab"
-                    aria-controls="tab-rate"
-                    aria-selected="false"
-                  >
-                    Flat Rate
-                  </a>
-                </li>
+                {tabs.map((tab) => (
+                  <li key={tab.id}>
+                    <a
+                      className={activeTab === tab.id ? "active" : ""}
+                      onClick={() => setActiveTab(tab.id)}
+                      role="tab"
+                      aria-controls={`tab-${tab.id}`}
+                      aria-selected={activeTab === tab.id}
+                    >
+                      {tab.label}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="tab-content">
-              <div
-                className="tab-pane fade active show"
-                id="tab-distance"
-                role="tabpanel"
-                aria-labelledby="tab-distance"
-              >
-                <div className="box-form-search">
-                  <div className="search-item search-date">
-                    <div className="search-icon">
-                      <span className="item-icon icon-date"> </span>
+              {tabs.map((tab) => (
+                <div
+                  key={tab.id}
+                  className={`tab-pane fade ${
+                    activeTab === tab.id ? "active show" : ""
+                  }`}
+                  id={`tab-${tab.id}`}
+                  role="tabpanel"
+                  aria-labelledby={`tab-${tab.id}`}
+                >
+                  <div className="box-form-search">
+                    <div className="search-item search-date">
+                      <div className="search-icon">
+                        <span className="item-icon icon-date"> </span>
+                      </div>
+                      <div className="search-inputs">
+                        <label className="text-14 color-grey">Date</label>
+                        <DatePickerComponent />
+                        {errors.date && <p className="error">{errors.date}</p>}
+                      </div>
                     </div>
-                    <div className="search-inputs">
-                      <label className="text-14 color-grey">Date</label>
-                      <DatePickerComponent />
+                    <div className="search-item search-time">
+                      <div className="search-icon">
+                        <span className="item-icon icon-time"> </span>
+                      </div>
+                      <div className="search-inputs">
+                        <label className="text-14 color-grey">Time</label>
+                        <TimePickerComponent />
+                        {errors.time && <p className="error">{errors.time}</p>}
+                      </div>
                     </div>
-                  </div>
-                  <div className="search-item search-time">
-                    <div className="search-icon">
-                      <span className="item-icon icon-time"> </span>
+                    <div className="search-item search-from">
+                      <div className="search-icon">
+                        <span className="item-icon icon-from"> </span>
+                      </div>
+                      <div className="search-inputs">
+                        <label className="text-14 color-grey">From</label>
+                        <PlacePicker type="from" />
+                        {errors.from && <p className="error">{errors.from}</p>}
+                      </div>
                     </div>
-                    <div className="search-inputs">
-                      <label className="text-14 color-grey">Time</label>
-                      <TimePickerComponent />
+                    <div className="search-item search-to">
+                      <div className="search-icon">
+                        <span className="item-icon icon-to"> </span>
+                      </div>
+                      <div className="search-inputs">
+                        <label className="text-14 color-grey">To</label>
+                        <PlacePicker type="to" />
+                        {errors.to && <p className="error">{errors.to}</p>}
+                      </div>
                     </div>
-                  </div>
-                  <div className="search-item search-from">
-                    <div className="search-icon">
-                      <span className="item-icon icon-from"> </span>
+                    <div className="search-item search-button mb-0">
+                      <button className="btn btn-search" onClick={handleSearch} type="submit">
+                        <Image
+                          width={20}
+                          height={20}
+                          src="/assets/imgs/template/icons/search.svg"
+                          alt="luxride"
+                        />
+                        Search
+                      </button>
                     </div>
-                    <div className="search-inputs">
-                      <label className="text-14 color-grey">From</label>
-                      <PlacePicker type="from"/>
-                    </div>
-                  </div>
-                  <div className="search-item search-to">
-                    <div className="search-icon">
-                      <span className="item-icon icon-to"> </span>
-                    </div>
-                    <div className="search-inputs">
-                      <label className="text-14 color-grey">To</label>
-                      <PlacePicker type="to"/>
-                    </div>
-                  </div>
-                  <div className="search-item search-button mb-0">
-                    <button className="btn btn-search" type="submit">
-                      <Image
-                        width={20}
-                        height={20}
-                        src="/assets/imgs/template/icons/search.svg"
-                        alt="luxride"
-                      />
-                      Search
-                    </button>
                   </div>
                 </div>
-              </div>
-              <div
-                className="tab-pane fade"
-                id="tab-hourly"
-                role="tabpanel"
-                aria-labelledby="tab-hourly"
-              >
-                <div className="box-form-search">
-                <div className="search-item search-date">
-                    <div className="search-icon">
-                      <span className="item-icon icon-date"> </span>
-                    </div>
-                    <div className="search-inputs">
-                      <label className="text-14 color-grey">Date</label>
-                      <DatePickerComponent />
-                    </div>
-                  </div>
-                  <div className="search-item search-time">
-                    <div className="search-icon">
-                      <span className="item-icon icon-time"> </span>
-                    </div>
-                    <div className="search-inputs">
-                      <label className="text-14 color-grey">Time</label>
-                      <TimePickerComponent />
-                    </div>
-                  </div>
-                  <div className="search-item search-from">
-                    <div className="search-icon">
-                      <span className="item-icon icon-from"> </span>
-                    </div>
-                    <div className="search-inputs">
-                      <label className="text-14 color-grey">From</label>
-                      <PlacePicker type="from" />
-                    </div>
-                  </div>
-                  <div className="search-item search-to">
-                    <div className="search-icon">
-                      <span className="item-icon icon-to"> </span>
-                    </div>
-                    <div className="search-inputs">
-                      <label className="text-14 color-grey">To</label>
-                      <PlacePicker type="to" />
-                    </div>
-                  </div>
-                  <div className="search-item search-button mb-0">
-                    <button className="btn btn-search" type="submit">
-                      <Image
-                        width={20}
-                        height={20}
-                        src="/assets/imgs/template/icons/search.svg"
-                        alt="luxride"
-                      />
-                      Search
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="tab-pane fade"
-                id="tab-rate"
-                role="tabpanel"
-                aria-labelledby="tab-rate"
-              >
-                <div className="box-form-search">
-                  <div className="search-item search-date">
-                    <div className="search-icon">
-                      <span className="item-icon icon-date"> </span>
-                    </div>
-                    <div className="search-inputs">
-                      <label className="text-14 color-grey">Date</label>
-                      <DatePickerComponent />
-                    </div>
-                  </div>
-                  <div className="search-item search-time">
-                    <div className="search-icon">
-                      <span className="item-icon icon-time"> </span>
-                    </div>
-                    <div className="search-inputs">
-                      <label className="text-14 color-grey">Time</label>
-                      <TimePickerComponent />
-                    </div>
-                  </div>
-                  <div className="search-item search-from">
-                    <div className="search-icon">
-                      <span className="item-icon icon-from"> </span>
-                    </div>
-                    <div className="search-inputs">
-                      <label className="text-14 color-grey">From</label>
-                      <PlacePicker type="from" />
-                    </div>
-                  </div>
-                  <div className="search-item search-to">
-                    <div className="search-icon">
-                      <span className="item-icon icon-to"> </span>
-                    </div>
-                    <div className="search-inputs">
-                      <label className="text-14 color-grey">To</label>
-                      <PlacePicker type="to" />
-                    </div>
-                  </div>
-                  <div className="search-item search-button mb-0">
-                    <button className="btn btn-search" type="submit">
-                      <Image
-                        width={20}
-                        height={20}
-                        src="/assets/imgs/template/icons/search.svg"
-                        alt="luxride"
-                      />
-                      Search
-                    </button>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
