@@ -12,7 +12,7 @@ const quantityItem = [
   {
     id: 1,
     name: "Child Seat",
-    price: 12,
+    price: 3,
     description:
       "Suitable for toddlers weighing 0-18 kg (approx 0 to 4 years).",
     quantity: 1,
@@ -37,19 +37,19 @@ export default function BookingExtra() {
     // Check if the flight number is provided
     newErrors.flightNumber = bookingData.flightNumber === "" ? "Flight number is required." : "";
 
-    // Check if the return date is provided
-    newErrors.returnDate = !bookingData.returnDate ? "Return date is required." : "";
+    // // Check if the return date is provided
+    // newErrors.returnDate = !bookingData.returnDate ? "Return date is required." : "";
 
-    // Check if drop-off location is provided
-    newErrors.dropOffLocation = bookingData.dropOffLocation === ""
-      ? "Drop-off location is required."
-      : "";
+    // // Check if drop-off location is provided
+    // newErrors.dropOffLocation = bookingData.dropOffLocation === ""
+    //   ? "Drop-off location is required."
+    //   : "";
 
-    // Check if drop-off date is provided
-    newErrors.dropOffDate = !bookingData.dropOffDate ? "Drop-off date is required." : "";
+    // // Check if drop-off date is provided
+    // newErrors.dropOffDate = !bookingData.dropOffDate ? "Drop-off date is required." : "";
 
-    // Check if drop-off time is provided
-    newErrors.dropOffTime = !bookingData.dropOffTime ? "Drop-off time is required." : "";
+    // // Check if drop-off time is provided
+    // newErrors.dropOffTime = !bookingData.dropOffTime ? "Drop-off time is required." : "";
 
     setErrors(newErrors);
 
@@ -227,7 +227,7 @@ export default function BookingExtra() {
                   </div>
                 </div>
 
-                <div className="col-lg-6">
+                {/* <div className="col-lg-6">
                   <div className="form-group form-check">
                     <input
                       type="checkbox"
@@ -241,7 +241,7 @@ export default function BookingExtra() {
                       Smoking
                     </label>
                   </div>
-                </div>
+                </div> */}
               </div>
 
               <div className="list-extras wow fadeInUp">
