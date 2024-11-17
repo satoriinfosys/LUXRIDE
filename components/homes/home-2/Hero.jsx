@@ -1,3 +1,4 @@
+'use client';
 import { bookingDetails } from "@/app/_state/states";
 import DatePickerComponent from "@/components/common/DatePicker";
 import FlatRatePicker from "@/components/common/FlatRatePicker";
