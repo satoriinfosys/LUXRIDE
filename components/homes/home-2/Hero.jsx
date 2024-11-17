@@ -1,5 +1,6 @@
 import { bookingDetails } from "@/app/_state/states";
 import DatePickerComponent from "@/components/common/DatePicker";
+import FlatRatePicker from "@/components/common/FlatRatePicker";
 import PlacePicker from "@/components/common/PlacePicker";
 import TimePickerComponent from "@/components/common/TimePicker";
 import Image from "next/image";
@@ -8,12 +9,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 
+const tabs = [
+  { id: "distance", label: "Distance" },
+  { id: "hourly", label: "Hourly" },
+  { id: "rate", label: "Flat Rate" },
+];
+
 export default function Hero() {
-  const tabs = [
-    { id: "distance", label: "Distance" },
-    { id: "hourly", label: "Hourly" },
-    { id: "rate", label: "Flat Rate" },
-  ];
 
   const [bookingData, setBookingDetails] = useRecoilState(bookingDetails);
   const [errors, setErrors] = useState({});
@@ -24,9 +26,12 @@ export default function Hero() {
   const handleSearch = () => {
     // Validate required fields
     let newErrors = {};
-
-    if (!bookingData.from?.name) newErrors.from = "Please enter a starting location.";
-    if (!bookingData.to?.name) newErrors.to = "Please enter a destination.";
+    if (activeTab === "rate") {
+      if (!bookingData.flatRate?.id) newErrors.from = "Please select flat rate.";
+    } else {
+      if (!bookingData.from?.name) newErrors.from = "Please enter a starting location.";
+      if (!bookingData.to?.name) newErrors.to = "Please enter a destination.";
+    }
     if (!bookingData.time) newErrors.time = "Please select a time.";
     if (!bookingData.date) newErrors.date = "Please select a date.";
 
@@ -38,6 +43,7 @@ export default function Hero() {
       router.push(`/booking-vehicle?book=${activeTab}`);
     }
   };
+
 
   return (
     <section className="section banner-home2 mb-50">
@@ -100,9 +106,8 @@ export default function Hero() {
               {tabs.map((tab) => (
                 <div
                   key={tab.id}
-                  className={`tab-pane fade ${
-                    activeTab === tab.id ? "active show" : ""
-                  }`}
+                  className={`tab-pane fade ${activeTab === tab.id ? "active show" : ""
+                    }`}
                   id={`tab-${tab.id}`}
                   role="tabpanel"
                   aria-labelledby={`tab-${tab.id}`}
@@ -128,26 +133,40 @@ export default function Hero() {
                         {errors.time && <p className="error">{errors.time}</p>}
                       </div>
                     </div>
-                    <div className="search-item search-from">
-                      <div className="search-icon">
-                        <span className="item-icon icon-from"> </span>
+                    {activeTab === "rate" ?
+                      <div className="search-item search-from">
+                        <div className="search-icon">
+                          <span className="item-icon icon-from"> </span>
+                        </div>
+                        <div className="search-inputs">
+                          <label className="text-14 color-grey">Flat Rate</label>
+                          <FlatRatePicker />
+                          {errors.from && <p className="error">{errors.from}</p>}
+                        </div>
                       </div>
-                      <div className="search-inputs">
-                        <label className="text-14 color-grey">From</label>
-                        <PlacePicker type="from" />
-                        {errors.from && <p className="error">{errors.from}</p>}
-                      </div>
-                    </div>
-                    <div className="search-item search-to">
-                      <div className="search-icon">
-                        <span className="item-icon icon-to"> </span>
-                      </div>
-                      <div className="search-inputs">
-                        <label className="text-14 color-grey">To</label>
-                        <PlacePicker type="to" />
-                        {errors.to && <p className="error">{errors.to}</p>}
-                      </div>
-                    </div>
+                      : <>
+                        <div className="search-item search-from">
+                          <div className="search-icon">
+                            <span className="item-icon icon-from"> </span>
+                          </div>
+                          <div className="search-inputs">
+                            <label className="text-14 color-grey">From</label>
+                            <PlacePicker type="from" />
+                            {errors.from && <p className="error">{errors.from}</p>}
+                          </div>
+                        </div>
+                        <div className="search-item search-to">
+                          <div className="search-icon">
+                            <span className="item-icon icon-to"> </span>
+                          </div>
+                          <div className="search-inputs">
+                            <label className="text-14 color-grey">To</label>
+                            <PlacePicker type="to" />
+                            {errors.to && <p className="error">{errors.to}</p>}
+                          </div>
+                        </div>
+                      </>}
+
                     <div className="search-item search-button mb-0">
                       <button className="btn btn-search" onClick={handleSearch} type="submit">
                         <Image

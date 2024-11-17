@@ -1,12 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { rideSummaryState } from "@/app/_state/states";
+import { bookingDetails, reservationDetails, rideSummaryState, selectedCarAtom } from "@/app/_state/states";
 import SideBar from "./SideBar";
 import { useRouter } from "next/navigation"; // To handle navigation
+import apiService from "@/app/_api/apiService";
+import { calculateCost } from "@/utlis/calculateCost";
+import { GRATUITY_AMOUNT } from "@/utlis/constants";
 
 export default function PassengerDetails() {
-  const [bookingData, setBookingData] = useRecoilState(rideSummaryState);
+  const [rideExtra, setRideExtra] = useRecoilState(rideSummaryState);
+  const [bookingData, setBookingDetails] = useRecoilState(bookingDetails);
+  const [selectedCar, setSelectedCar] = useRecoilState(selectedCarAtom);
+  const [reservationData, setReservationData] = useRecoilState(reservationDetails);
+
   const [errors, setErrors] = useState({ email: "", phone: "", name: "", lastName: "" });
   const router = useRouter();
 
@@ -41,7 +48,7 @@ export default function PassengerDetails() {
   // Update Recoil state when input changes
   const handleInputChange = (e) => {
     const { id, value } = e.target;
-    setBookingData((prev) => ({
+    setRideExtra((prev) => ({
       ...prev,
       [id]: id === "totalLuggage" || id === "totalSeating" ? parseInt(value) : value,
     }));
@@ -58,30 +65,93 @@ export default function PassengerDetails() {
     return re.test(phone);
   };
 
+
+  const createReservation = async () => {
+
+    try {
+      const { totalPrice } = calculateCost({ selectedCar, rideExtra, bookingData });
+
+      const reservationDetails = {
+        "firstName": rideExtra?.firstName,
+        "lastName": rideExtra?.lastName,
+        "email": rideExtra?.email,
+        "phone": rideExtra?.phone,
+        "address": bookingData?.from?.name,
+        "pickUpLocation": bookingData?.from?.name,
+        "pickUpDate": bookingData?.date || undefined,
+        "pickUpTime": bookingData?.time || undefined,
+        "returnDate": rideExtra?.dropOffDate || undefined,
+        "dropOffLocation": rideExtra?.dropOffLocation,
+        "dropOffDate": rideExtra?.dropOffDate || undefined,
+        "dropOffTime": rideExtra?.dropOffTime || undefined,
+        "meetAndGreet": rideExtra?.meetAndGreet,
+        "clientRequest": rideExtra?.clientRequest,
+        "gratuityPercentage": null,
+        "gratuityAmount": GRATUITY_AMOUNT,
+        "customerId": null,
+        "smoking": false,
+        "totalHour": bookingData?.durationInHours,
+        "totalDistance": bookingData?.distanceInMiles,
+        "isByHour": bookingData?.bookType === "hourly" ? true : false,
+        "isRoundTrip": true,
+        "carId": selectedCar?.id,
+        "userId": null,
+        "totalSeating": rideExtra?.totalSeating,
+        "totalLuggage": rideExtra?.totalLuggage,
+        "paymentStatus": "pending",
+        "reservationStatus": "pending",
+        "cardType": null,
+        "cardNumber": null,
+        "babySeatingCapacity": rideExtra?.babySeatingCapacity,
+        "cvv": null,
+        "gratitude": 10,
+        "cardExpiryDate": null,
+        "cardName": null,
+        "nameoncard": null,
+        "expectedDuration": bookingData?.durationInHours,
+        "expectedTime": bookingData?.time,
+        "flightNumber": rideExtra?.flightNumber,
+        "paymentAmount": totalPrice,
+        "paymentToken": null,
+        "paymentType": null,
+        "reservationApproval": "pending",
+        "smokingFee": 0,
+        "stripeToken": null
+      }
+
+      const response = await apiService.post("/reservation", reservationDetails);
+      setReservationData(response.data)
+      router.push("/booking-payment");
+    } catch (error) {
+      console.error("Error while reservation", error?.message)
+    }
+  }
+
+
   // Handle form submission
-  const handleContinueClick = () => {
+  const handleContinueClick = async () => {
     const newErrors = { email: "", phone: "", name: "", lastName: "" };
     let formIsValid = true;
 
     // Validate name and last name
-    if (!bookingData.firstName) {
+    if (!rideExtra.firstName) {
       newErrors.name = "Name is required";
       formIsValid = false;
     }
 
-    if (!bookingData.lastName) {
+    if (!rideExtra.lastName) {
       newErrors.lastName = "Last name is required";
       formIsValid = false;
     }
 
     // Validate email
-    if (!bookingData.email || !validateEmail(bookingData.email)) {
+    if (!rideExtra.email || !validateEmail(rideExtra.email)) {
       newErrors.email = "Please enter a valid email address";
       formIsValid = false;
     }
 
     // Validate phone number
-    if (!bookingData.phone || !validatePhone(bookingData.phone)) {
+    if (!rideExtra.phone || !validatePhone(rideExtra.phone)) {
       newErrors.phone = "Please enter a valid phone number";
       formIsValid = false;
     }
@@ -90,7 +160,8 @@ export default function PassengerDetails() {
 
     // Navigate on successful validation
     if (formIsValid) {
-      router.push("/booking-payment");
+      // create reservation
+      await createReservation();
     }
   };
 
@@ -114,7 +185,7 @@ export default function PassengerDetails() {
                       className="form-control"
                       id="firstName"
                       type="text"
-                      value={bookingData.firstName || ""}
+                      value={rideExtra.firstName || ""}
                       onChange={handleInputChange}
                     />
                     {errors.name && <span className="error">{errors.name}</span>}
@@ -129,7 +200,7 @@ export default function PassengerDetails() {
                       className="form-control"
                       id="lastName"
                       type="text"
-                      value={bookingData.lastName || ""}
+                      value={rideExtra.lastName || ""}
                       onChange={handleInputChange}
                     />
                     {errors.lastName && <span className="error">{errors.lastName}</span>}
@@ -144,7 +215,7 @@ export default function PassengerDetails() {
                       className="form-control"
                       id="email"
                       type="text"
-                      value={bookingData.email || ""}
+                      value={rideExtra.email || ""}
                       onChange={handleInputChange}
                     />
                     {errors.email && <span className="error">{errors.email}</span>}
@@ -159,7 +230,7 @@ export default function PassengerDetails() {
                       className="form-control"
                       id="phone"
                       type="text"
-                      value={bookingData.phone || ""}
+                      value={rideExtra.phone || ""}
                       onChange={handleInputChange}
                     />
                     {errors.phone && <span className="error">{errors.phone}</span>}
@@ -183,7 +254,7 @@ export default function PassengerDetails() {
                     <select
                       className="form-control"
                       id="totalSeating"
-                      value={bookingData.totalSeating || 0}
+                      value={rideExtra.totalSeating || 0}
                       onChange={handleInputChange}
                     >
                       {[...Array(11).keys()].map((num) => (
@@ -202,7 +273,7 @@ export default function PassengerDetails() {
                     <select
                       className="form-control"
                       id="totalLuggage"
-                      value={bookingData.totalLuggage || 0}
+                      value={rideExtra.totalLuggage || 0}
                       onChange={handleInputChange}
                     >
                       {[...Array(11).keys()].map((num) => (
@@ -222,7 +293,7 @@ export default function PassengerDetails() {
                       className="form-control"
                       id="notes"
                       rows="5"
-                      value={bookingData.notes || ""}
+                      value={rideExtra.notes || ""}
                       onChange={handleInputChange}
                     ></textarea>
                   </div>

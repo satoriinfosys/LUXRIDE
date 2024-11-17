@@ -1,42 +1,72 @@
+'use client';
+import { reservationDetails } from "@/app/_state/states";
 import Image from "next/image";
+import { useRecoilState } from "recoil";
 
-const infoData = [
-  { id: 1, label: "Order Number", value: "#4039" },
-  { id: 2, label: "Date", value: "Thu, Oct 06, 2022" },
-  { id: 3, label: "Total", value: "$40.10" },
-  { id: 4, label: "Payment Method", value: "Direct Bank Transfer" },
-];
-const rideData = [
-  {
-    id: 1,
-    topText: "Pick Up Address",
-    bottomText: "London City Airport (LCY)",
-  },
-  {
-    id: 2,
-    topText: "Drop Off Address",
-    bottomText: "London City Airport (LCY)",
-  },
-  { id: 3, topText: "Pick Up Date", bottomText: "Thu, Oct 06, 2022" },
-  { id: 4, topText: "Pick Up Time", bottomText: "6 PM : 15" },
-  { id: 5, topText: "Distance", bottomText: "311 km/ 194 miles" },
-  { id: 6, topText: "Time", bottomText: "3h 43m" },
-];
-const personalData = [
-  { id: 1, topText: "First name", bottomText: "Ali" },
-  { id: 2, topText: "Last name", bottomText: "Tufan" },
-  { id: 3, topText: "Email", bottomText: "creativelayers088@gmail.com" },
-  { id: 4, topText: "Phone", bottomText: "+09 383 829 91" },
-  { id: 5, topText: "Address line 1", bottomText: "" },
-  { id: 6, topText: "Address line 2", bottomText: "" },
-  { id: 7, topText: "City", bottomText: "London" },
-  { id: 8, topText: "State/Province/Region", bottomText: "" },
-  { id: 9, topText: "ZIP code/Postal code", bottomText: "95833" },
-  { id: 10, topText: "Country", bottomText: "UK" },
-  { id: 11, topText: "Special Requirements", bottomText: "" },
-];
 
 export default function BookingRecieved() {
+  const [reservationData, setReservationData] = useRecoilState(reservationDetails);
+
+  const infoData = [
+    { id: 1, label: "Rservation Id", value: reservationData?.id },
+    {
+      id: 2, label: "Date", value: reservationData?.createdAt
+        ? new Date(reservationData.createdAt).toLocaleString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+        : "N/A",
+    },
+    { id: 3, label: "Total", value: "$ " + reservationData?.paymentAmount },
+    { id: 4, label: "Payment Method", value: reservationData?.paymentType || "Card" },
+  ];
+  const rideData = [
+    {
+      id: 1,
+      topText: "Pick Up Address",
+      bottomText: reservationData?.pickUpLocation,
+    },
+    {
+      id: 2,
+      topText: "Drop Off Address",
+      bottomText: reservationData?.dropOffLocation,
+    },
+    {
+      id: 3, topText: "Pick Up Date", bottomText: reservationData?.pickUpDate
+        ? new Date(reservationData.pickUpDate).toLocaleString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+        : "N/A",
+    },
+    {
+      id: 4, topText: "Pick Up Time", bottomText: reservationData?.pickUpTime
+        ? new Date(reservationData.pickUpTime).toLocaleString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+        : "N/A"
+    },
+    { id: 5, topText: "Distance", bottomText: reservationData?.totalDistance },
+    { id: 6, topText: "Time", bottomText: reservationData?.totalHour },
+  ];
+  const personalData = [
+    { id: 1, topText: "First name", bottomText: reservationData?.firstName },
+    { id: 2, topText: "Last name", bottomText: reservationData?.lastName },
+    { id: 3, topText: "Email", bottomText: reservationData?.email },
+    { id: 4, topText: "Phone", bottomText: reservationData?.phone },
+    // { id: 5, topText: "Address line 1", bottomText: "" },
+    // { id: 6, topText: "Address line 2", bottomText: "" },
+    // { id: 7, topText: "City", bottomText: "London" },
+    // { id: 8, topText: "State/Province/Region", bottomText: "" },
+    // { id: 9, topText: "ZIP code/Postal code", bottomText: "95833" },
+    { id: 10, topText: "Country", bottomText: "USA" },
+    { id: 11, topText: "Special Requirements", bottomText: reservationData?.clientRequest },
+  ];
+
+
   return (
     <section className="section">
       <div className="container-sub">
@@ -50,10 +80,10 @@ export default function BookingRecieved() {
               alt="luxride"
             />
             <h4 className="heading-24-medium color-text mb-10">
-              System, your order was submitted successfully!
+              Hi, your reservation was completed successfully!
             </h4>
             <p className="text-14 color-grey mb-40">
-              Booking details has been sent to: booking@luxride.com
+              Booking details has been sent to: ${reservationData?.email}
             </p>
           </div>
           <div className="box-info-book-border wow fadeInUp">
@@ -91,12 +121,12 @@ export default function BookingRecieved() {
             </div>
             <ul className="list-prices">
               <li>
-                <span className="text-top">Class</span>
-                <span className="text-bottom">Business Class</span>
+                <span className="text-top">Model</span>
+                <span className="text-bottom">{reservationData?.car?.model}</span>
               </li>
               <li>
-                <span className="text-top">Cars</span>
-                <span className="text-bottom">Mercedes-Benz E-Class</span>
+                <span className="text-top">Car</span>
+                <span className="text-bottom">{reservationData?.car?.name}</span>
               </li>
             </ul>
           </div>

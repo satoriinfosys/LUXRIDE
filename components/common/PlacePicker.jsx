@@ -23,11 +23,11 @@ export default function PlacePicker({ type }) {
       const response = await fetch(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?proximity=ip&access_token=${accessToken}`
       );
-  
+
       if (!response.ok) {
         throw new Error("Failed to fetch locations");
       }
-  
+
       const data = await response.json();
 
       if (data && data.features && Array.isArray(data.features)) {
@@ -48,7 +48,37 @@ export default function PlacePicker({ type }) {
       setIsLoading(false);
     }
   };
-  
+
+  const fetchFlatRate = async (query) => {
+    setIsLoading(true);
+    try {
+      const response = await apiService.post("/flatrate/get-all", {
+        "status": true,
+        "sort": "DESC",
+        "limit": 10,
+        "page": 1,
+        "searchTerm": query,
+        "isActive": true
+      })
+
+
+      const data = await response.data;
+
+      if (data) {
+        setIsActive(true);
+        setLocations(data); // Use the locations array
+      } else {
+        setIsActive(false);
+        setLocations([]); // Handle no results
+      }
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+      setLocations([]); // Handle API errors
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   // Debounced search function to limit API calls
   const debouncedFetch = debounce((query) => {
@@ -100,9 +130,9 @@ export default function PlacePicker({ type }) {
           if (value && selectedLocation) {
             setSelectedLocation(""); // Clear selected location when typing starts
             if (type === "from") {
-              setBookingDetails((prev) => ({ ...prev, from: {name: "", coordinates: null } })); // Clear Recoil 'from'
+              setBookingDetails((prev) => ({ ...prev, from: { name: "", coordinates: null } })); // Clear Recoil 'from'
             } else if (type === "to") {
-              setBookingDetails((prev) => ({ ...prev, to: {name: "", coordinates: null } })); // Clear Recoil 'to'
+              setBookingDetails((prev) => ({ ...prev, to: { name: "", coordinates: null } })); // Clear Recoil 'to'
             }
           }
           setSearchTerm(value); // Update searchTerm when typing

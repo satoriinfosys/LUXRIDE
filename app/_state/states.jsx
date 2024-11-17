@@ -8,8 +8,14 @@ export const bookingDetails = atom({
         from: '',
         to: '',
         time: '',
-        date: ''
+        date: '',
+        flatRate: '',
     },
+});
+
+export const reservationDetails = atom({
+    key: 'reservation-details',
+    default: null
 });
 
 export const rideSummaryState = atom({

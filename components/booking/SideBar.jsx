@@ -1,5 +1,5 @@
 'use client'
-import { bookingDetails, selectedCarAtom } from "@/app/_state/states";
+import { bookingDetails, rideSummaryState, selectedCarAtom } from "@/app/_state/states";
 import { useRouter, usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -10,6 +10,8 @@ const accessToken = process.env.MAP_ACCESS_TOKEN || "pk.eyJ1IjoiMTIzcm9zaGFuMTIz
 
 
 import { features } from "@/data/cars";
+import { CHILD_SEAT_RATE, GRATUITY_AMOUNT, MEET_AND_GREET, SALES_TAX } from "@/utlis/constants";
+import { calculateCost } from "@/utlis/calculateCost";
 
 
 export default function SideBar() {
@@ -18,7 +20,10 @@ export default function SideBar() {
 
   const [bookingData, setBookingDetails] = useRecoilState(bookingDetails);
   const [selectedCar, setSelectedCar] = useRecoilState(selectedCarAtom);
+  const [rideExtra, setRideExtra] = useRecoilState(rideSummaryState);
+
   const [finalPrice, setFinalPrice] = useState(0);
+  const [carPrice, setCarPrice] = useState(0)
 
   const mapContainerRef = useRef(null); // Reference to the map container
 
@@ -28,7 +33,7 @@ export default function SideBar() {
 
   useEffect(() => {
 
-    if (bookingData?.from?.coordinates && bookingData?.to?.coordinates) {
+    if (bookingData?.from?.coordinates && bookingData?.to?.coordinates && bookingData.bookType !== "rate") {
       // Set your Mapbox Access Token
       mapboxgl.accessToken = accessToken;
 
@@ -91,27 +96,16 @@ export default function SideBar() {
     }
   }, [fromCoordinates, toCoordinates]);
 
-  const calculateCost = () => {
-    if (!selectedCar) return;
-    if (bookingData?.bookType === "distance") {
-      const pricePerHourDistance = selectedCar.prizePerDistance;
-      const calculatedPrice = pricePerHourDistance * bookingData.distanceInMiles; // calculated per miles
-      setFinalPrice(calculatedPrice)
-    }
-    if (bookingData?.bookType === "hourly") {
-      const pricePerHour = selectedCar.prizePerHour;
-      const calculatedPrice = pricePerHour * (bookingData.durationInHours + bookingData.durationInMinutes);
-      setFinalPrice(calculatedPrice)
-    };
-    if (bookingData?.bookType === "rate") {// TODO: need to handle this for flatrate
-      const pricePerHourDistance = selectedCar.prizePerDistance;
-      const calculatedPrice = pricePerHourDistance * bookingData.distanceInMiles;
-      setFinalPrice(calculatedPrice)
+  const getTotalCost = () => {
+    if (!selectedCar || !rideExtra) return;
+    const { totalPrice, selectedCarPrice } = calculateCost({ selectedCar, rideExtra, bookingData });
+    if (totalPrice && selectedCarPrice) {
+      setCarPrice(selectedCarPrice);
+      setFinalPrice(totalPrice);
     }
   }
-
   useEffect(() => {
-    calculateCost();
+    getTotalCost();
   }, [selectedCar, finalPrice]);
 
 
@@ -129,26 +123,30 @@ export default function SideBar() {
         </div>
 
         {/* Ride locations */}
-        <div className="mt-20 wow fadeInUp">
-          <ul className="list-routes">
-            {bookingData.from.name && (
-              <li>
-                <span className="location-item">A </span>
-                <span className="info-location text-14-medium">
-                  {bookingData.from.name || "From not selected"}
-                </span>
-              </li>
-            )}
-            {bookingData.to.name && (
-              <li>
-                <span className="location-item">B </span>
-                <span className="info-location text-14-medium">
-                  {bookingData.to.name || "To not selected"}
-                </span>
-              </li>
-            )}
-          </ul>
-        </div>
+        {
+          bookingData?.bookType !== "rate" ?
+            <div className="mt-20 wow fadeInUp">
+              <ul className="list-routes">
+                {bookingData.from.name && (
+                  <li>
+                    <span className="location-item">A </span>
+                    <span className="info-location text-14-medium">
+                      {bookingData.from.name || "From not selected"}
+                    </span>
+                  </li>
+                )}
+                {bookingData.to.name && (
+                  <li>
+                    <span className="location-item">B </span>
+                    <span className="info-location text-14-medium">
+                      {bookingData.to.name || "To not selected"}
+                    </span>
+                  </li>
+                )}
+              </ul>
+            </div> : <></>
+        }
+
 
         {/* Date and Time */}
         <div className="mt-20 wow fadeInUp">
@@ -172,21 +170,25 @@ export default function SideBar() {
 
         {/* Map and route info */}
         <div className="mt-20 wow fadeInUp">
-          <div className="box-map-route">
-            <div ref={mapContainerRef} />
-          </div>
-          <div className="box-info-route">
-            <div className="info-route-left">
-              <span className="text-14 color-grey">Total Distance</span>
-              <span className="text-14-medium color-text">
-                {bookingData.distanceInKm} km/ {bookingData.distanceInMiles}miles
-              </span>
-            </div>
-            <div className="info-route-left">
-              <span className="text-14 color-grey">Total Time</span>
-              <span className="text-14-medium color-text">{bookingData.durationInHours || 0} Hr {bookingData.durationInMinutes || 0}Mins</span>
-            </div>
-          </div>
+          {bookingData.bookType !== "rate" ?
+            <>
+              <div className="box-map-route">
+                <div ref={mapContainerRef} />
+              </div>
+              <div className="box-info-route">
+                <div className="info-route-left">
+                  <span className="text-14 color-grey">Total Distance</span>
+                  <span className="text-14-medium color-text">
+                    {bookingData.distanceInKm} km/ {bookingData.distanceInMiles}miles
+                  </span>
+                </div>
+                <div className="info-route-left">
+                  <span className="text-14 color-grey">Total Time</span>
+                  <span className="text-14-medium color-text">{bookingData.durationInHours || 0} Hr {bookingData.durationInMinutes || 0}Mins</span>
+                </div>
+              </div>
+            </> : <></>}
+
 
           {/* Extra Details Section */}
           {pathName !== "/booking-vehicle" ? <>
@@ -241,12 +243,29 @@ export default function SideBar() {
           <ul className="list-prices list-prices-2">
             <li>
               <span className="text">Selected vehicle</span>
-              <span className="price">${finalPrice}</span>
+              <span className="price">${carPrice}</span>
+            </li>
+            {rideExtra.meetAndGreet ?
+              <li>
+                <span className="text">Meet And Greet</span>
+                <span className="price">${MEET_AND_GREET}</span>
+              </li> : <></>
+            }
+            {rideExtra.babySeatingCapacity >= 2 ?
+              <li>
+                <span className="text">Baby Seat</span>
+                <span className="price">${rideExtra.babySeatingCapacity * CHILD_SEAT_RATE}</span>
+              </li> : <></>
+            }
+            <li>
+              <span className="text">Gratuity Amount</span>
+              <span className="price">${GRATUITY_AMOUNT}</span>
             </li>
             <li>
-              <span className="text">Extra options</span>
-              <span className="price">$0</span>
+              <span className="text">Sales Tax</span>
+              <span className="price">${SALES_TAX}</span>
             </li>
+
           </ul>
           <div className="border-bottom mt-30 mb-15"></div>
           <ul className="list-prices">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRecoilState } from "recoil";
-import { paymentDetailsAtom } from "@/app/_state/states";
+import { bookingDetails, paymentDetailsAtom, reservationDetails, rideSummaryState, selectedCarAtom } from "@/app/_state/states";
 import { activeInputFocus } from "@/utlis/activeInputFocus";
 import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
@@ -15,6 +15,8 @@ import SideBar from "./SideBar";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import apiService from "@/app/_api/apiService";
+import { calculateCost } from "@/utlis/calculateCost";
+import { GRATUITY_AMOUNT } from "@/utlis/constants";
 
 const stripePromise = loadStripe(process.env.STRIPE_SECRET_KEY || "pk_test_51Nk3XVADEjNInJHV2wz6Plyqiby3A5FkksGboywyA6i6QzMznRWEsihvwHHtd3QFZu4MbJtM9wQTRSGTWxqnfhIe00sltwnZwW"); // Replace with your Stripe public key
 
@@ -24,6 +26,12 @@ function PaymentForm() {
   const stripe = useStripe();
   const elements = useElements();
   const router = useRouter();
+
+  const [rideExtra, setRideExtra] = useRecoilState(rideSummaryState);
+  const [bookingData, setBookingDetails] = useRecoilState(bookingDetails);
+  const [selectedCar, setSelectedCar] = useRecoilState(selectedCarAtom);
+  const [reservationData, setReservationData] = useRecoilState(reservationDetails);
+
 
   const validateForm = () => {
     const newErrors = {};
@@ -35,6 +43,67 @@ function PaymentForm() {
     }
     return newErrors;
   };
+
+  const updateReservationStatus = async (clientSecret) => {
+    try {
+      const { totalPrice } = calculateCost({ selectedCar, rideExtra, bookingData });
+
+      const reservationDetails = {
+        id: reservationData.id,
+        "firstName": rideExtra?.firstName,
+        "lastName": rideExtra?.lastName,
+        "email": rideExtra?.email,
+        "phone": rideExtra?.phone,
+        "address": bookingData?.from?.name,
+        "pickUpLocation": bookingData?.from?.name,
+        "pickUpDate": bookingData?.date || undefined,
+        "pickUpTime": bookingData?.time || undefined,
+        "returnDate": rideExtra?.dropOffDate || undefined,
+        "dropOffLocation": bookingData?.to?.name,
+        "dropOffDate": rideExtra?.dropOffDate || undefined,
+        "dropOffTime": rideExtra?.dropOffTime || undefined,
+        "meetAndGreet": rideExtra?.meetAndGreet,
+        "clientRequest": rideExtra?.clientRequest,
+        "gratuityPercentage": null,
+        "gratuityAmount": GRATUITY_AMOUNT,
+        "customerId": null,
+        "smoking": false,
+        "totalHour": (bookingData?.durationInHours || 0) + " Hr" + (bookingData?.durationInMinutes || 0) + " Mins",
+        "totalDistance": bookingData?.distanceInMiles,
+        "isByHour": bookingData?.bookType === "hourly" ? true : false,
+        "isRoundTrip": true,
+        "carId": selectedCar?.id,
+        "userId": null,
+        "totalSeating": rideExtra?.totalSeating,
+        "totalLuggage": rideExtra?.totalLuggage,
+        "cardType": null,
+        "cardNumber": null,
+        "babySeatingCapacity": rideExtra?.babySeatingCapacity,
+        "cvv": null,
+        "gratitude": 10,
+        "cardExpiryDate": null,
+        "expectedDuration": (bookingData?.durationInHours || 0) + " Hr" + (bookingData?.durationInMinutes || 0) + " Mins",
+        "expectedTime": bookingData?.time,
+        "flightNumber": rideExtra?.flightNumber,
+        "smokingFee": 0,
+        "stripeToken": null,
+
+        // new data after payment
+        "cardName": paymentDetails.cardName,
+        "nameoncard": paymentDetails.cardName,
+        "paymentAmount": totalPrice,
+        "paymentToken": clientSecret,
+        "reservationApproval": "pending",
+        "paymentType": "card",
+        "paymentStatus": "success",
+        "reservationStatus": "completed",
+      }
+
+      const response = await apiService.post("/reservation", reservationDetails);
+    } catch (error) {
+      console.error("Error while reservation", error?.message)
+    }
+  }
 
   const initiatePayment = async () => {
     try {
@@ -59,11 +128,13 @@ function PaymentForm() {
         return;
       }
 
+      const { totalPrice } = calculateCost({ selectedCar, rideExtra, bookingData });
+
       // Send the payment method ID to your backend
       const response = await apiService.post("/payment/cars/test",
         {
           Token: paymentMethod.id,
-          amount: 4000, // Amount in the smallest currency unit
+          amount: parseInt(totalPrice), // Amount in the smallest currency unit
           currency: "usd",
         }
       );
@@ -79,17 +150,24 @@ function PaymentForm() {
   };
 
   async function handlePayment(clientSecret) {
-    const stripe = await stripePromise;
+    try {
+      const stripe = await stripePromise;
 
-    // Confirm the PaymentIntent
-    const result = await stripe.confirmCardPayment(clientSecret);
+      // Confirm the PaymentIntent
+      const result = await stripe.confirmCardPayment(clientSecret);
 
-    if (result.error) {
-      // Handle payment failure
-      console.error("Payment failed:", result.error.message);
-    } else if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
-      // Payment succeeded
-      router.push("/booking-received");
+      if (result.error) {
+        // Handle payment failure
+        console.error("Payment failed:", result.error.message);
+      } else if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
+        await updateReservationStatus(clientSecret);
+
+        // Payment succeeded
+        router.push("/booking-received");
+      }
+    }
+    catch (error) {
+      console.error("error while confirm payment and updating reservation", error);
     }
   }
 

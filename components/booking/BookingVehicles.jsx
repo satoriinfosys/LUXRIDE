@@ -21,7 +21,7 @@ export default function BookingVehicles() {
   const searchParams = useSearchParams();
   let book = searchParams.get('book');
 
-  if(!book){
+  if (!book) {
     book = bookingData?.bookType || null;
   }
 
@@ -80,7 +80,14 @@ export default function BookingVehicles() {
 
   useEffect(() => {
     fetchCar();
-    getDistanceAndTime();
+
+    if (book !== "rate") {
+      getDistanceAndTime()
+    } else {
+      setBookingDetails(prevState => ({ ...prevState, 
+        bookType: book
+      }));
+    };
   }, [])
 
   const handleSelectVehicle = (id) => {
@@ -97,8 +104,8 @@ export default function BookingVehicles() {
           <div className="list-vehicles wow fadeInUp">
             {cars.map((elm, i) => {
               let price = elm.prizePerDistance + "/mile";
+              if (book === "rate") price = elm.flatRate;
               if (book === "hourly") price = elm.prizePerHour + "/hr";
-              if (book === "rate") price = elm.prizePerDistance + ""; // TODO: need to handle this for flatrate
 
               return (<div key={i} className="item-vehicle wow fadeInUp">
                 <div className="vehicle-left">
