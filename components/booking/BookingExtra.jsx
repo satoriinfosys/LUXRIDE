@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import SideBar from "./SideBar";
 import { activeInputFocus } from "@/utlis/activeInputFocus";
@@ -19,7 +19,7 @@ const quantityItem = [
   },
 ];
 
-export default function BookingExtra() {
+function BookingExtraContent() {
   const [quantityItems, setquantityItems] = useState(quantityItem);
   const [bookingData, setBookingData] = useRecoilState(rideSummaryState);
   const [errors, setErrors] = useState({});
@@ -93,7 +93,7 @@ export default function BookingExtra() {
   const getVehicleDetails = async () => {
     setIsLoading(true);
     try {
-      if(!vehicle){
+      if (!vehicle) {
         vehicle = selectedCar.id;
       }
       const endPoint = `/cars/${vehicle}`;
@@ -330,4 +330,10 @@ export default function BookingExtra() {
 
     </div>
   );
+}
+
+export default function BookingExtra() {
+  return (<Suspense fallback={<div>Loading...</div>}>
+    <BookingExtraContent />
+  </Suspense>)
 }

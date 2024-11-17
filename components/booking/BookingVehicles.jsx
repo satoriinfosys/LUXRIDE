@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { features } from "@/data/cars";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,7 +12,7 @@ import SideBar from "./SideBar";
 
 const accessToken = process.env.MAP_ACCESS_TOKEN || "pk.eyJ1IjoiMTIzcm9zaGFuMTIzIiwiYSI6ImNsZ2QwcGp3ZzAwN3UzbHA3eGd3cGVveG0ifQ.OcKGB8CjV8B0ZmGptJCO6g";
 
-export default function BookingVehicles() {
+function BookingVehiclesContent() {
   const [cars, setCars] = useState([]); // For locations fetched from API
   const [isLoading, setIsLoading] = useState(false);
   const [bookingData, setBookingDetails] = useRecoilState(bookingDetails);
@@ -84,7 +84,8 @@ export default function BookingVehicles() {
     if (book !== "rate") {
       getDistanceAndTime()
     } else {
-      setBookingDetails(prevState => ({ ...prevState, 
+      setBookingDetails(prevState => ({
+        ...prevState,
         bookType: book
       }));
     };
@@ -177,5 +178,14 @@ export default function BookingVehicles() {
       </div>
       <SideBar />
     </div>
+  );
+}
+
+export default function BookingVehicles() {
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <BookingVehiclesContent />
+    </Suspense>
   );
 }
