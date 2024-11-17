@@ -50,7 +50,7 @@ export default function BookingRecieved() {
         : "N/A"
     },
     { id: 5, topText: "Distance", bottomText: reservationData?.totalDistance },
-    { id: 6, topText: "Time", bottomText: reservationData?.totalHour },
+    { id: 6, topText: "Time", bottomText: reservationData?.totalHour +" Hr" },
   ];
   const personalData = [
     { id: 1, topText: "First name", bottomText: reservationData?.firstName },
