@@ -251,7 +251,7 @@ export default function SideBar() {
                 <span className="price">${MEET_AND_GREET}</span>
               </li> : <></>
             }
-            {rideExtra.babySeatingCapacity >= 2 ?
+            {rideExtra.babySeatingCapacity >= 1 ?
               <li>
                 <span className="text">Baby Seat</span>
                 <span className="price">${rideExtra.babySeatingCapacity * CHILD_SEAT_RATE}</span>

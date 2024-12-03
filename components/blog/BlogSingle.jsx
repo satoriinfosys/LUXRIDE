@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 export default function BlogSingle({ blog }) {
+  console.log(blog)
   const [fullName, setFullName] = useState("Test");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -14,21 +15,22 @@ export default function BlogSingle({ blog }) {
           <div className="cardImage">
             <div className="datePost">
               <div className="heading-52-medium color-white">
-                {blog.date ? blog.date : "14"}.
+                {new Date(blog.date).getFullYear()}
               </div>
               <p className="text-14 color-white">
-                {blog.monthYear ? blog.monthYear : "Jun, 2022"}
+                {new Date(blog.date).toLocaleDateString("en-US", { month: "long" })}
               </p>
             </div>
             <Image
               width={1170}
               height={600}
               style={{ height: "fit-content" }}
-              src={
-                blog.imageSrc
-                  ? blog.imageSrc
-                  : "/assets/imgs/page/blog2/img-single.png"
-              }
+              // src={
+              //   blog.bannerImage
+              //     ? blog.bannerImage
+              //     : "/assets/imgs/page/blog2/img-single.png"
+              // }
+              src="https://fastly.picsum.photos/id/1043/200/200.jpg?hmac=i7xbST4bM6KMg5XsUaVYvDgwvsZ3VskoXKRqGf1BjcU"
               alt="luxride"
             />
           </div>
@@ -36,44 +38,21 @@ export default function BlogSingle({ blog }) {
         <h2 className="heading-44-medium mb-30 wow fadeInUp">{blog.title}</h2>
         <div className="content-single wow fadeInUp">
           <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy. Eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-            no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            {blog.description1}
           </p>
           <blockquote>
-            “Sed viverra ipsum nunc aliquet bibendum enim facilisis gravida.
+            {blog.subtitle}
+            {/* “Sed viverra ipsum nunc aliquet bibendum enim facilisis gravida.
             Diam phasellus <br className="d-nond d-lg-block" />
             vestibulum lorem sed risus ultricies. Magna sit amet purus gravida
             quis blandit. Arcu <br className="d-nond d-lg-block" />
-            cursus vitae congue mauris.“
+            cursus vitae congue mauris.“ */}
           </blockquote>
           <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy. Eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-            no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
-            dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-            tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-            voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+            {blog.description2}
           </p>
           <p>
-            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
-            dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
-            elitr, sed diam nonumy. Eirmod tempor invidunt ut labore et dolore
-            magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
-            justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-            takimata sanctus est Lorem ipsum dolor sit amet.
+            {blog.description3}
           </p>
           <p>
             <Image
@@ -85,15 +64,7 @@ export default function BlogSingle({ blog }) {
             />
           </p>
           <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy. Eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-            no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            {blog?.additionalContent?.[0]?.text}
           </p>
           <div className="row">
             <div className="col-lg-6 mb-30">
@@ -116,38 +87,11 @@ export default function BlogSingle({ blog }) {
             </div>
           </div>
           <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy. Eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-            no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            {blog?.additionalContent?.[1]?.text}
           </p>
-          <h2 className="heading-44-medium">Natural Habitat Adventures</h2>
+          <h2 className="heading-44-medium">{blog?.additionalContent?.[0]?.title}</h2>
           <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy. Eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-            no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
-            dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-            tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-            voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-          </p>
-          <p>
-            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
-            dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
-            elitr, sed diam nonumy. Eirmod tempor invidunt ut labore et dolore
-            magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
-            justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-            takimata sanctus est Lorem ipsum dolor sit amet.
+            {blog?.additionalContent?.[0]?.text}
           </p>
         </div>
         <div className="box-share-tags mt-50 wow fadeInUp">
@@ -155,25 +99,25 @@ export default function BlogSingle({ blog }) {
             <div className="col-lg-6 mb-30 text-lg-start text-center">
               <span className="text-16-medium color-text mr-15">Share</span>
               <div className="d-inline-block social-single">
-                {socials.map((elm, i) => (
+                {blog?.socialLinks?.map((elm, i) => (
                   <a
                     key={i}
                     className={`icon-socials icon-${elm.name}`}
-                    href="#"
+                    href={elm.href}
                   ></a>
                 ))}
               </div>
             </div>
             <div className="col-lg-6 text-lg-end mb-30 text-center">
-              {tags.slice(0, 4).map((elm, i) => (
-                <a key={i} className="btn btn-tag mr-10 mb-10" href={elm.href}>
-                  {elm.name}
+              {blog?.tags?.map((elm, i) => (
+                <a key={i} className="btn btn-tag mr-10 mb-10">
+                  {elm}
                 </a>
               ))}
             </div>
           </div>
         </div>
-        <div className="border-bottom mb-30 mt-60"></div>
+        {/* <div className="border-bottom mb-30 mt-60"></div>
         <div className="author-box wow fadeInUp">
           <div className="item-author">
             <div className="item-author-image">
@@ -195,8 +139,8 @@ export default function BlogSingle({ blog }) {
               </p>
             </div>
           </div>
-        </div>
-        <div className="border-bottom mb-30 mt-60"></div>
+        </div> */}
+        {/* <div className="border-bottom mb-30 mt-60"></div>
         <div className="box-pagination-single wow fadeInUp">
           <div className="row align-items-center">
             <div className="col-lg-5 col-sm-5 col-5">
@@ -258,9 +202,9 @@ export default function BlogSingle({ blog }) {
               </div>
             </div>
           </div>
-        </div>
-        <div className="border-bottom mb-50 mt-25"></div>
-        <div className="box-reviews wow fadeInUp">
+        </div> */}
+        {/* <div className="border-bottom mb-50 mt-25"></div> */}
+        {/* <div className="box-reviews wow fadeInUp">
           <h5 className="text-20-medium color-text mb-30">Reviews</h5>
           {reviews.map((elm, i) => (
             <div key={i} className="item-reviews">
@@ -284,8 +228,8 @@ export default function BlogSingle({ blog }) {
               </div>
             </div>
           ))}
-        </div>
-        <div className="border-bottom mb-50 mt-60"></div>
+        </div> */}
+        {/* <div className="border-bottom mb-50 mt-60"></div>
         <div className="box-form-comment wow fadeInUp">
           <h5 className="text-20-medium mb-30">Leave a Comment</h5>
           <p className="text-14 color-text mb-30">
@@ -359,7 +303,7 @@ export default function BlogSingle({ blog }) {
               </div>
             </form>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

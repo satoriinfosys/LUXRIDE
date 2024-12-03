@@ -1,9 +1,38 @@
-import { blogs } from "@/data/blogs";
+import apiService from "@/app/_api/apiService";
+// import { blogs } from "@/data/blogs";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function RelatedBlogs() {
+
+  const [blogs, setBlogs] = useState([]); // For locations fetched from API
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchBlogs = async () => {
+    console.log("fetching")
+    setIsLoading(true);
+    try {
+      const endPoint = "/blog/get-all";
+      const response = await apiService.get(endPoint);
+      console.log({ response })
+      if (response && Array.isArray(response)) {
+        setBlogs(response);
+      } else {
+        setBlogs([]);
+      }
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+      setBlogs([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBlogs();
+  }, [])
+
   return (
     <section className="section pt-120 bg-white latest-new-white mb-90">
       <div className="container-sub">
@@ -18,9 +47,11 @@ export default function RelatedBlogs() {
                   <div className="cardImage">
                     <div className="datePost">
                       <div className="heading-52-medium color-white">
-                        {elm.date}.
+                        {new Date(elm.date).getFullYear()}
                       </div>
-                      <p className="text-14 color-white">{elm.monthYear}</p>
+                      <p className="text-14 color-white">
+                        {new Date(elm.date).toLocaleDateString("en-US", { month: "long" })}
+                      </p>
                     </div>
                     <Image
                       width={1104}

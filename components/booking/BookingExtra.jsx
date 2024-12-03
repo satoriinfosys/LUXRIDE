@@ -12,7 +12,7 @@ const quantityItem = [
   {
     id: 1,
     name: "Child Seat",
-    price: 3,
+    price: 2,
     description:
       "Suitable for toddlers weighing 0-18 kg (approx 0 to 4 years).",
     quantity: 1,

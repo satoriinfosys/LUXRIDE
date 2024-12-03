@@ -1,29 +1,73 @@
+'use client'
 import Image from "next/image";
 import Pagination from "../common/Pagination";
 import { blogs2 } from "@/data/blogs";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import apiService from "@/app/_api/apiService";
 
 export default function Blogs1() {
+
+  const [blogs, setBlogs] = useState([]); // For locations fetched from API
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchBlogs = async () => {
+    console.log("fetching")
+    setIsLoading(true);
+    try {
+      const endPoint = "/blog/get-all";
+      const response = await apiService.get(endPoint);
+      console.log({ response })
+      if (response && Array.isArray(response)) {
+        setBlogs(response);
+      } else {
+        setBlogs([]);
+      }
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+      setBlogs([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBlogs();
+  }, [])
+
+  console.log({ blogs })
+
   return (
     <section className="section pt-60 bg-white latest-new-white">
       <div className="container-sub">
         <div className="row mt-50">
-          {blogs2.map((elm, i) => (
+          {blogs.map((elm, i) => (
             <div key={i} className="col-lg-4">
               <div className="cardNews wow fadeInUp">
                 <Link href={`/blog-single/${elm.id}`}>
                   <div className="cardImage">
-                    <div className="datePost">
+                    {/* <div className="datePost">
                       <div className="heading-52-medium color-white">
                         {elm.date}.
                       </div>
-                      <p className="text-14 color-white">{elm.monthYear}</p>
+                      <p className="text-14 color-white">{elm.date}</p>
+                    </div> */}
+                    <div className="datePost">
+                      <div className="heading-52-medium color-white">
+                        {new Date(elm.date).getFullYear()}
+                      </div>
+                      <p className="text-14 color-white">
+                        {new Date(elm.date).toLocaleDateString("en-US", { month: "long" })}
+                      </p>
                     </div>
+
+
                     <Image
                       width={1104}
                       height={780}
                       style={{ height: "fit-content" }}
-                      src={elm.imageSrc}
+                      // src={elm.bannerImage} //TODO: uncomment later
+                      src="https://fastly.picsum.photos/id/1043/200/200.jpg?hmac=i7xbST4bM6KMg5XsUaVYvDgwvsZ3VskoXKRqGf1BjcU"
                       alt="luxride"
                     />
                   </div>
@@ -34,7 +78,7 @@ export default function Blogs1() {
                   </div>
                   <Link className="color-white" href={`/blog-single/${elm.id}`}>
                     <h3 className="text-20-medium color-white mb-20">
-                      {elm.title}
+                      {elm.name}
                     </h3>
                   </Link>
                   <Link
