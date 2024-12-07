@@ -96,7 +96,7 @@ export default function Footer1() {
                 ))}
               </ul>
             </div>
-            <div className="col-lg-3 width-20">
+            {/* <div className="col-lg-3 width-20">
               <h5 className="text-18-medium color-white mb-20 wow fadeInUp">
                 Download The App
               </h5>
@@ -146,7 +146,7 @@ export default function Footer1() {
                   </a>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

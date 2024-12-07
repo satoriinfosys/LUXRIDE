@@ -31,7 +31,7 @@ export default function page() {
         <Testimonials />
         <Blogs />
         <Partners />
-        <DownloadApp />
+        {/* <DownloadApp /> */}
       </main>
       <Footer2 />
     </>

@@ -35,8 +35,6 @@ export default function Blogs1() {
     fetchBlogs();
   }, [])
 
-  console.log({ blogs })
-
   return (
     <section className="section pt-60 bg-white latest-new-white">
       <div className="container-sub">
@@ -106,11 +104,11 @@ export default function Blogs1() {
             </div>
           ))}
         </div>
-        <div className="text-center mt-40 mb-120 wow fadeInUp">
+        {/* <div className="text-center mt-40 mb-120 wow fadeInUp">
           <nav className="box-pagination">
             <Pagination />
           </nav>
-        </div>
+        </div> */}
       </div>
     </section>
   );

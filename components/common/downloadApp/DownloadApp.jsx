@@ -5,7 +5,7 @@ export default function DownloadApp() {
     <section className="section mt-50 bg-download-3 bg-secondary">
       <div className="container-sub">
         <h2 className="heading-44-medium color-white mb-20 wow fadeInUp">
-          Download the app
+          Download the apps
         </h2>
         <p className="color-white text-16 mb-60 wow fadeInUp">
           Have a personal driver at your fingertips no matter where you

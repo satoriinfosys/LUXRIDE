@@ -32,7 +32,7 @@ export default function page() {
         <Testimonials />
         <Partners />
         <Faq />
-        <DownloadApp />
+        {/* <DownloadApp /> */}
       </main>
       <Footer1 />
     </>

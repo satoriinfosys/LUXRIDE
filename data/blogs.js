@@ -8,7 +8,7 @@ export const blogs = [
     title: "3 hidden-gem destinations for your wish list",
   },
   {
-    id: 2,
+    id: 2,          
     date: "18",
     monthYear: "Jun, 2022",
     imageSrc: "/assets/imgs/page/homepage1/news2.png",
