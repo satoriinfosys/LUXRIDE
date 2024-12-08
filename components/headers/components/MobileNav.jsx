@@ -58,6 +58,33 @@ export default function MobileNav() {
           </ul>
         </li>
       ))}
+            <li>
+        <Link
+          className={`${"/service-grid" == pathname ? "active-link" : ""}`}
+          style={{ fontSize: "20px" }}
+          href="/service-grid"
+        >
+          Services
+        </Link>
+      </li>
+      <li>
+        <Link
+          className={`${"/blog-grid" == pathname ? "active-link" : ""}`}
+          style={{ fontSize: "20px" }}
+          href="/blog-grid"
+        >
+          Blogs
+        </Link>
+      </li>
+      <li>
+        <Link
+          className={`${"/about" == pathname ? "active-link" : ""}`}
+          style={{ fontSize: "20px" }}
+          href="/about"
+        >
+          About
+        </Link>
+      </li>
       <li>
         <Link
           className={`${"/contact" == pathname ? "active-link" : ""}`}
@@ -65,6 +92,15 @@ export default function MobileNav() {
           href="/contact"
         >
           Contact
+        </Link>
+      </li>
+      <li>
+        <Link
+          className={`${"/offline-form" == pathname ? "active-link" : ""}`}
+          style={{ fontSize: "20px" }}
+          href="/offline-form"
+        >
+          Book Offline
         </Link>
       </li>
     </>

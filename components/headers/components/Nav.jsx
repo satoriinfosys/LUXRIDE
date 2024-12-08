@@ -7,9 +7,9 @@ export default function Nav() {
   const pathname = usePathname();
   return (
     <>
-      <li>
+      {/* <li>
         <Link href="/fleet-list">Our Fleet</Link>
-      </li>
+      </li> */}
       <li>
         <Link href="/service-grid">Services</Link>
       </li>
@@ -53,6 +53,10 @@ export default function Nav() {
 
       <li>
         <Link href="/contact">Contact</Link>
+      </li>
+
+      <li>
+        <Link href="/offline-form">Book Offline</Link>
       </li>
     </>
   );

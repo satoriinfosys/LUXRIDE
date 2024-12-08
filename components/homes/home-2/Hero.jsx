@@ -63,7 +63,7 @@ export default function Hero() {
             A New Class Of Luxury <br className="d-none d-lg-block" />
             Limo Service
           </h2>
-          <div className="mt-20">
+          {/* <div className="mt-20">
             <Link className="btn btn-border wow fadeInUp" href="/fleet-list">
               View Our Fleet
               <svg
@@ -82,7 +82,7 @@ export default function Hero() {
                 ></path>
               </svg>
             </Link>
-          </div>
+          </div> */}
         </div>
         <div className="box-search-ride box-search-ride-style-2 light-input">
           <div className="box-search-tabs wow fadeInUp">

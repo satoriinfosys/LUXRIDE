@@ -23,7 +23,7 @@ export default function Main() {
       <main className="main">
         <Hero />
         <Partners />
-        <Feet />
+        {/* <Feet /> */}
         <Process />
         <Features />
         <Facts />
