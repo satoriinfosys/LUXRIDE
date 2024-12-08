@@ -1,13 +1,40 @@
 "use client";
 
+import apiService from "@/app/_api/apiService";
 import { activeInputFocus } from "@/utlis/activeInputFocus";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function ContactForm() {
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
   useEffect(() => {
     // Focus event
     activeInputFocus();
   }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+
+    // Gather form data
+    const enquiryDetails = {
+      fullname: e.target.fullname.value,
+      email: e.target.email.value,
+      subject: e.target.subject.value,
+      message: e.target.message.value,
+    };
+
+    try {
+
+      const response = await apiService.post("/contact", enquiryDetails)
+
+      setShowSuccessMessage(true);
+      e.target.reset();
+
+    } catch (error) {
+      console.error('Error submitting enquiry:', error);
+    }
+  };
+
   return (
     <section className="section mt-120 mb-120">
       <div className="container-sub">
@@ -16,7 +43,7 @@ export default function ContactForm() {
             Leave us your info
           </h2>
           <div className="form-contact form-comment wow fadeInUp">
-            <form onSubmit={(e) => e.preventDefault()}>
+            <form onSubmit={handleSubmit}>
               <div className="row">
                 <div className="col-lg-6 col-md-6">
                   <div className="form-group">
@@ -26,8 +53,8 @@ export default function ContactForm() {
                     <input
                       className="form-control"
                       id="fullname"
+                      name="fullname"
                       type="text"
-                      defaultValue="Ali Tufan"
                     />
                   </div>
                 </div>
@@ -39,7 +66,8 @@ export default function ContactForm() {
                     <input
                       className="form-control"
                       id="email"
-                      type="text"
+                      name="email"
+                      type="email"
                       placeholder=""
                     />
                   </div>
@@ -52,6 +80,7 @@ export default function ContactForm() {
                     <input
                       className="form-control"
                       id="subject"
+                      name="subject"
                       type="text"
                       placeholder=""
                     />
@@ -62,7 +91,11 @@ export default function ContactForm() {
                     <label className="form-label" htmlFor="message">
                       Message
                     </label>
-                    <textarea className="form-control" id="message"></textarea>
+                    <textarea
+                      className="form-control"
+                      id="message"
+                      name="message"
+                    ></textarea>
                   </div>
                 </div>
                 <div className="col-lg-12">
@@ -87,9 +120,15 @@ export default function ContactForm() {
                 </div>
               </div>
             </form>
+            {showSuccessMessage && (
+              <div className="success-message">
+                <p>Your enquiry has been submitted successfully!</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </section>
   );
 }
+
