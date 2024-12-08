@@ -113,7 +113,7 @@ export default function FlatRatePicker() {
                                 setSearchTerm(""); // Clear search term after selecting a location
                                 setIsActive(false); // Close the dropdown
                                 // Update Recoil state with the selected location's id and name
-                                const flatRateInfo = { name: elm.name, id: elm.id, description: elm.description };
+                                const flatRateInfo = { name: elm.from + '-' + elm.to, id: elm.id, description: elm.description };
                                 setBookingDetails((prev) => ({ ...prev, flatRate: flatRateInfo }));
                             }}
                             className="item-location"
@@ -128,7 +128,7 @@ export default function FlatRatePicker() {
                             </div>
                             <div className="location-info">
                                 <h6 className="text-16-medium color-text title-location">
-                                    {elm.name}
+                                    {elm.from}-{elm.to}
                                 </h6>
                                 <p className="text-14 color-grey searchLocations">
                                     {elm.description}
