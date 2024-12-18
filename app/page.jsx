@@ -1,9 +1,9 @@
 import Main from './main';
 export const metadata = {
   title:
-    "Home 1 || Lixride Chauffeur Limousine Transport and Car Hire Nextjs Template",
+    "Super Car Deluxe ",
   description:
-    "Lixride Chauffeur Limousine Transport and Car Hire Nextjs Template",
+    "Super Car Deluxe offers premium limo services with professional chauffeurs, ensuring a luxurious and comfortable travel experience. Whether you're booking a sedan, SUV, or limousine, our fleet is designed to provide the highest standard of service for every occasion.",
 };
 export default function Home() {
   return (

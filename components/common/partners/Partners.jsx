@@ -8,9 +8,9 @@ export default function Partners() {
         <div className="row align-items-center">
           <div className="col-xl-3 col-lg-4 mb-30">
             <h3 className="color-primary wow fadeInUp">
-              The partners who sell
+              Our Fleet 
               <br className="d-none d-lg-block" />
-              our products
+              Brands 
             </h3>
           </div>
           <div className="col-xl-9 col-lg-8 mb-30">
@@ -26,7 +26,7 @@ export default function Partners() {
                       objectFit: "contain",
                     }}
                     src={elm.url}
-                    alt="luxride"
+                    alt="Super Car Deluxe "
                   />
                 </li>
               ))}

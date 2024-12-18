@@ -52,17 +52,18 @@ export default function Hero() {
         <div
           className="box-cover-image boxBgImage"
           style={{
-            backgroundImage: "url(assets/imgs/page/homepage1/banner3.png)",
+            backgroundImage: "url(assets/imgs/page/homepage1/banner.jpeg)",
           }}
         ></div>
         <div className="box-banner-info">
-          <p className="text-16 color-white wow fadeInUp">
-            Where Would You Like To Go?
-          </p>
-          <h2 className="heading-52-medium color-white wow fadeInUp">
-            A New Class Of Luxury <br className="d-none d-lg-block" />
-            Limo Service
-          </h2>
+        <p className="text-16 color-white wow fadeInUp">
+  Where Would You Like To Go?
+</p>
+<h2 className="heading-52-medium color-white wow fadeInUp">
+  Experience Luxury <br className="d-none d-lg-block" />
+  with Super Car Deluxe Nyc
+</h2>
+
           {/* <div className="mt-20">
             <Link className="btn btn-border wow fadeInUp" href="/fleet-list">
               View Our Fleet
@@ -174,7 +175,7 @@ export default function Hero() {
                           width={20}
                           height={20}
                           src="/assets/imgs/template/icons/search.svg"
-                          alt="luxride"
+                          alt="Super Car Deluxe "
                         />
                         Search
                       </button>
