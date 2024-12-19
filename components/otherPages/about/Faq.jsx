@@ -12,7 +12,6 @@ export default function Faq() {
     try {
       const endPoint = "/faq/get-all";
       const response = await apiService.get(endPoint);
-      console.log({ response })
       if (response && Array.isArray(response)) {
         setFaqs(response);
       } else {

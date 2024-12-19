@@ -1,8 +1,39 @@
-import { cars } from "@/data/cars";
+'use client';
+import apiService from "@/app/_api/apiService";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Feet() {
+  const [cars, setCars] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+
+
+  const fetchCar = async () => {
+    setIsLoading(true);
+    try {
+      const endPoint = "/cars/get-all";
+      const response = await apiService.get(endPoint);
+
+      if (response.data && Array.isArray(response.data)) {
+        setCars(response.data);
+      } else {
+        setCars([]);
+      }
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+      setCars([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCar();
+  }, [])
+
+
   return (
     <section className="section pt-120 box-fleet-cover">
       <div className="box-fleet-padding">
@@ -66,13 +97,13 @@ export default function Feet() {
                     <div className="passenger">
                       <span className="icon-circle icon-passenger"></span>
                       <span className="text-14">
-                        Passengers<span>{elm.passenger}</span>
+                        Passengers<span> {elm.seatingCapacity}</span>
                       </span>
                     </div>
                     <div className="luggage">
                       <span className="icon-circle icon-luggage"></span>
                       <span className="text-14">
-                        Luggage<span>{elm.luggage}</span>
+                        Luggage<span> {elm.luggageCapacity}</span>
                       </span>
                     </div>
                   </div>

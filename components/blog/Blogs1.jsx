@@ -12,12 +12,10 @@ export default function Blogs1() {
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchBlogs = async () => {
-    console.log("fetching")
     setIsLoading(true);
     try {
       const endPoint = "/blog/get-all";
       const response = await apiService.get(endPoint);
-      console.log({ response })
       if (response && Array.isArray(response)) {
         setBlogs(response);
       } else {

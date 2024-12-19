@@ -4,18 +4,48 @@ import Pagination from "../common/Pagination";
 import { carBrands, carTypes, cars } from "@/data/cars";
 import Image from "next/image";
 import Link from "next/link";
+import apiService from "@/app/_api/apiService";
 
 export default function FeetList1() {
+  const [cars, setCars] = useState([]);
   const [selectedCarTypes, setSelectedCarTypes] = useState("All");
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [selectedCars, setSelectedCars] = useState(cars);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchCar = async () => {
+    setIsLoading(true);
+    try {
+      const endPoint = "/cars/get-all";
+      const response = await apiService.get(endPoint);
+
+      if (response.data && Array.isArray(response.data)) {
+        setCars(response.data);
+        setSelectedCars(response.data);
+      } else {
+        setCars([]);
+      }
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+      setCars([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCar();
+  }, [])
+
+
   useEffect(() => {
     let items = cars;
     if (selectedCarTypes != "All") {
-      items = items.filter((elm) => elm.carType == selectedCarTypes);
+      items = items.filter((elm) => elm.name == selectedCarTypes);
     }
     if (selectedBrand != "All") {
-      items = items.filter((elm) => elm.brand == selectedBrand);
+      items = items.filter((elm) => elm.model == selectedBrand);
     }
     setSelectedCars(items);
   }, [selectedCarTypes, selectedBrand]);
@@ -47,9 +77,8 @@ export default function FeetList1() {
                 {carTypes.map((elm, i) => (
                   <li key={i} onClick={() => setSelectedCarTypes(elm)}>
                     <a
-                      className={`dropdown-item cursor-pointer ${
-                        selectedCarTypes == elm ? "car-filter-active" : ""
-                      }`}
+                      className={`dropdown-item cursor-pointer ${selectedCarTypes == elm ? "car-filter-active" : ""
+                        }`}
                     >
                       {elm}
                     </a>
@@ -74,9 +103,8 @@ export default function FeetList1() {
                 {carBrands.map((elm, i) => (
                   <li key={i} onClick={() => setSelectedBrand(elm)}>
                     <a
-                      className={`dropdown-item cursor-pointer ${
-                        selectedBrand == elm ? "car-filter-active" : ""
-                      }`}
+                      className={`dropdown-item cursor-pointer ${selectedBrand == elm ? "car-filter-active" : ""
+                        }`}
                     >
                       {elm}
                     </a>

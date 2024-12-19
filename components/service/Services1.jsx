@@ -15,7 +15,6 @@ export default function Services1() {
     try {
       const endPoint = "/service";
       const response = await apiService.get(endPoint);
-      console.log({ response })
       if (response && Array.isArray(response)) {
         setServices(response);
       } else {
@@ -36,6 +35,9 @@ export default function Services1() {
   return (
     <section className="section pt-60">
       <div className="container-sub">
+        <div className="text-center">
+          <h2 className="heading-44-medium wow fadeInUp">Our Services</h2>
+        </div>
         <div className="row">
           {services.slice(0, 6).map((elm, i) => (
             <div key={i} className="col-lg-4 col-sm-6 mb-30">

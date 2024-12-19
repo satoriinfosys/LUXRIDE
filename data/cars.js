@@ -89,8 +89,8 @@ export const cars = [
   },
 ];
 
-export const carTypes = ["All", "Hatchback", "Sedan", "SUV", "Crossover"];
-export const carBrands = ["All", "Mercedes-Benz", "Audi", "Hyundai", "Honda"];
+export const carTypes = ["All", "Luxury SUV", "Sedan", "SUV", "Crossover"];
+export const carBrands = ["All", "Chevrolet Suburban", "Mercedes-Benz", "Audi", "Hyundai", "Honda"];
 export const features = [
   "+100.000 passengers transported",
   "Instant confirmation",

@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 
 export default function BlogSingle({ blog }) {
-  console.log(blog)
   const [fullName, setFullName] = useState("Test");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
