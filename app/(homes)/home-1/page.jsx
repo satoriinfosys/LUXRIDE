@@ -13,9 +13,9 @@ import Testimonials from "@/components/homes/home-2/Testimonials";
 import MobailHeader1 from "@/components/headers/MobailHeader1";
 export const metadata = {
   title:
-    "Home 2 || Lixride Chauffeur Limousine Transport and Car Hire Nextjs Template",
+    "Super Car Deluxe  || Book Your Ride Now !!",
   description:
-    "Lixride Chauffeur Limousine Transport and Car Hire Nextjs Template",
+    "Super Car Deluxe Chauffeur Limousine Transport and Car Hire at Nyc",
 };
 
 export default function page() {

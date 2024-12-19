@@ -22,12 +22,10 @@ export const socialMediaPlatforms = [
 
 export const links1 = [
   { id: 1, text: "About us", href: "/about" },
-  { id: 2, text: "Our offerings", href: "/fleet-list" },
-  { id: 3, text: "Newsroom", href: "/blog-grid" },
-  { id: 4, text: "Investors", href: "/our-team" },
+  { id: 2, text: "Our Fleets", href: "/fleet-list" },
+  { id: 3, text: "News & Stories", href: "/blog-grid" },
+  { id: 4, text: "Founders", href: "/our-team" },
   { id: 5, text: "Blog", href: "/blog-grid" },
-  { id: 6, text: "Careers", href: "#" },
-  { id: 7, text: "Gift cards", href: "#" },
 ];
 export const links2 = [
   { id: 1, name: "New York", href: "#" },
@@ -55,4 +53,10 @@ export const legalLinks = [
   { id: 2, name: "Privacy policy", href: "/about" },
   { id: 3, name: "Legal notice", href: "/about" },
   { id: 4, name: "Accessibility", href: "/about" },
+];
+export const instagramPosts = [
+  { id: 1, src: "/assets/imgs/instagram/post1.jpg", alt: "Post 1" },
+  { id: 2, src: "/assets/imgs/instagram/post2.jpg", alt: "Post 2" },
+  { id: 3, src: "/assets/imgs/instagram/post3.jpg", alt: "Post 3" },
+  { id: 4, src: "/assets/imgs/instagram/post4.jpg", alt: "Post 4" },
 ];

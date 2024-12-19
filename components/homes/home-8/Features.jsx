@@ -15,7 +15,7 @@ export default function Features() {
             <div key={i} className="col-lg-4 col-md-6 col-sm-6 mb-30">
               <div className="cardIconTitleDesc wow fadeInUp">
                 <div className="cardIcon">
-                  <Image width={56} height={56} src={elm.src} alt="luxride" />
+                  <Image width={56} height={56} src={elm.src} alt="supercardeluxenyc" />
                 </div>
                 <div className="cardTitle">
                   <h5 className="text-20-medium color-text">{elm.title}</h5>

@@ -36,7 +36,7 @@ export default function Faq() {
         <div className="box-faqs">
           <div className="text-center">
             <h2 className="color-brand-1 mb-20 wow fadeInUp">
-              Frequently Asked Questionsaaa
+              Frequently Asked Questions
             </h2>
           </div>
           <div className="mt-60 mb-40">

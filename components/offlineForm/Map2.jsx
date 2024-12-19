@@ -32,7 +32,7 @@ export default function Map2() {
                         Location
                       </h6>
                       <p className="text-16 color-white">
-                        PO Box 16122 Collins Street West Victoria 8007 Australia
+                            00000
                       </p>
                       <a
                         className="cardLink btn btn-link color-white hover-up"

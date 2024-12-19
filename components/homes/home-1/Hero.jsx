@@ -41,7 +41,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 export default function Hero() {
   const settings = {
-    slidesPerView: 1,
+    slidesPerView: 4,
     loop: true,
     navigation: {
       nextEl: ".snbn2",

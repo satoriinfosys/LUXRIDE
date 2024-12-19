@@ -1,5 +1,5 @@
 import Footer1 from "@/components/footers/Footer1";
-import Header1 from "@/components/headers/Header1";
+import Header3 from "@/components/headers/Header3";
 import MobailHeader1 from "@/components/headers/MobailHeader1";
 import Blogs from "@/components/homes/common/blogs/Blogs2";
 import Cta from "@/components/homes/common/cta/Cta";
@@ -16,14 +16,14 @@ import Testimonials from "@/components/common/testimonials/Testimonials2";
 import DownloadApp from "@/components/common/downloadApp/DownloadApp";
 export const metadata = {
   title:
-    "Home 1 || Lixride Chauffeur Limousine Transport and Car Hire Nextjs Template",
+    "laxman || Lixride Chauffeur Limousine Transport and Car Hire Nextjs Template",
   description:
     "Lixride Chauffeur Limousine Transport and Car Hire Nextjs Template",
 };
 export default function Home() {
   return (
     <>
-      <Header1 /> <MobailHeader1 />
+      <Header3 /> <MobailHeader1 />
       <MobailHeader1 />
       <main className="main">
         <Hero />

@@ -8,7 +8,7 @@ export default function Facts() {
           <div className="row align-items-center">
             <div className="col-lg-6 mb-30">
               <h2 className="heading-44-medium color-white wow fadeInUp">
-                Showcase some impressive numbers.
+              Showcase our remarkable success figures.
               </h2>
             </div>
             <div className="col-lg-6">

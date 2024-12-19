@@ -3,7 +3,7 @@ export const contactCards = [
     id: 1,
     city: "New York",
     imageSrc: "/assets/imgs/page/contact/new-york.svg",
-    address: "PO Box 16122 Collins Street West Victoria 8007 Australia",
+    address: "00",
     phone: "+32 2 512 08 15",
     email: "newyork@luxride.com",
   },

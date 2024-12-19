@@ -1,7 +1,7 @@
 export const facts = [
-  { id: 1, number: "285", text: "Vehicles" },
-  { id: 2, number: "97", text: "Awards" },
-  { id: 3, number: "13K", text: "Happy Customer" },
+  { id: 1, number: "250 +", text: "Vehicles" },
+  { id: 2, number: "300 +", text: "Chauffeurs" },
+  { id: 3, number: "11K +", text: "Happy Customer" },
 ];
 export const facts2 = [
   {

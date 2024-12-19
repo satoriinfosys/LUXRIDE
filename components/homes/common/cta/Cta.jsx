@@ -38,14 +38,13 @@ export default function Cta() {
           <div className="col-lg-6 mb-30">
             <div className="box-region-right wow fadeInUp">
               <h2 className="heading-44-medium color-text mb-30">
-                From the region, for the region
+              Nationwide Luxury Travel, Anytime, Anywhere
               </h2>
               <p className="text-16 color-text mb-30">
-                Superide operates in more than 120 cities in 18 countries from
-                Morocco to Pakistan.
+              From the 7 boroughs of NYC to every corner of the country, we deliver luxury travel that meets the highest standards. Our professional chauffeurs are ready to serve you anytime, anywhere, for an unforgettable journey.
               </p>
               <Link className="btn btn-primary" href="/fleet-list">
-                View All Cities
+                View Service Areas
                 <svg
                   className="icon-16 ml-5"
                   fill="none"

@@ -4,22 +4,39 @@ export const features = [
     icon: "/assets/imgs/page/homepage1/safe.svg",
     title: "Safety First",
     description:
-      "Both you and your shipments will travel with professional drivers. Always with the highest quality standards.",
+      "At Super Car Deluxe, your safety comes first. Our professional chauffeurs are highly trained, and our vehicles are meticulously maintained to ensure a secure and reliable journey every time.",
   },
   {
     id: 2,
     icon: "/assets/imgs/page/homepage1/price.svg",
     title: "Prices With No Surprises",
     description:
-      "Both you and your shipments will travel with professional drivers. Always with the highest quality standards.",
+      "We offer transparent pricing with no hidden fees. Our rates are clear, ensuring you know exactly what to expect, so you can enjoy a hassle-free luxury experience.",
   },
   {
     id: 3,
+    icon: "/assets/imgs/page/homepage4/phone.svg",
+    title: "24/7 Available",
+    description: "Whether it’s early in the morning, late at night, or any time in between, our professional chauffeurs and premium vehicles are always ready to take you wherever you need to go.",
+  },
+  {
+    id: 4,
     icon: "/assets/imgs/page/homepage1/vehicle.svg",
     title: "Private Travel Solutions",
     description:
-      "Both you and your shipments will travel with professional drivers. Always with the highest quality standards.",
-  },
+"We provide exclusive private travel solutions, offering personalized, luxury transportation with professional chauffeurs. Whether for business or leisure, our services ensure privacy, comfort, and convenience, delivering a seamless travel experience tailored to your needs."  },
+{
+  id: 5,
+  icon: "/assets/imgs/page/homepage4/driver.svg",
+  title: "Professional Chauffeurs",
+  description: "Our professional chauffeurs are highly trained, experienced, and committed to providing exceptional service. With attention to detail and a focus on your comfort and safety, they ensure every ride is smooth and enjoyable.",
+},
+{
+  id: 6,
+  icon: "/assets/imgs/page/homepage4/limo.svg",
+  title: "Luxury Limousine Selection",
+  description: "Impressive selection of luxury limousines, each equipped with top-tier amenities to provide the ultimate travel experience. From sleek, modern models to spacious, elegant options, our fleet is designed to cater to your style and comfort.",
+},
 ];
 export var features2 = [
   {
@@ -70,7 +87,7 @@ export const features5 = [
   {
     id: 1,
     src: "/assets/imgs/page/homepage7/route.svg",
-    alt: "luxride",
+    alt: "super car deluxe 24/7 S",
     title: "Safety First",
     description:
       "Both you and your shipments will travel with professional drivers. Always with the highest quality standards.",

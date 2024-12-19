@@ -23,14 +23,14 @@ export default function Main() {
       <main className="main">
         <Hero />
         <Partners />
-        {/* <Feet /> */}
+         <Feet /> 
         <Process />
         <Features />
         <Facts />
         <Service />
         <Testimonials />
-        {/* <Cta /> */}
-        {/* <Blogs /> */}
+        <Cta />
+        <Blogs /> 
         <Faq />
         {/* <DownloadApp /> */}
       </main>

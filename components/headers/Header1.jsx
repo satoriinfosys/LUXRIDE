@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import Nav from "./components/Nav";
-import Image from "next/image";
 
+import Image from "next/image";
 import Link from "next/link";
 import Language from "./components/Language";
 
-export default function Header1() {
+export default function Header3() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -26,7 +26,9 @@ export default function Header1() {
     };
   }, []);
   return (
-    <header className={`header sticky-bar ${scrolled ? "stick" : ""}`}>
+    <header
+      className={`header header-black-2 sticky-bar ${scrolled ? "stick" : ""}`}
+    >
       <div className="container">
         <div className="main-header">
           <div className="header-left">
@@ -34,7 +36,7 @@ export default function Header1() {
               <Link className="d-flex" href="/">
                 <Image
                   width={150}
-                  height={19}
+                  height={50}
                   alt="luxride"
                   src="/assets/imgs/template/logo.svg"
                   style={{ height: "fit-content" }}

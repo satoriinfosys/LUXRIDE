@@ -1,31 +1,43 @@
 export const testimonials = [
   {
     id: 1,
-    name: "Jonathan Miller",
-    occupation: "Web Developer",
+    name: "John Davis",
+    country: "USA",
+    occupation: "Executive Director, Finance",
     content:
-      "I really can recommend this theme, because it’s coded very well and it’s really easy to build your own website!",
+      "They offer unparalleled service. The professionalism of the chauffeurs and the quality of the vehicles exceeded my expectations. Highly recommended for those seeking luxury and reliability.",
   },
   {
     id: 2,
-    name: "Jonathan Miller",
-    occupation: "Web Developer",
+    name: "Emily Clark",
+    country: "UK",
+    occupation: "Marketing Manager",
     content:
-      "I really can recommend this theme, because it’s coded very well and it’s really easy to build your own website!",
+      "The experience was outstanding. From booking to the smooth ride, everything was flawless. It’s the perfect choice for executive travel, offering both comfort and style.",
   },
   {
     id: 3,
-    name: "Jonathan Miller",
-    occupation: "Web Developer",
+    name: "Michael Schmidt",
+    country: "Germany",
+    occupation: "Chief Operating Officer",
     content:
-      "I really can recommend this theme, because it’s coded very well and it’s really easy to build your own website!",
+      "Impressive service! The vehicles are top-notch, and the chauffeurs are well-trained, ensuring safety and comfort throughout the ride. They are now my go-to for corporate travel.",
   },
   {
     id: 4,
-    name: "Jonathan Miller",
-    occupation: "Web Developer",
+    name: "Sarah Williams",
+    country: "Australia",
+    occupation: "Senior IT Consultant",
     content:
-      "I really can recommend this theme, because it’s coded very well and it’s really easy to build your own website!",
+      "I rely on them for both business and leisure travel. The level of luxury and professionalism is unmatched. A fantastic choice for anyone looking for premium service.",
+  },
+  {
+    id: 5,
+    name: "Takeshi Tanaka",
+    country: "Japan",
+    occupation: "Business Development Manager",
+    content:
+      "They provide an exceptional experience. The punctuality and attention to detail make it a top choice for professional transportation. I will certainly continue using their services for all my trips.",
   },
 ];
 export const testimonials2 = [
