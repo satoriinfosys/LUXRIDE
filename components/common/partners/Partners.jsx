@@ -1,3 +1,4 @@
+"use client";
 import { partners } from "@/data/partners";
 import Image from "next/image";
 
@@ -16,8 +17,7 @@ export default function Partners() {
           <div className="col-xl-9 col-lg-8 mb-30">
             <div className="logo-container">
               <ul className="list-logos d-flex align-items-center wow fadeInUp">
-                {/* List of logos */}
-                {partners.map((elm, i) => (
+                {partners.concat(partners).map((elm, i) => (
                   <li key={i} className="logo-item">
                     <Image
                       width={180}
@@ -38,45 +38,31 @@ export default function Partners() {
         </div>
       </div>
 
-      {/* Add CSS for the scrolling effect */}
       <style jsx>{`
         .logo-container {
           position: relative;
-          overflow: hidden; /* Hide overflowing logos */
+          overflow: hidden;
         }
 
         .list-logos {
           display: flex;
           align-items: center;
           animation: scrollLeft 20s linear infinite;
-        }
-
-        .logo-item {
-          margin-right: 30px; /* Adjust space between logos */
-        }
-
-        /* Keyframe animation for scrolling the logos */
-        @keyframes scrollLeft {
-          0% {
-            transform: translateX(0); /* Start at the initial position */
-          }
-          100% {
-            transform: translateX(-100%); /* Move logos off the screen */
-          }
-        }
-
-        /* Ensure the container is wide enough to hold all logos */
-        .list-logos {
-          display: flex;
           white-space: nowrap;
           width: max-content;
         }
 
-        /* Make sure logos wrap seamlessly */
-        .logo-container:before {
-          content: "";
-          width: 100%;
-          height: 0;
+        .logo-item {
+          margin-right: 30px;
+        }
+
+        @keyframes scrollLeft {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
         }
       `}</style>
     </section>
