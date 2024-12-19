@@ -1,7 +1,8 @@
+'use client';
+import { useEffect, useState } from "react";
 import apiService from "@/app/_api/apiService";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export default function Blogs() {
 
