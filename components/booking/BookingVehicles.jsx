@@ -95,6 +95,7 @@ function BookingVehiclesContent() {
     router.push(`/booking-extra?vehicle=${id}`)
   }
 
+
   return (
     <div className="box-row-tab mt-50">
       <div className="box-tab-left">
@@ -122,7 +123,7 @@ function BookingVehiclesContent() {
                   <div className="vehicle-facilities">
                     {elm.features.map((feature, index) => (
                       <div key={index} className="text-fact meet-greeting">
-                        {feature}
+                        {feature?.name || feature}
                       </div>
                     ))}
                   </div>
