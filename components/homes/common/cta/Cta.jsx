@@ -43,7 +43,7 @@ export default function Cta() {
               <p className="text-16 color-text mb-30">
               From the 7 boroughs of NYC to every corner of the country, we deliver luxury travel that meets the highest standards. Our professional chauffeurs are ready to serve you anytime, anywhere, for an unforgettable journey.
               </p>
-              <Link className="btn btn-primary" href="/fleet-list">
+              <Link className="btn btn-primary" href="/service-area-list">
                 View Service Areas
                 <svg
                   className="icon-16 ml-5"

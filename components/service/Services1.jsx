@@ -50,26 +50,26 @@ export default function Services1() {
                     <p className="cardDesc text-14 color-white mb-30">
                       {elm.description}
                     </p>
-                    {/* <Link
+                    <Link
                       className="cardLink btn btn-arrow-up"
-                      // href={`/service-single/${elm.id}`}
-                    > */}
-                    <svg
-                      className="icon-16"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
+                      href={`/service-single/${elm.id}`}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
-                      ></path>
-                    </svg>
-                    {/* </Link> */}
+                      <svg
+                        className="icon-16"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
+                        ></path>
+                      </svg>
+                    </Link>
                   </div>
                 </div>
                 <div className="cardImage">

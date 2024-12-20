@@ -9,7 +9,6 @@ export default function Feet() {
   const [isLoading, setIsLoading] = useState(false);
 
 
-
   const fetchCar = async () => {
     setIsLoading(true);
     try {
@@ -69,47 +68,49 @@ export default function Feet() {
             </div>
           </div>
           <div className="row mt-50">
-            {cars.slice(0, 3).map((elm, i) => (
-              <div key={i} className="col-lg-4">
-                <div className="cardFleet cardFleetStyle2 wow fadeInUp">
-                  <div className="cardInfo">
-                    <a href="#">
-                      <h3 className="text-20-medium color-text mb-10">
-                        {elm.title}
-                      </h3>
-                    </a>
-                    <p className="text-14 color-text mb-30">
-                      {elm.description}
-                    </p>
-                  </div>
-                  <div className="cardImage mb-30">
-                    <a href="#">
-                      <Image
-                        width={1530}
-                        height={711}
-                        style={{ height: "fit-content" }}
-                        src={elm.imgSrc}
-                        alt="Luxride"
-                      />
-                    </a>
-                  </div>
-                  <div className="cardInfoBottom">
-                    <div className="passenger">
-                      <span className="icon-circle icon-passenger"></span>
-                      <span className="text-14">
-                        Passengers<span> {elm.seatingCapacity}</span>
-                      </span>
+            {cars
+              .filter((elm) => elm.isFeatured) // Filter for featured items
+              .slice(0, 3).map((elm, i) => (
+                <div key={i} className="col-lg-4">
+                  <div className="cardFleet cardFleetStyle2 wow fadeInUp">
+                    <div className="cardInfo">
+                      <Link href={`/fleet-single/${elm.id}`}>
+                        <h3 className="text-20-medium color-text mb-10">
+                          {elm.model}
+                        </h3>
+                        \</Link>
+                      <p className="text-14 color-text mb-30">
+                        {elm.description}
+                      </p>
                     </div>
-                    <div className="luggage">
-                      <span className="icon-circle icon-luggage"></span>
-                      <span className="text-14">
-                        Luggage<span> {elm.luggageCapacity}</span>
-                      </span>
+                    <div className="cardImage mb-30">
+                      <a href="#">
+                        <Image
+                          width={1530}
+                          height={711}
+                          style={{ height: "fit-content" }}
+                          src={elm.imgSrc}
+                          alt="Luxride"
+                        />
+                      </a>
+                    </div>
+                    <div className="cardInfoBottom">
+                      <div className="passenger">
+                        <span className="icon-circle icon-passenger"></span>
+                        <span className="text-14">
+                          Passengers<span> {elm.seatingCapacity}</span>
+                        </span>
+                      </div>
+                      <div className="luggage">
+                        <span className="icon-circle icon-luggage"></span>
+                        <span className="text-14">
+                          Luggage<span> {elm.luggageCapacity}</span>
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </div>

@@ -1,8 +1,7 @@
 import axios from "axios";
 
-// const BASE_URL =
-//   process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8000/api"; // Replace this with your API base URL
-const BASE_URL = "https://parash-limo-backend.onrender.com/api";
+const BASE_URL = "http://localhost:8000/api"; // Replace this with your API base URL
+// const BASE_URL = "https://parash-limo-backend.onrender.com/api";
 
 const apiService = axios.create({
   baseURL: BASE_URL,

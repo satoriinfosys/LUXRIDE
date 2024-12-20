@@ -11,7 +11,7 @@ const slideImages = [
   "/assets/imgs/page/fleet/slide2.png",
 ];
 
-export default function Details({car}) {
+export default function Details({serviceArea}) {
   useEffect(() => {
     addLeftPaddingSwiper();
   }, []);
@@ -68,11 +68,11 @@ export default function Details({car}) {
       <div className="container-sub">
         <div className="mt-120">
           <h2 className="heading-44-medium mb-30 color-text title-fleet wow fadeInUp">
-            {car?.model}
+            {serviceArea?.model}
           </h2>
           <div className="content-single wow fadeInUp">
             <p>
-              {car?.description}
+              {serviceArea?.description}
             </p>
             {/* <p>
               Et, morbi at sagittis vehicula rutrum. Lacus tortor, quam arcu mi

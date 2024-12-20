@@ -1,40 +1,37 @@
 'use client';
 import apiService from "@/app/_api/apiService";
 import BreadCumb from "@/components/fleet-list/BreadCumb";
-import BookSection from "@/components/fleet-single/BookSection";
-import BusnessClassFleet from "@/components/fleet-single/BusnessClassFleet";
 import Details from "@/components/fleet-single/Details";
 import Features from "@/components/fleet-single/Features";
 import Footer1 from "@/components/footers/Footer1";
 import Header1 from "@/components/headers/Header1";
 import MobailHeader1 from "@/components/headers/MobailHeader1";
-import { cars } from "@/data/cars";
 import React, { useEffect, useState } from "react";
 
 export default function page({ params }) {
-  const [car, setCar] = useState([]);
+  const [serviceArea, setServiceArea] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchFleet = async () => {
+  const fetchServiceArea = async () => {
     setIsLoading(true);
     try {
-      const endPoint = `/cars/${params.id}`;
+      const endPoint = `/service/${params.id}`;
       const response = await apiService.get(endPoint);
       if (response) {
-        setCar(response);
+        setServiceArea(response);
       } else {
-        setCar([]);
+        setServiceArea([]);
       }
     } catch (error) {
-      console.error("Error fetching car:", error);
-      setCar([]);
+      console.error("Error fetching service area:", error);
+      setServiceArea([]);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchFleet();
+    fetchServiceArea();
   }, [])
 
   return (
@@ -42,10 +39,8 @@ export default function page({ params }) {
       <Header1 /> <MobailHeader1 />
       <main className="main">
         <BreadCumb />
-        <Details car={car} />
+        <Details serviceArea={serviceArea} />
         <Features />
-        {/* <BookSection car={car} /> */}
-        {/* <BusnessClassFleet /> */}
       </main>
       <Footer1 />
     </>

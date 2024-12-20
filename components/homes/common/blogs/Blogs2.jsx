@@ -31,6 +31,7 @@ export default function Blogs() {
     fetchBlogs();
   }, [])
 
+
   return (
     <section className="section pt-120 pb-90 bg-primary">
       <div className="container-sub">

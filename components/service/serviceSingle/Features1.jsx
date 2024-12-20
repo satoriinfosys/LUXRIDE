@@ -2,7 +2,7 @@ import { features8 } from "@/data/features";
 import Image from "next/image";
 import React from "react";
 
-export default function Features1() {
+export default function Features1({ service }) {
   return (
     <section className="section mt-90">
       <div className="container-sub">

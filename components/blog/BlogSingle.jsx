@@ -1,12 +1,7 @@
 "use client";
-import { reviews, socials, tags } from "@/data/blogs";
 import Image from "next/image";
-import { useState } from "react";
 
 export default function BlogSingle({ blog }) {
-  const [fullName, setFullName] = useState("Test");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
   return (
     <section className="section pt-60 bg-white latest-new-white">
       <div className="container-sub">
