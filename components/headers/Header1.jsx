@@ -35,7 +35,7 @@ export default function Header3() {
             <div className="header-logo">
               <Link className="d-flex" href="/">
                 <Image
-                  width={150}
+                  width={170}
                   height={50}
                   alt="luxride"
                   src="/assets/imgs/template/logo.svg"
