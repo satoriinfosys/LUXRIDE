@@ -78,7 +78,7 @@ export default function Feet() {
                         <h3 className="text-20-medium color-text mb-10">
                           {elm.model}
                         </h3>
-                        \</Link>
+                      </Link>
                       <p className="text-14 color-text mb-30">
                         {elm.description}
                       </p>
