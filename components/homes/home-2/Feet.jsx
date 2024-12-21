@@ -1,5 +1,5 @@
 'use client';
-import apiService from "@/app/_api/apiService";
+import apiService, { BASE_URL } from "@/app/_api/apiService";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -8,7 +8,7 @@ export default function Feet() {
   const [cars, setCars] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-
+console.log({image: BASE_URL+`/image/4.png`})
   const fetchCar = async () => {
     setIsLoading(true);
     try {
@@ -32,6 +32,8 @@ export default function Feet() {
     fetchCar();
   }, [])
 
+
+  console.log({cars})
 
   return (
     <section className="section pt-120 box-fleet-cover">
@@ -89,7 +91,7 @@ export default function Feet() {
                           width={1530}
                           height={711}
                           style={{ height: "fit-content" }}
-                          src={elm.imgSrc}
+                          src={BASE_URL+`/user/image/${elm.image}`}
                           alt="Luxride"
                         />
                       </a>

@@ -4,7 +4,7 @@ import Pagination from "../common/Pagination";
 import { carBrands, carTypes, cars } from "@/data/cars";
 import Image from "next/image";
 import Link from "next/link";
-import apiService from "@/app/_api/apiService";
+import apiService, { BASE_URL } from "@/app/_api/apiService";
 
 export default function FeetList1() {
   const [cars, setCars] = useState([]);
@@ -132,7 +132,7 @@ export default function FeetList1() {
                       width={1530}
                       height={711}
                       style={{ height: "fit-content" }}
-                      src={elm.imgSrc}
+                      src={BASE_URL + `/user/image/${elm?.image}`}
                       alt="Luxride"
                     />
                   </Link>

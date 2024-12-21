@@ -4,14 +4,10 @@ import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { addLeftPaddingSwiper } from "@/utlis/addSwiperPadding";
 import Image from "next/image";
-const slideImages = [
-  "/assets/imgs/page/fleet/slide1.png",
-  "/assets/imgs/page/fleet/slide2.png",
-  "/assets/imgs/page/fleet/slide1.png",
-  "/assets/imgs/page/fleet/slide2.png",
-];
+import { BASE_URL } from "@/app/_api/apiService";
 
-export default function Details({car}) {
+
+export default function Details({ car }) {
   useEffect(() => {
     addLeftPaddingSwiper();
   }, []);
@@ -55,14 +51,20 @@ export default function Details({car}) {
       },
     },
   };
+
+  const slideImages = [
+    BASE_URL + `/user/image/${car?.image}`,
+    BASE_URL + `/user/image/${car?.detailImage}`
+  ];
+
   return (
     <section className="section">
       <Image
         width={1920}
-        height={760}
+        height={560}
         style={{ height: "fit-content" }}
         className=""
-        src="/assets/imgs/page/fleet/banner.png"
+        src={BASE_URL + `/user/image/${car?.detailImage}`}
         alt="luxride"
       />
       <div className="container-sub">
