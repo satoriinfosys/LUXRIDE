@@ -11,13 +11,13 @@ import React, { useEffect, useState } from "react";
 export default function page({ params }) {
   const [serviceArea, setServiceArea] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  console.log("here")
+
   const fetchServiceArea = async () => {
     setIsLoading(true);
     try {
       const endPoint = `/serviceArea/${params.id}`;
       const response = await apiService.get(endPoint);
-      console.log({response})
+
       if (response) {
         setServiceArea(response);
       } else {
@@ -35,7 +35,6 @@ export default function page({ params }) {
     fetchServiceArea();
   }, [])
 
-  console.log({ serviceArea })
 
   return (
     <>

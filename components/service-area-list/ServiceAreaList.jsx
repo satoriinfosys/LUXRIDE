@@ -35,7 +35,6 @@ export default function ServiceAreaList() {
     fetchServiceArea();
   }, [])
 
-  console.log({ serviceAreas })
 
   return (
     <section className="section pt-60 bg-white latest-new-white">

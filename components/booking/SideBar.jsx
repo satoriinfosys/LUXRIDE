@@ -106,7 +106,7 @@ export default function SideBar() {
   }
   useEffect(() => {
     getTotalCost();
-  }, [selectedCar, finalPrice]);
+  }, [selectedCar, finalPrice, rideExtra]);
 
 
   return (
@@ -259,7 +259,7 @@ export default function SideBar() {
             }
             <li>
               <span className="text">Gratuity Amount</span>
-              <span className="price">${rideExtra.gratuityAmount || 0}</span>
+              <span className="price">${parseFloat(rideExtra?.gratuityAmount || 0).toFixed(2) || 0}</span>
             </li>
             <li>
               <span className="text">Sales Tax</span>
@@ -271,7 +271,7 @@ export default function SideBar() {
           <ul className="list-prices">
             <li>
               <span className="text text-20-medium">Total</span>
-              <span className="price text-20-medium">${finalPrice}</span>
+              <span className="price text-20-medium">${parseFloat(finalPrice).toFixed(2)}</span>
             </li>
           </ul>
         </div> : <></>}

@@ -36,7 +36,6 @@ export default function page({ params }) {
     fetchService();
   }, [])
 
-  console.log({service})
 
   return (
     <>

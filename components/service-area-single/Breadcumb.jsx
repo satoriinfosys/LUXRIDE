@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 
 export default function Breadcumb({ serviceArea }) {
-  console.log({serviceArea})
+
   return (
     <div className="section pt-60 pb-60 bg-primary">
       <div className="container-sub">
