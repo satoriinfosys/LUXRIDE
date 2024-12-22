@@ -20,7 +20,7 @@ export default function Banner2() {
               </div>
               <div className="mt-60 wow fadeInUp">
                 <h2 className="heading-44-medium mb-30 color-white title-fleet">
-                  We reimagine the way the world moves for the better
+                Revolutionizing the Way We Move to Drive Efficiency, Connectivity, and Sustainability
                 </h2>
                 <div className="content-single">
                   <p className="color-white">

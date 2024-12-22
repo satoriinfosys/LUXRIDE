@@ -40,7 +40,7 @@ export default function ContactForm() {
       <div className="container-sub">
         <div className="mw-770">
           <h2 className="heading-44-medium mb-60 text-center wow fadeInUp">
-            Leave us your info
+            Leave us your info 
           </h2>
           <div className="form-contact form-comment wow fadeInUp">
             <form onSubmit={handleSubmit}>

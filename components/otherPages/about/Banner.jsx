@@ -8,7 +8,7 @@ export default function Banner() {
         height={550}
         style={{ height: "fit-content" }}
         src="/assets/imgs/page/about/banner.png"
-        alt="luxride"
+        alt="Super Car Deluxe"
       />
     </div>
   );
