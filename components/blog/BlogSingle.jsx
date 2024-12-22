@@ -1,4 +1,5 @@
 "use client";
+import { BASE_URL } from "@/app/_api/apiService";
 import Image from "next/image";
 
 export default function BlogSingle({ blog }) {
@@ -24,7 +25,8 @@ export default function BlogSingle({ blog }) {
               //     ? blog.bannerImage
               //     : "/assets/imgs/page/blog2/img-single.png"
               // }
-              src="https://fastly.picsum.photos/id/1043/200/200.jpg?hmac=i7xbST4bM6KMg5XsUaVYvDgwvsZ3VskoXKRqGf1BjcU"
+              src={BASE_URL + `/user/image/${blog.bannerImage}`}
+              // src="https://fastly.picsum.photos/id/1043/200/200.jpg?hmac=i7xbST4bM6KMg5XsUaVYvDgwvsZ3VskoXKRqGf1BjcU"
               alt="luxride"
             />
           </div>

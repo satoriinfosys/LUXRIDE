@@ -1,4 +1,4 @@
-import apiService from "@/app/_api/apiService";
+import apiService, { BASE_URL } from "@/app/_api/apiService";
 // import { blogs } from "@/data/blogs";
 import Image from "next/image";
 import Link from "next/link";
@@ -55,7 +55,7 @@ export default function RelatedBlogs() {
                       width={1104}
                       height={780}
                       style={{ height: "fit-content" }}
-                      src={elm.imageSrc}
+                      src={BASE_URL + `/user/image/${elm.bannerImage}`}
                       alt="luxride"
                     />
                   </div>

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from "react";
-import apiService from "@/app/_api/apiService";
+import apiService, { BASE_URL } from "@/app/_api/apiService";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -91,7 +91,8 @@ export default function Blogs() {
                       // src={elm.imageSrc}
                       style={{ height: "fit-content" }}
                       alt="luxride"
-                      src="https://fastly.picsum.photos/id/1043/200/200.jpg?hmac=i7xbST4bM6KMg5XsUaVYvDgwvsZ3VskoXKRqGf1BjcU"
+                      src={BASE_URL + `/user/image/${elm.bannerImage}`}
+                      // src="https://fastly.picsum.photos/id/1043/200/200.jpg?hmac=i7xbST4bM6KMg5XsUaVYvDgwvsZ3VskoXKRqGf1BjcU"
                     />
                   </div>
                 </Link>
