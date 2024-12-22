@@ -56,3 +56,8 @@ export const selectedCarAtom = atom({
     key: 'selectedCar',
     default: null
 })
+
+export const userLoggedInState = atom({
+    key: 'loggedInUser',
+    default: null
+})

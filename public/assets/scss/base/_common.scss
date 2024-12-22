@@ -737,3 +737,20 @@ a.color-primary {
     }
   }
 }
+
+.bg-dark {
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.bg-dark:hover {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.fa {
+  transition: transform 0.2s ease-in-out;
+}
+
+.fa-chevron-up {
+  transform: rotate(180deg);
+}
+

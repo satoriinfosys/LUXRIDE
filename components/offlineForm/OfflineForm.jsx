@@ -129,7 +129,7 @@ export default function OfflineForm() {
                 </div>
 
                 {/* New Fields */}
-                <div className="col-lg-6 col-md-6">
+                {/* <div className="col-lg-6 col-md-6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="carId">
                       Car ID
@@ -142,8 +142,8 @@ export default function OfflineForm() {
                       required
                     />
                   </div>
-                </div>
-                <div className="col-lg-6 col-md-6">
+                </div> */}
+                {/* <div className="col-lg-6 col-md-6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="totalSeating">
                       Total Seating
@@ -156,8 +156,8 @@ export default function OfflineForm() {
                       required
                     />
                   </div>
-                </div>
-                <div className="col-lg-6 col-md-6">
+                </div> */}
+                {/* <div className="col-lg-6 col-md-6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="totalLuggage">
                       Total Luggage
@@ -170,7 +170,7 @@ export default function OfflineForm() {
                       required
                     />
                   </div>
-                </div>
+                </div> */}
                 <div className="col-lg-6 col-md-6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="pickUpLocation">
@@ -213,7 +213,7 @@ export default function OfflineForm() {
                     />
                   </div>
                 </div>
-                <div className="col-lg-6 col-md-6">
+                {/* <div className="col-lg-6 col-md-6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="dropOffLocation">
                       Drop-Off Location
@@ -254,8 +254,8 @@ export default function OfflineForm() {
                       required
                     />
                   </div>
-                </div>
-                <div className="col-lg-6 col-md-6">
+                </div> */}
+                {/* <div className="col-lg-6 col-md-6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="serviceAreaId">
                       Service Area ID
@@ -282,7 +282,7 @@ export default function OfflineForm() {
                       required
                     />
                   </div>
-                </div>
+                </div> */}
                 <div className="col-lg-12">
                   <div className="form-group">
                     <label className="form-label" htmlFor="message">

@@ -5,9 +5,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { addLeftPaddingSwiper } from "@/utlis/addSwiperPadding";
 import Image from "next/image";
 import { BASE_URL } from "@/app/_api/apiService";
+import Link from "next/link";
+import { userLoggedInState } from "@/app/_state/states";
 
 
 export default function Details({ car }) {
+
+  const [authUser, setAuthUserDetails] = useRecoilState(userLoggedInState);
+
   useEffect(() => {
     addLeftPaddingSwiper();
   }, []);
@@ -84,18 +89,19 @@ export default function Details({ car }) {
               condimentum. Vitae in nam porttitor rutrum sed aliquam donec sed.
               Sapien facilisi lectus.
             </p> */}
-            <h6 className="heading-24-medium color-text mb-30">We offer</h6>
+            {car?.features?.length && <h6 className="heading-24-medium color-text mb-30">We offer</h6>}
             <ul className="list-ticks list-ticks-small">
-              <li className="text-16 mb-20">100% Luxurious Fleet</li>
+              {car?.features?.length && car?.features?.map((elm, i) => (<li key={i} className="text-16 mb-20">{elm.name || elm}</li>))}
+              {/* <li className="text-16 mb-20">100% Luxurious Fleet</li>
               <li className="text-16 mb-20">
                 All Our Fleet Are Fully Valeted & Serviced
               </li>
               <li className="text-16 mb-20">A Safe & Secure Journey</li>
               <li className="text-16 mb-20">Comfortable And Enjoyable</li>
-              <li className="text-16 mb-20">Clean, Polite & Knowledgeable</li>
+              <li className="text-16 mb-20">Clean, Polite & Knowledgeable</li> */}
             </ul>
             <div className="mt-30">
-              <a className="btn btn-primary btn-book">
+              <a className="btn btn-primary btn-book" href={authUser.email ? '/' : '/login'}>
                 Book Now
                 <svg
                   className="icon-16 ml-5"

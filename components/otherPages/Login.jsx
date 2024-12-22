@@ -1,9 +1,40 @@
 "use client";
+import apiService from "@/app/_api/apiService";
+import { userLoggedInState } from "@/app/_state/states";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 
 export default function Login() {
-  const [emailValue, setEmailValue] = useState("creativelayers088@gmail.com");
+  const router = useRouter();
+
+  const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [authUser, setAuthUserDetails] = useRecoilState(userLoggedInState);
+
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const response = await apiService.post("/auth/login", { email: emailValue, password: passwordValue });
+      localStorage.setItem("authToken", response.data.token);
+      setAuthUserDetails((prevState) => ({
+        ...prevState,
+        email: response.data.email,
+        phone: response.data.phone,
+        fullName: response.data.fullName
+      }));
+      router.push("/");
+    }
+    catch (error) {
+      localStorage.setItem("authToken", null);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <section className="section mt-120 mb-100">
       <div className="container-sub">
@@ -15,7 +46,7 @@ export default function Login() {
         </div>
         <div className="box-login mt-70">
           <div className="form-contact form-comment wow fadeInUp">
-            <form onSubmit={(e) => e.preventDefault()}>
+            <form onSubmit={(e) => handleLogin(e)}>
               <div className="row">
                 <div className="col-lg-12">
                   <div className={`form-group ${emailValue ? "focused" : ""}`}>
@@ -39,11 +70,10 @@ export default function Login() {
                       Password
                     </label>
                     <input
-                      className={`form-control ${
-                        passwordValue ? "filled" : ""
-                      }`}
+                      className={`form-control ${passwordValue ? "filled" : ""
+                        }`}
                       id="email"
-                      type="text"
+                      type="password"
                       value={passwordValue}
                       onChange={(e) => setPasswordValue(e.target.value)}
                     />
@@ -63,7 +93,7 @@ export default function Login() {
                   </div>
                 </div>
                 <div className="col-lg-12">
-                  <button className="btn btn-primary w-100" type="submit">
+                  <button className="btn btn-primary w-100" type="submit" disabled={loading}>
                     Sign in
                     <svg
                       className="icon-16 ml-5"
@@ -82,7 +112,7 @@ export default function Login() {
                     </svg>
                   </button>
                 </div>
-                <div className="col-lg-12">
+                {/* <div className="col-lg-12">
                   <div className="text-or-box">
                     <span className="text-or">OR</span>
                   </div>
@@ -101,12 +131,12 @@ export default function Login() {
                       Continue Apple
                     </a>
                   </div>
-                </div>
+                </div> */}
                 <div className="mt-0 text-center">
                   <span className="text-14-medium color-text">
                     Not signed up?{" "}
                   </span>
-                  <a className="text-14-medium color-text" href="#">
+                  <a className="text-14-medium color-text" href="/register">
                     Create an account.
                   </a>
                 </div>

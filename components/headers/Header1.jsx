@@ -5,10 +5,13 @@ import Nav from "./components/Nav";
 import Image from "next/image";
 import Link from "next/link";
 import Language from "./components/Language";
+import { userLoggedInState } from "@/app/_state/states";
+import { useRecoilState } from "recoil";
 
 export default function Header3() {
   const [scrolled, setScrolled] = useState(false);
-
+  const [authUser, setAuthUserDetails] = useRecoilState(userLoggedInState);
+  console.log({ authUser })
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 200) {
@@ -25,6 +28,12 @@ export default function Header3() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleLogout = () => {
+    setAuthUserDetails(null);
+    localStorage.setItem("authToken", null);
+  }
+
   return (
     <header
       className={`header header-black-2 sticky-bar ${scrolled ? "stick" : ""}`}
@@ -66,16 +75,31 @@ export default function Header3() {
               <div className="d-none d-xxl-inline-block box-dropdown-cart align-middle mr-10">
                 <Language />
               </div>
-              <div className="box-button-login d-inline-block mr-10 align-middle">
-                <Link className="btn btn-default hover-up" href="/login">
-                  Log In
-                </Link>
-              </div>
-              <div className="box-button-login d-none2 d-inline-block align-middle">
-                <Link className="btn btn-white hover-up" href="/register">
-                  Sign Up
-                </Link>
-              </div>
+              {
+                !(authUser?.email) ? <>
+                  <div className="box-button-login d-inline-block mr-10 align-middle">
+                    <Link className="btn btn-default hover-up" href="/login">
+                      Log In
+                    </Link>
+                  </div>
+                  <div className="box-button-login d-none2 d-inline-block align-middle">
+                    <Link className="btn btn-white hover-up" href="/register">
+                      Sign Up
+                    </Link>
+                  </div>
+                </> :
+                  <>
+                    <div className="box-button-login d-inline-block mr-10 align-middle">
+                      <div className="text-white p-3 shadow-sm d-inline-block">
+                        <span className="font-weight-bold">{authUser?.fullName || "Guest User"}</span>
+                      </div>
+                      <button className="btn btn-default hover-up" onClick={handleLogout}>
+                        Log Out
+                      </button>
+                    </div>
+                  </>
+              }
+
             </div>
           </div>
         </div>
