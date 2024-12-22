@@ -3,7 +3,7 @@ import { features7 } from "@/data/features";
 import Image from "next/image";
 import React from "react";
 
-export default function Features2({ service }) {
+export default function Features2({ serviceArea }) {
   return (
     <section className="section">
       <div className="container-sub">
@@ -13,7 +13,7 @@ export default function Features2({ service }) {
           </h2> */}
           <div className="content-single wow fadeInUp">
             <p>
-              {service.description}
+              {serviceArea.description}
             </p>
             {/* <p>
               Et, morbi at sagittis vehicula rutrum. Lacus tortor, quam arcu mi
@@ -23,13 +23,13 @@ export default function Features2({ service }) {
               condimentum. Vitae in nam porttitor rutrum sed aliquam donec sed.
               Sapien facilisi lectus.
             </p> */}
-            <ul className="list-ticks list-ticks-small">
+            {/* <ul className="list-ticks list-ticks-small">
               {features7.map((elm, i) => (
                 <li key={i} className="text-16 mb-20">
                   {elm}
                 </li>
               ))}
-            </ul>
+            </ul> */}
           </div>
         </div>
         <div className="row align-items-center mt-90">
@@ -38,7 +38,7 @@ export default function Features2({ service }) {
               width={1710}
               height={1800}
               style={{ height: "fit-content" }}
-              src={BASE_URL + `/user/image/${service?.images?.[0]}`}
+              src={BASE_URL + `/user/image/${serviceArea?.images?.[1]}`}
               alt="luxride"
             />
           </div>
@@ -47,30 +47,9 @@ export default function Features2({ service }) {
               {/* <h3 className="heading-44-medium color-text mb-30">
                 Get to or from the airport
               </h3> */}
-              <p className="text-16 color-text" dangerouslySetInnerHTML={{ __html: service.description1 }}>
+              <p className="text-16 color-text" dangerouslySetInnerHTML={{ __html: serviceArea.footDescription }}>
               </p>
             </div>
-          </div>
-        </div>
-        <div className="row align-items-center mt-90 mb-120">
-          <div className="col-lg-6 mb-30">
-            <div className="box-info-left wow fadeInUp">
-              {/* <h3 className="heading-44-medium color-text mb-30">
-                Airport shuttle booking
-              </h3> */}
-              <p className="text-16 color-text" dangerouslySetInnerHTML={{ __html: service.description2 }}>
-
-              </p>
-            </div>
-          </div>
-          <div className="col-lg-6 mb-30 wow fadeInUp">
-            <Image
-              width={1710}
-              height={1800}
-              style={{ height: "fit-content" }}
-              src={BASE_URL + `/user/image/${service?.images?.[1]}`}
-              alt="luxride"
-            />
           </div>
         </div>
       </div>

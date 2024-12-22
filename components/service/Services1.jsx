@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Pagination from "../common/Pagination";
 import Image from "next/image";
 import Link from "next/link";
-import apiService from "@/app/_api/apiService";
+import apiService, { BASE_URL } from "@/app/_api/apiService";
 
 export default function Services1() {
 
@@ -78,7 +78,8 @@ export default function Services1() {
                     height={400}
                     style={{ height: "fit-content" }}
                     // src={elm.image}
-                    src="https://fastly.picsum.photos/id/1043/200/200.jpg?hmac=i7xbST4bM6KMg5XsUaVYvDgwvsZ3VskoXKRqGf1BjcU"
+                    src={BASE_URL + `/user/image/${elm?.images?.[0]}`}
+                    // src="https://fastly.picsum.photos/id/1043/200/200.jpg?hmac=i7xbST4bM6KMg5XsUaVYvDgwvsZ3VskoXKRqGf1BjcU"
                     alt="Luxride"
                   />
                 </div>

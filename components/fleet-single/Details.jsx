@@ -7,6 +7,7 @@ import Image from "next/image";
 import { BASE_URL } from "@/app/_api/apiService";
 import Link from "next/link";
 import { userLoggedInState } from "@/app/_state/states";
+import { useRecoilState } from "recoil";
 
 
 export default function Details({ car }) {
@@ -101,7 +102,7 @@ export default function Details({ car }) {
               <li className="text-16 mb-20">Clean, Polite & Knowledgeable</li> */}
             </ul>
             <div className="mt-30">
-              <a className="btn btn-primary btn-book" href={authUser.email ? '/' : '/login'}>
+              <a className="btn btn-primary btn-book" href={authUser?.email ? '/' : '/login'}>
                 Book Now
                 <svg
                   className="icon-16 ml-5"

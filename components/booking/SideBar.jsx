@@ -242,7 +242,7 @@ export default function SideBar() {
         <div className="sidebar wow fadeInUp">
           <ul className="list-prices list-prices-2">
             <li>
-              <span className="text">Selected vehicle</span>
+              <span className="text">Vehicle Price</span>
               <span className="price">${carPrice}</span>
             </li>
             {rideExtra.meetAndGreet ?
@@ -259,7 +259,7 @@ export default function SideBar() {
             }
             <li>
               <span className="text">Gratuity Amount</span>
-              <span className="price">${GRATUITY_AMOUNT}</span>
+              <span className="price">${rideExtra.gratuityAmount || 0}</span>
             </li>
             <li>
               <span className="text">Sales Tax</span>

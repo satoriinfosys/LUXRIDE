@@ -82,15 +82,15 @@ export default function Feet() {
                       </p>
                     </div>
                     <div className="cardImage mb-30">
-                      <a href="#">
+                      <Link href={`/fleet-single/${elm.id}`}>
                         <Image
                           width={1530}
                           height={711}
                           style={{ height: "fit-content" }}
-                          src={BASE_URL+`/user/image/${elm.image}`}
+                          src={BASE_URL + `/user/image/${elm.image}`}
                           alt="Luxride"
                         />
-                      </a>
+                      </Link>
                     </div>
                     <div className="cardInfoBottom">
                       <div className="passenger">

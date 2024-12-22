@@ -4,7 +4,7 @@ import Pagination from "../common/Pagination";
 import { carBrands, carTypes, cars } from "@/data/cars";
 import Image from "next/image";
 import Link from "next/link";
-import apiService from "@/app/_api/apiService";
+import apiService, { BASE_URL } from "@/app/_api/apiService";
 
 export default function ServiceAreaList() {
   const [serviceAreas, setServiceAreas] = useState([]);
@@ -35,6 +35,8 @@ export default function ServiceAreaList() {
     fetchServiceArea();
   }, [])
 
+  console.log({ serviceAreas })
+
   return (
     <section className="section pt-60 bg-white latest-new-white">
       <div className="container-sub">
@@ -50,23 +52,23 @@ export default function ServiceAreaList() {
             <div key={i} className="col-lg-4 mb-30">
               <div className="cardFleet wow fadeInUp">
                 <div className="cardInfo">
-                  {/* <Link href={`/service-area-single/${elm.id}`}> */}
-                  <h3 className="text-20-medium color-text mb-10">
-                    {elm.name}
-                  </h3>
-                  {/* </Link> */}
+                  <Link href={`/service-area-single/${elm.id}`}>
+                    <h3 className="text-20-medium color-text mb-10">
+                      {elm.name}
+                    </h3>
+                  </Link>
                   <p className="text-14 color-text mb-30">{elm.description}</p>
                 </div>
                 <div className="cardImage mb-30">
-                  {/* <Link href={`/service-area-single/${elm.id}`}> */}
-                  <Image
-                    width={1530}
-                    height={711}
-                    style={{ height: "fit-content" }}
-                    src={elm.imgSrc}
-                    alt="Luxride"
-                  />
-                  {/* </Link> */}
+                  <Link href={`/service-area-single/${elm.id}`}>
+                    <Image
+                      width={1530}
+                      height={711}
+                      style={{ height: "fit-content" }}
+                      src={BASE_URL + `/user/image/${elm?.images?.[0]}`}
+                      alt="Luxride"
+                    />
+                  </Link>
                 </div>
                 <div className="cardInfoBottom">
                   {elm.isAirportService &&

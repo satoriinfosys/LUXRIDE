@@ -65,7 +65,7 @@ function PaymentForm() {
         "meetAndGreet": rideExtra?.meetAndGreet,
         "clientRequest": rideExtra?.clientRequest,
         "gratuityPercentage": null,
-        "gratuityAmount": GRATUITY_AMOUNT,
+        "gratuityAmount": rideExtra?.gratuityAmount, // GRATUITY_AMOUNT,
         "customerId": null,
         "smoking": false,
         "totalHour": (bookingData?.durationInHours || 0) + " Hr" + (bookingData?.durationInMinutes || 0) + " Mins",

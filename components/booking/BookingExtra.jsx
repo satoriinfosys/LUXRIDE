@@ -145,71 +145,107 @@ function BookingExtraContent() {
                   </div>
                 </div>
 
-                {/* New fields */}
-                <div className="col-lg-6">
+                <div className="col-lg-12">
                   <div className="form-group">
-                    <label className="form-label sticky">
-                      Return Date
+                    <label className="form-label" htmlFor="gratuityAmount">
+                      Gratuity
                     </label>
                     <input
                       className="form-control"
-                      id="returnDate"
-                      type="date"
-                      name="returnDate"
-                      value={bookingData.returnDate}
+                      id="gratuityAmount"
+                      type="number"
+                      name="gratuityAmount"
+                      value={bookingData.gratuityAmount}
                       onChange={handleInputChange}
                     />
-                    {errors.returnDate && <p className="error">{errors.returnDate}</p>}
+                    {errors.gratuityAmount && <p className="error">{errors.gratuityAmount}</p>}
                   </div>
                 </div>
-                <div className="col-lg-6">
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="dropOffLocation">
-                      Drop-off Location
-                    </label>
+
+                <div className="col-lg-12">
+                  <div className="form-group form-check">
                     <input
-                      className="form-control"
-                      id="dropOffLocation"
-                      type="text"
-                      name="dropOffLocation"
-                      value={bookingData.dropOffLocation}
+                      type="checkbox"
+                      className="form-check-input"
+                      id="dropOffCheck"
+                      name="dropOffCheck"
+                      checked={bookingData.dropOffCheck}
                       onChange={handleInputChange}
                     />
-                    {errors.dropOffLocation && <p className="error">{errors.dropOffLocation}</p>}
-                  </div>
-                </div>
-                <div className="col-lg-6">
-                  <div className="form-group">
-                    <label className="form-label sticky" htmlFor="dropOffDate">
-                      Drop-off Date
+                    <label className="form-check-label" htmlFor="dropOffCheck">
+                      Need Drop Off
                     </label>
-                    <input
-                      className="form-control"
-                      id="dropOffDate"
-                      type="date"
-                      name="dropOffDate"
-                      value={bookingData.dropOffDate}
-                      onChange={handleInputChange}
-                    />
-                    {errors.dropOffDate && <p className="error">{errors.dropOffDate}</p>}
                   </div>
                 </div>
-                <div className="col-lg-6">
-                  <div className="form-group">
-                    <label className="form-label sticky" htmlFor="dropOffTime">
-                      Drop-off Time
-                    </label>
-                    <input
-                      className="form-control"
-                      id="dropOffTime"
-                      type="time"
-                      name="dropOffTime"
-                      value={bookingData.dropOffTime}
-                      onChange={handleInputChange}
-                    />
-                    {errors.dropOffTime && <p className="error">{errors.dropOffTime}</p>}
+
+                {bookingData.dropOffCheck && <>
+                  {/* New fields */}
+                  <div className="col-lg-6">
+                    <div className="form-group">
+                      <label className="form-label sticky">
+                        Return Date
+                      </label>
+                      <input
+                        className="form-control"
+                        id="returnDate"
+                        type="date"
+                        name="returnDate"
+                        value={bookingData.returnDate}
+                        onChange={handleInputChange}
+                      />
+                      {errors.returnDate && <p className="error">{errors.returnDate}</p>}
+                    </div>
                   </div>
-                </div>
+                  <div className="col-lg-6">
+                    <div className="form-group">
+                      <label className="form-label" htmlFor="dropOffLocation">
+                        Drop-off Location
+                      </label>
+                      <input
+                        className="form-control"
+                        id="dropOffLocation"
+                        type="text"
+                        name="dropOffLocation"
+                        value={bookingData.dropOffLocation}
+                        onChange={handleInputChange}
+                      />
+                      {errors.dropOffLocation && <p className="error">{errors.dropOffLocation}</p>}
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="form-group">
+                      <label className="form-label sticky" htmlFor="dropOffDate">
+                        Drop-off Date
+                      </label>
+                      <input
+                        className="form-control"
+                        id="dropOffDate"
+                        type="date"
+                        name="dropOffDate"
+                        value={bookingData.dropOffDate}
+                        onChange={handleInputChange}
+                      />
+                      {errors.dropOffDate && <p className="error">{errors.dropOffDate}</p>}
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="form-group">
+                      <label className="form-label sticky" htmlFor="dropOffTime">
+                        Drop-off Time
+                      </label>
+                      <input
+                        className="form-control"
+                        id="dropOffTime"
+                        type="time"
+                        name="dropOffTime"
+                        value={bookingData.dropOffTime}
+                        onChange={handleInputChange}
+                      />
+                      {errors.dropOffTime && <p className="error">{errors.dropOffTime}</p>}
+                    </div>
+                  </div>
+                </>}
+
 
                 <div className="col-lg-6">
                   <div className="form-group form-check">

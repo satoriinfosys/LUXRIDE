@@ -36,6 +36,8 @@ export default function page({ params }) {
     fetchService();
   }, [])
 
+  console.log({service})
+
   return (
     <>
       <Header1 /> <MobailHeader1 />
