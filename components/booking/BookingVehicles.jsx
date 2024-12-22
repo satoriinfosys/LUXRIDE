@@ -3,7 +3,7 @@ import React, { Suspense, useEffect, useRef, useState } from "react";
 import { features } from "@/data/cars";
 import Image from "next/image";
 import Link from "next/link";
-import apiService from "@/app/_api/apiService";
+import apiService, { BASE_URL } from "@/app/_api/apiService";
 import { useRecoilState } from "recoil";
 import { bookingDetails } from "@/app/_state/states";
 import axios from "axios";
@@ -95,7 +95,6 @@ function BookingVehiclesContent() {
     router.push(`/booking-extra?vehicle=${id}`)
   }
 
-
   return (
     <div className="box-row-tab mt-50">
       <div className="box-tab-left">
@@ -116,7 +115,7 @@ function BookingVehiclesContent() {
                       width={1530}
                       height={711}
                       style={{ height: "fit-content" }}
-                      src={elm.imgSrc || "/"}
+                      src={BASE_URL + `/user/image/${elm?.image}`}
                       alt="luxride"
                     />
                   </div>
@@ -140,9 +139,9 @@ function BookingVehiclesContent() {
                   <p className="text-14 color-text mb-20">{elm.description}</p>
                   <div className="vehicle-passenger-luggage mb-10">
                     <span className="passenger">
-                      Passengers {elm.passenger}
+                      Passengers {elm?.seatingCapacity}
                     </span>
-                    <span className="luggage">Luggage {elm.luggage}</span>
+                    <span className="luggage">Luggage {elm?.luggageCapacity}</span>
                   </div>
                   <div className="vehicle-price">
                     <h4 className="heading-30-medium color-text">
