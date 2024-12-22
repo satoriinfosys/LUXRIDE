@@ -32,8 +32,6 @@ export default function Services1() {
     fetchServices();
   }, [])
 
-  console.log({services})
-
   return (
     <section className="section pt-60">
       <div className="container-sub">

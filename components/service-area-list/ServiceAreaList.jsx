@@ -17,7 +17,7 @@ export default function ServiceAreaList() {
     try {
       const endPoint = "/serviceArea";
       const response = await apiService.get(endPoint);
-      console.log({ response })
+
       if (response && Array.isArray(response)) {
         setServiceAreas(response);
       } else {
@@ -34,10 +34,6 @@ export default function ServiceAreaList() {
   useEffect(() => {
     fetchServiceArea();
   }, [])
-
-
-
-  console.log({ serviceAreas })
 
   return (
     <section className="section pt-60 bg-white latest-new-white">

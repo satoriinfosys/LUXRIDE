@@ -24,7 +24,7 @@ export default function FlatRatePicker() {
                 "sort": "DESC",
                 "limit": 10,
                 "page": 1,
-                "searchTerm": query,
+                ...(query ? { "searchTerm": query } : {}),
                 "isActive": true
             })
 
@@ -98,6 +98,7 @@ export default function FlatRatePicker() {
                     }
                     setSearchTerm(value); // Update searchTerm when typing
                 }}
+                onFocus={()=>fetchFlatRate()}
             />
 
             <div

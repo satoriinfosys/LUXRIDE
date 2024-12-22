@@ -8,7 +8,6 @@ export default function Feet() {
   const [cars, setCars] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-console.log({image: BASE_URL+`/image/4.png`})
   const fetchCar = async () => {
     setIsLoading(true);
     try {
@@ -31,9 +30,6 @@ console.log({image: BASE_URL+`/image/4.png`})
   useEffect(() => {
     fetchCar();
   }, [])
-
-
-  console.log({cars})
 
   return (
     <section className="section pt-120 box-fleet-cover">
