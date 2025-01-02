@@ -12,6 +12,10 @@ const accessToken = process.env.MAP_ACCESS_TOKEN || "pk.eyJ1IjoiMTIzcm9zaGFuMTIz
 import { features } from "@/data/cars";
 import { CHILD_SEAT_RATE, GRATUITY_AMOUNT, MEET_AND_GREET, SALES_TAX } from "@/utlis/constants";
 import { calculateCost } from "@/utlis/calculateCost";
+import PlacePicker from "../common/PlacePicker";
+import FlatRatePicker from "../common/FlatRatePicker";
+import DatePickerComponent from "../common/DatePicker";
+import TimePickerComponent from "../common/TimePicker";
 
 
 export default function SideBar() {
@@ -24,6 +28,7 @@ export default function SideBar() {
 
   const [finalPrice, setFinalPrice] = useState(0);
   const [carPrice, setCarPrice] = useState(0)
+  const [editBooking, setEditBooking] = useState(false);
 
   const mapContainerRef = useRef(null); // Reference to the map container
 
@@ -108,17 +113,16 @@ export default function SideBar() {
     getTotalCost();
   }, [selectedCar, finalPrice, rideExtra]);
 
-
   return (
     <div className="box-tab-right">
       <div className="sidebar">
         <div className="d-flex align-items-center justify-content-between wow fadeInUp">
           <h6 className="text-20-medium color-text">Ride Summary</h6>
           <a
-            className="text-14-medium color-text text-decoration-underline"
-            onClick={(() => router.push("/"))}
+            className="text-14-medium color-text text-decoration-underline pointer"
+            onClick={(() => setEditBooking(!editBooking))}
           >
-            Edit
+            {editBooking ? 'Update' : 'Edit'}
           </a>
         </div>
 
@@ -127,26 +131,29 @@ export default function SideBar() {
           bookingData?.bookType !== "rate" ?
             <div className="mt-20 wow fadeInUp">
               <ul className="list-routes">
-                {bookingData.from.name && (
+                {(bookingData.from.name || bookingData.from.name === "") && (
                   <li>
                     <span className="location-item">A </span>
-                    <span className="info-location text-14-medium">
+                    {editBooking ? <PlacePicker type="from" /> : <span className="info-location text-14-medium">
                       {bookingData.from.name || "From not selected"}
-                    </span>
+                    </span>}
                   </li>
                 )}
-                {bookingData.to.name && (
+                {(bookingData.to.name || bookingData.to.name === "") && (
                   <li>
                     <span className="location-item">B </span>
-                    <span className="info-location text-14-medium">
-                      {bookingData.to.name || "To not selected"}
-                    </span>
+                    {editBooking ?
+                      <PlacePicker type="to" /> :
+                      <span className="info-location text-14-medium">
+                        {bookingData.to.name || "To not selected"}
+                      </span>
+                    }
                   </li>
                 )}
               </ul>
             </div> : <div className="mt-20 wow fadeInUp">
               <ul className="list-routes">
-                {bookingData.flatRate && (
+                {bookingData?.flatRate?.name && !editBooking && (
                   <li>
                     <span className="location-item">A </span>
                     <span className="info-location text-14-medium">
@@ -154,12 +161,19 @@ export default function SideBar() {
                     </span>
                   </li>
                 )}
-                {bookingData.flatRate && (
+                {bookingData.flatRate && !editBooking && (
                   <li>
                     <span className="location-item">B </span>
                     <span className="info-location text-14-medium">
-                    {bookingData.flatRate.name.split("-")[1] || "From not selected"}
+                      {bookingData.flatRate.name.split("-")[1] || "From not selected"}
                     </span>
+                  </li>
+                )}
+
+                {editBooking && (
+                  <li>
+                    <span className="location-item">Flat Rate </span>
+                    <FlatRatePicker />
                   </li>
                 )}
               </ul>
@@ -172,17 +186,23 @@ export default function SideBar() {
           <ul className="list-icons">
             <li>
               <span className="icon-item icon-plan"> </span>
-              <span className="info-location text-14-medium">
-                {bookingData.date
-                  ? new Date(bookingData.date).toDateString()
-                  : "Date not selected"}
-              </span>
+              {editBooking ?
+                <DatePickerComponent /> :
+                <span className="info-location text-14-medium">
+                  {bookingData.date
+                    ? new Date(bookingData.date).toDateString()
+                    : "Date not selected"}
+                </span>
+              }
             </li>
             <li>
               <span className="icon-item icon-time"></span>
-              <span className="info-location text-14-medium">
-                {bookingData.time ? new Date(bookingData.time).toLocaleTimeString() : "Time not selected"}
-              </span>
+              {editBooking ?
+                <TimePickerComponent /> :
+                <span className="info-location text-14-medium">
+                  {bookingData.time ? new Date(bookingData.time).toLocaleTimeString() : "Time not selected"}
+                </span>
+              }
             </li>
           </ul>
         </div>

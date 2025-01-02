@@ -11,7 +11,7 @@ import { useRecoilState } from "recoil";
 export default function Header3() {
   const [scrolled, setScrolled] = useState(false);
   const [authUser, setAuthUserDetails] = useRecoilState(userLoggedInState);
-  console.log({ authUser })
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 200) {

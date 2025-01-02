@@ -115,7 +115,6 @@ export default function PlacePicker({ type }) {
     }
   }, [type, bookingData]);
 
-
   return (
     <>
       <input
