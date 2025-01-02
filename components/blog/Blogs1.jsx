@@ -75,7 +75,7 @@ export default function Blogs1() {
                   </div>
                   <Link className="color-white" href={`/blog-single/${elm.id}`}>
                     <h3 className="text-20-medium color-white mb-20">
-                      {elm.name}
+                      {elm.title}
                     </h3>
                   </Link>
                   <Link
