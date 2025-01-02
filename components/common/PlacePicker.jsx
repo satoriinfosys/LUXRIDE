@@ -21,8 +21,9 @@ export default function PlacePicker({ type }) {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?proximity=ip&access_token=${accessToken}`
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?country=us&access_token=${accessToken}`
       );
+      
 
       if (!response.ok) {
         throw new Error("Failed to fetch locations");
