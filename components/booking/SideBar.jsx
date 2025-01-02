@@ -144,7 +144,26 @@ export default function SideBar() {
                   </li>
                 )}
               </ul>
-            </div> : <></>
+            </div> : <div className="mt-20 wow fadeInUp">
+              <ul className="list-routes">
+                {bookingData.flatRate && (
+                  <li>
+                    <span className="location-item">A </span>
+                    <span className="info-location text-14-medium">
+                      {bookingData.flatRate.name.split("-")[0] || "From not selected"}
+                    </span>
+                  </li>
+                )}
+                {bookingData.flatRate && (
+                  <li>
+                    <span className="location-item">B </span>
+                    <span className="info-location text-14-medium">
+                    {bookingData.flatRate.name.split("-")[1] || "From not selected"}
+                    </span>
+                  </li>
+                )}
+              </ul>
+            </div>
         }
 
 
