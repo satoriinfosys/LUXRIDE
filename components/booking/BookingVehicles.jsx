@@ -61,8 +61,12 @@ function BookingVehiclesContent() {
       const distanceInMiles = distanceInMeters / 1609.34;
 
       // Convert duration from seconds to hours
-      const durationInHours = Math.floor(durationInSeconds / 3600); // Whole hours
-      const durationInMinutes = Math.floor((durationInSeconds % 3600) / 60); // Remaining minutes
+      let durationInHours = Math.floor(durationInSeconds / 3600); // Whole hours
+      let durationInMinutes = Math.floor((durationInSeconds % 3600) / 60); // Remaining minutes
+      if (book === "hourly") {
+        durationInHours = parseInt(bookingData.durationInHours);
+        durationInMinutes = 0;
+      }
 
       setBookingDetails(prevState => ({
         ...prevState,
@@ -83,7 +87,8 @@ function BookingVehiclesContent() {
 
     if (book !== "rate") {
       getDistanceAndTime()
-    } else {
+    }
+    else {
       setBookingDetails(prevState => ({
         ...prevState,
         bookType: book

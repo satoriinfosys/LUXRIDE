@@ -113,6 +113,7 @@ export default function SideBar() {
     getTotalCost();
   }, [selectedCar, finalPrice, rideExtra]);
 
+  
   return (
     <div className="box-tab-right">
       <div className="sidebar">

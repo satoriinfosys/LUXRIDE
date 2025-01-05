@@ -1,6 +1,7 @@
 "use client";
 import DatePickerComponent from "@/components/common/DatePicker";
 import DatePicker from "@/components/common/DatePicker";
+import HourPicker from "@/components/common/HourPicker";
 import PlacePicker from "@/components/common/PlacePicker";
 import TimePickerComponent from "@/components/common/TimePicker";
 import TimePicker from "@/components/common/TimePicker";
@@ -103,6 +104,10 @@ export default function Hero() {
                     <div className="search-inputs">
                       <label className="text-14 color-grey">Time</label>
                       <TimePicker />
+                    </div>
+                    <div className="search-inputs">
+                      <label className="text-14 color-grey">Total Hour</label>
+                      <HourPicker />
                     </div>
                   </div>
                   <div className="search-item search-from">

@@ -2,6 +2,7 @@
 import { bookingDetails } from "@/app/_state/states";
 import DatePickerComponent from "@/components/common/DatePicker";
 import FlatRatePicker from "@/components/common/FlatRatePicker";
+import HourPicker from "@/components/common/HourPicker";
 import PlacePicker from "@/components/common/PlacePicker";
 import TimePickerComponent from "@/components/common/TimePicker";
 import Image from "next/image";
@@ -36,6 +37,11 @@ export default function Hero() {
     if (!bookingData.time) newErrors.time = "Please select a time.";
     if (!bookingData.date) newErrors.date = "Please select a date.";
 
+    if(activeTab === "hourly"){
+      if(!bookingData.durationInHours) newErrors.totalHours = "Please input total hours."
+      if(bookingData.durationInHours < 3) newErrors.totalHours = "Minimum 3 hours is required."
+    }
+
     setErrors(newErrors);
 
     // If no errors, proceed with navigation
@@ -56,13 +62,13 @@ export default function Hero() {
           }}
         ></div>
         <div className="box-banner-info">
-        <p className="text-16 color-white wow fadeInUp">
-  Where Would You Like To Go?
-</p>
-<h2 className="heading-52-medium color-white wow fadeInUp">
-  Experience Luxury <br className="d-none d-lg-block" />
-  with Super Car Deluxe Nyc
-</h2>
+          <p className="text-16 color-white wow fadeInUp">
+            Where Would You Like To Go?
+          </p>
+          <h2 className="heading-52-medium color-white wow fadeInUp">
+            Experience Luxury <br className="d-none d-lg-block" />
+            with Super Car Deluxe Nyc
+          </h2>
 
           {/* <div className="mt-20">
             <Link className="btn btn-border wow fadeInUp" href="/fleet-list">
@@ -168,6 +174,20 @@ export default function Hero() {
                           </div>
                         </div>
                       </>}
+
+                    {activeTab === "hourly" ?
+                      <div className="search-item search-from">
+                        <div className="search-icon">
+                          <span className="item-icon icon-hour"> </span>
+                        </div>
+                        <div className="search-inputs">
+                          <label className="text-14 color-grey">Total Hour</label>
+                          <HourPicker />
+                          {errors.totalHours && <p className="error">{errors.totalHours}</p>}
+                        </div>
+                      </div>
+                      : <></>
+                    }
 
                     <div className="search-item search-button mb-0">
                       <button className="btn btn-search" onClick={handleSearch} type="submit">

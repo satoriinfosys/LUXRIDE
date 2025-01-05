@@ -142,12 +142,15 @@ function PaymentForm() {
         }
       );
 
+
       if (response.clientSecret) {
         handlePayment(response.clientSecret);
       } else {
         console.error("Payment failed:", response.message);
       }
     } catch (error) {
+      router.push("/booking-received");
+
       console.error("Error during payment:", error.message);
     }
   };
@@ -160,6 +163,7 @@ function PaymentForm() {
       const result = await stripe.confirmCardPayment(clientSecret);
 
       if (result.error) {
+
         // Handle payment failure
         console.error("Payment failed:", result.error.message);
       } else if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
