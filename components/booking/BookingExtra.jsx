@@ -35,7 +35,7 @@ function BookingExtraContent() {
   const validate = () => {
     const newErrors = {};
     // Check if the flight number is provided
-    newErrors.flightNumber = bookingData.flightNumber === "" ? "Flight number is required." : "";
+    newErrors.flightNumber = bookingData.flightDetails && bookingData.flightNumber === "" ? "Flight number is required." : "";
 
     // // Check if the return date is provided
     // newErrors.returnDate = !bookingData.returnDate ? "Return date is required." : "";
@@ -74,13 +74,36 @@ function BookingExtraContent() {
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setBookingData((prevState) => ({
-      ...prevState,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+  const handleInputChange = (event) => {
+    const { name, value, type, checked } = event.target;
+
+    setBookingData((prevData) => {
+      if (type === "checkbox") {
+        // If toggling off flightDetails, reset related fields
+        if (name === "flightDetails" && !checked) {
+          return {
+            ...prevData,
+            [name]: checked, // Update the checkbox value
+            flightNumber: "", // Reset flightNumber
+            terminalNumber: "", // Reset terminalNumber
+          };
+        }
+        if (name === "dropOffCheck" && !checked) {
+          return {
+            ...prevData,
+            [name]: checked, // Update the checkbox value
+            returnDate: "",
+            dropOffDate: "",
+            dropOffLocation: "",
+            dropOffTime: ""
+          };
+        }
+        return { ...prevData, [name]: checked }; // Update checkbox value
+      }
+      return { ...prevData, [name]: value }; // Update text input values
+    });
   };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -128,22 +151,62 @@ function BookingExtraContent() {
           <div className="form-contact form-comment wow fadeInUp">
             <form onSubmit={handleSubmit}>
               <div className="row">
+
                 <div className="col-lg-12">
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="flightNumber">
-                      Flight/train number
-                    </label>
+                  <div className="form-group form-check">
                     <input
-                      className="form-control"
-                      id="flightNumber"
-                      type="text"
-                      name="flightNumber"
-                      value={bookingData.flightNumber}
+                      type="checkbox"
+                      className="form-check-input"
+                      id="flightDetails"
+                      name="flightDetails"
+                      checked={bookingData.flightDetails}
                       onChange={handleInputChange}
                     />
-                    {errors.flightNumber && <p className="error">{errors.flightNumber}</p>}
+                    <label className="form-check-label" htmlFor="flightDetails">
+                      Select Terminal
+                    </label>
                   </div>
                 </div>
+
+                {bookingData.flightDetails && (
+                  <>
+                    <div className="col-lg-12">
+                      <div className="form-group">
+                        <label className="form-label" htmlFor="flightNumber">
+                          Flight/train number
+                        </label>
+                        <input
+                          className="form-control"
+                          id="flightNumber"
+                          type="text"
+                          name="flightNumber"
+                          value={bookingData.flightNumber}
+                          onChange={handleInputChange}
+                          placeholder=""
+                        />
+                        {errors.flightNumber && <p className="error">{errors.flightNumber}</p>}
+                      </div>
+                    </div>
+
+                    <div className="col-lg-12">
+                      <div className="form-group">
+                        <label className="form-label" htmlFor="terminalNumber">
+                          Terminal number
+                        </label>
+                        <input
+                          className="form-control"
+                          id="terminalNumber"
+                          type="text"
+                          name="terminalNumber"
+                          value={bookingData.terminalNumber}
+                          onChange={handleInputChange}
+                          placeholder=""
+                        />
+                        {errors.terminalNumber && <p className="error">{errors.terminalNumber}</p>}
+                      </div>
+                    </div>
+                  </>
+                )}
 
                 <div className="col-lg-12">
                   <div className="form-group">
@@ -192,6 +255,7 @@ function BookingExtraContent() {
                         name="returnDate"
                         value={bookingData.returnDate}
                         onChange={handleInputChange}
+                        placeholder=""
                       />
                       {errors.returnDate && <p className="error">{errors.returnDate}</p>}
                     </div>
@@ -208,6 +272,7 @@ function BookingExtraContent() {
                         name="dropOffLocation"
                         value={bookingData.dropOffLocation}
                         onChange={handleInputChange}
+                        placeholder=""
                       />
                       {errors.dropOffLocation && <p className="error">{errors.dropOffLocation}</p>}
                     </div>
@@ -224,6 +289,7 @@ function BookingExtraContent() {
                         name="dropOffDate"
                         value={bookingData.dropOffDate}
                         onChange={handleInputChange}
+                        placeholder=""
                       />
                       {errors.dropOffDate && <p className="error">{errors.dropOffDate}</p>}
                     </div>
@@ -240,6 +306,7 @@ function BookingExtraContent() {
                         name="dropOffTime"
                         value={bookingData.dropOffTime}
                         onChange={handleInputChange}
+                        placeholder=""
                       />
                       {errors.dropOffTime && <p className="error">{errors.dropOffTime}</p>}
                     </div>

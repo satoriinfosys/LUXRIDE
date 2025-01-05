@@ -84,7 +84,10 @@ function PaymentForm() {
         "cardExpiryDate": null,
         "expectedDuration": (bookingData?.durationInHours || 0) + " Hr" + (bookingData?.durationInMinutes || 0) + " Mins",
         "expectedTime": bookingData?.time,
+        "flightDetails": bookingData?.flightDetails,
+        "dropOffCheck": bookingData?.dropOffCheck,
         "flightNumber": rideExtra?.flightNumber,
+        "terminalNumber": rideExtra?.terminalNumber,
         "smokingFee": 0,
         "stripeToken": null,
 

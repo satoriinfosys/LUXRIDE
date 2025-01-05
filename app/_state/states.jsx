@@ -29,6 +29,7 @@ export const rideSummaryState = atom({
         clientRequest: "",
         smoking: false,
         flightNumber: "",
+        terminalNumber: "",
         babySeatingCapacity: 0,
         firstName: "",
         lastName: "",

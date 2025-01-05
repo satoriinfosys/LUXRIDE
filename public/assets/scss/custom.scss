@@ -341,13 +341,13 @@ textarea:invalid:focus {
 
 .form-label {
   position: absolute;
-  top: 12px; /* Start at input's padding */
+  top: -8px; /* Always above the input */
   left: 10px;
-  background: #fff; /* Match the background color */
+  background: #fff;
   padding: 0 5px;
-  font-size: 1rem; /* Normal font size */
+  font-size: 0.875rem;
   color: #555;
-  transition: all 0.3s ease; /* Smooth transition for label */
+  transition: all 0.3s ease;
 }
 
 .form-control {
@@ -355,16 +355,20 @@ textarea:invalid:focus {
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  width: 100%;
 }
 
+/* Always keep the label on top even when input is empty or not focused */
 .form-control:focus + .form-label,
-.form-control:not(:placeholder-shown) + .form-label {
-  top: -8px; /* Move label above the input */
-  font-size: 0.875rem; /* Smaller font size */
-  color: #007bff; /* Optional: Change color to indicate focus */
+.form-control:not(:placeholder-shown) + .form-label,
+.form-control[value]:not([value=""]) + .form-label {
+  top: -8px; /* Label stays on top */
+  font-size: 0.875rem;
+  color: #007bff;
 }
 
+/* Add focus styling for input */
 .form-control:focus {
   outline: none;
-  border-color: #007bff; /* Optional: Highlight border on focus */
+  border-color: #007bff;
 }
