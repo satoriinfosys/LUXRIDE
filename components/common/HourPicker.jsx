@@ -6,7 +6,7 @@ export default function HourPicker() {
     const [bookingData, setBookingDetails] = useRecoilState(bookingDetails); // Recoil state for 'from' and 'to' locations
 
     const handleHourChange = (e) => {
-        setBookingDetails((prev) => ({ ...prev, durationInHours: e.target.value })); // Store the time as an ISO string
+        setBookingDetails((prev) => ({ ...prev, durationInHours: parseInt(e?.target?.value || 0) || 0 })); // Store the time as an ISO string
     };
 
     return (
@@ -19,6 +19,7 @@ export default function HourPicker() {
                 value={bookingData.durationInHours}
                 onChange={handleHourChange}
                 placeholder="Pick Hours.."
+                min={3}
             />
         </div>
     );

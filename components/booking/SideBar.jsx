@@ -16,6 +16,7 @@ import PlacePicker from "../common/PlacePicker";
 import FlatRatePicker from "../common/FlatRatePicker";
 import DatePickerComponent from "../common/DatePicker";
 import TimePickerComponent from "../common/TimePicker";
+import HourPicker from "../common/HourPicker";
 
 
 export default function SideBar() {
@@ -113,7 +114,6 @@ export default function SideBar() {
     getTotalCost();
   }, [selectedCar, finalPrice, rideExtra]);
 
-  
   return (
     <div className="box-tab-right">
       <div className="sidebar">
@@ -205,6 +205,12 @@ export default function SideBar() {
                 </span>
               }
             </li>
+            {bookingData.bookType === "hourly" && editBooking &&
+              < li >
+                <span className="icon-item icon-time"></span>
+                <HourPicker />
+              </li>
+            }
           </ul>
         </div>
 
@@ -266,55 +272,59 @@ export default function SideBar() {
       </div>
 
       {/* Features Section */}
-      {pathName === "/booking-vehicle" ?
-        <div className="sidebar wow fadeInUp">
-          <ul className="list-ticks list-ticks-small list-ticks-small-booking">
-            {features.map((elm, i) => (
-              <li key={i} className="text-14 mb-20">
-                {elm}
-              </li>
-            ))}
-          </ul>
-        </div> : <></>}
+      {
+        pathName === "/booking-vehicle" ?
+          <div className="sidebar wow fadeInUp">
+            <ul className="list-ticks list-ticks-small list-ticks-small-booking">
+              {features.map((elm, i) => (
+                <li key={i} className="text-14 mb-20">
+                  {elm}
+                </li>
+              ))}
+            </ul>
+          </div> : <></>
+      }
 
       {/* Total Section */}
-      {pathName !== "/booking-vehicle" ?
-        <div className="sidebar wow fadeInUp">
-          <ul className="list-prices list-prices-2">
-            <li>
-              <span className="text">Vehicle Price</span>
-              <span className="price">${carPrice}</span>
-            </li>
-            {rideExtra.meetAndGreet ?
+      {
+        pathName !== "/booking-vehicle" ?
+          <div className="sidebar wow fadeInUp">
+            <ul className="list-prices list-prices-2">
               <li>
-                <span className="text">Meet And Greet</span>
-                <span className="price">${MEET_AND_GREET}</span>
-              </li> : <></>
-            }
-            {rideExtra.babySeatingCapacity >= 1 ?
+                <span className="text">Vehicle Price</span>
+                <span className="price">${carPrice}</span>
+              </li>
+              {rideExtra.meetAndGreet ?
+                <li>
+                  <span className="text">Meet And Greet</span>
+                  <span className="price">${MEET_AND_GREET}</span>
+                </li> : <></>
+              }
+              {rideExtra.babySeatingCapacity >= 1 ?
+                <li>
+                  <span className="text">Baby Seat</span>
+                  <span className="price">${rideExtra.babySeatingCapacity * CHILD_SEAT_RATE}</span>
+                </li> : <></>
+              }
               <li>
-                <span className="text">Baby Seat</span>
-                <span className="price">${rideExtra.babySeatingCapacity * CHILD_SEAT_RATE}</span>
-              </li> : <></>
-            }
-            <li>
-              <span className="text">Gratuity Amount</span>
-              <span className="price">${parseFloat(rideExtra?.gratuityAmount || 0).toFixed(2) || 0}</span>
-            </li>
-            <li>
-              <span className="text">Sales Tax</span>
-              <span className="price">${SALES_TAX}</span>
-            </li>
+                <span className="text">Gratuity Amount</span>
+                <span className="price">${parseFloat(rideExtra?.gratuityAmount || 0).toFixed(2) || 0}</span>
+              </li>
+              <li>
+                <span className="text">Sales Tax</span>
+                <span className="price">${SALES_TAX}</span>
+              </li>
 
-          </ul>
-          <div className="border-bottom mt-30 mb-15"></div>
-          <ul className="list-prices">
-            <li>
-              <span className="text text-20-medium">Total</span>
-              <span className="price text-20-medium">${parseFloat(finalPrice).toFixed(2)}</span>
-            </li>
-          </ul>
-        </div> : <></>}
-    </div>
+            </ul>
+            <div className="border-bottom mt-30 mb-15"></div>
+            <ul className="list-prices">
+              <li>
+                <span className="text text-20-medium">Total</span>
+                <span className="price text-20-medium">${parseFloat(finalPrice).toFixed(2)}</span>
+              </li>
+            </ul>
+          </div> : <></>
+      }
+    </div >
   );
 }
