@@ -1,4 +1,5 @@
 'use client';
+import { BASE_URL } from "@/app/_api/apiService";
 import { reservationDetails } from "@/app/_state/states";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
@@ -18,7 +19,7 @@ export default function BookingRecieved() {
         })
         : "N/A",
     },
-    { id: 3, label: "Total", value: "$ " + reservationData?.paymentAmount },
+    { id: 3, label: "Total", value: "$ " + parseFloat(reservationData?.paymentAmount).toFixed(2) },
     { id: 4, label: "Payment Method", value: reservationData?.paymentType || "Card" },
   ];
   const rideData = [
@@ -115,7 +116,7 @@ export default function BookingRecieved() {
                 width={1530}
                 height={711}
                 style={{ height: "fit-content" }}
-                src="/assets/imgs/page/homepage1/e-class.png"
+                src={BASE_URL + `/user/image/${reservationData?.car?.detailImage}`}
                 alt="luxride"
               />
             </div>
