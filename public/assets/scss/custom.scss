@@ -333,3 +333,38 @@ textarea:invalid:focus {
 .pointer {
   cursor: pointer;
 }
+
+.form-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  position: absolute;
+  top: 12px; /* Start at input's padding */
+  left: 10px;
+  background: #fff; /* Match the background color */
+  padding: 0 5px;
+  font-size: 1rem; /* Normal font size */
+  color: #555;
+  transition: all 0.3s ease; /* Smooth transition for label */
+}
+
+.form-control {
+  padding: 12px 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-control:focus + .form-label,
+.form-control:not(:placeholder-shown) + .form-label {
+  top: -8px; /* Move label above the input */
+  font-size: 0.875rem; /* Smaller font size */
+  color: #007bff; /* Optional: Change color to indicate focus */
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #007bff; /* Optional: Highlight border on focus */
+}
