@@ -13,6 +13,14 @@ export default function Header3() {
   const [authUser, setAuthUserDetails] = useRecoilState(userLoggedInState);
 
   useEffect(() => {
+    // Retrieve user details from localStorage
+    const savedUserDetails = localStorage.getItem("userDetails");
+    if (savedUserDetails) {
+      setAuthUserDetails(JSON.parse(savedUserDetails));
+    }
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 200) {
         setScrolled(true);
@@ -32,6 +40,8 @@ export default function Header3() {
   const handleLogout = () => {
     setAuthUserDetails(null);
     localStorage.setItem("authToken", null);
+    Cookies.remove("token", { secure: true, sameSite: "strict" });
+    localStorage.removeItem("userDetails");
   }
 
   return (
@@ -90,9 +100,11 @@ export default function Header3() {
                 </> :
                   <>
                     <div className="box-button-login d-inline-block mr-10 align-middle">
-                      <div className="text-white p-3 shadow-sm d-inline-block">
-                        <span className="font-weight-bold">{authUser?.fullName || "Guest User"}</span>
-                      </div>
+                      <Link className="btn hover-up" href="/dashboard">
+                        <div className="text-white p-3 shadow-sm d-inline-block">
+                          <span className="font-weight-bold">{authUser?.fullName || "Guest User"}</span>
+                        </div>
+                      </Link>
                       <button className="btn btn-default hover-up" onClick={handleLogout}>
                         Log Out
                       </button>

@@ -4,6 +4,7 @@ import { userLoggedInState } from "@/app/_state/states";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
+import Cookies from "js-cookie";
 
 export default function Login() {
   const router = useRouter();
@@ -20,11 +21,29 @@ export default function Login() {
       setLoading(true);
       const response = await apiService.post("/auth/login", { email: emailValue, password: passwordValue });
       localStorage.setItem("authToken", response.data.token);
+
+      Cookies.set("token", response.data.token, {
+        expires: 1, // Expires in 1 day
+        secure: true, // Use HTTPS
+        sameSite: "strict", // CSRF protection
+      });
+
+      // Save user details in localStorage
+      const userDetails = {
+        email: response.data.email,
+        phone: response.data.phone,
+        fullName: response.data.fullName,
+        userId: response.data.userId
+      };
+
+      localStorage.setItem("userDetails", JSON.stringify(userDetails));
+
       setAuthUserDetails((prevState) => ({
         ...prevState,
         email: response.data.email,
         phone: response.data.phone,
-        fullName: response.data.fullName
+        fullName: response.data.fullName,
+        userId: response.data.userId
       }));
       router.push("/");
     }
