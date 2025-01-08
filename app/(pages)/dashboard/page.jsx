@@ -12,18 +12,16 @@ export default function DashboardPage() {
     const [activeSection, setActiveSection] = useState("profileoverview");
 
     const [userDetails, setAuthUserDetails] = useState(null);
-    console.log("here")
+
     useEffect(() => {
         // Retrieve user details from localStorage
         const savedUserDetails = JSON.parse(localStorage.getItem("userDetails"));
-        console.log({ savedUserDetails })
         if (savedUserDetails) {
             getUser(savedUserDetails.userId)
         }
     }, []);
 
     const getUser = async (userId) => {
-        console.log({ userId })
         const token = Cookies.get("token");
         const response = await apiService.get(`/user/${userId}`, {
             headers: {
@@ -38,7 +36,7 @@ export default function DashboardPage() {
         overview: <OverviewSection />,
         profile: <ProfileSection profile={userDetails}/>,
         history: <BookingHistorySection />,
-        payment: <PaymentSection />,
+        payment: <PaymentSection profile={userDetails}/>,
     };
 
     return (

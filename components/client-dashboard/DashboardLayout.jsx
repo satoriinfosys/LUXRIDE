@@ -96,7 +96,7 @@ export default function DashboardLayout({ activeSection, setActiveSection, userD
           </div>
         ) : (
           <OffCanvasNav
-            userName={userName}
+            userName={userDetails?.firstName}
             menuItems={menuItems}
             activeSection={activeSection}
             setActiveSection={setActiveSection}
