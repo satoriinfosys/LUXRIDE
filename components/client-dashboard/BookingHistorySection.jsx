@@ -1,45 +1,40 @@
 "use client";
+import apiService, { BASE_URL } from "@/app/_api/apiService";
+import Cookies from "js-cookie";
 import { useState, useEffect } from "react";
 
-const BookingHistorySection = () => {
+const BookingHistorySection = ({ profile }) => {
   const [bookingHistory, setBookingHistory] = useState([]);
 
-  // Function to determine booking status (Completed vs. Pending)
-  const getStatus = (booking) => {
-    const today = new Date().toISOString().split("T")[0];
-    return today > booking.to ? "Completed" : "Pending";
-  };
-
-  // Simulate fetching booking history data (replace with a real API call)
   useEffect(() => {
-    const fetchBookingHistory = async () => {
-      const data = [
-        {
-          id: 1,
-          carName: "Tesla Model S",
-          carImage: "/assets/imgs/cars/tesla-model-s.jpg",
-          from: "2025-01-01",
-          to: "2025-01-05",
-          pickupLocation: "New York City",
-          dropOffLocation: "Los Angeles",
-          message: "Client requested extra luggage space.",
-        },
-        {
-          id: 2,
-          carName: "BMW 5 Series",
-          carImage: "/assets/imgs/cars/bmw-5-series.jpg",
-          from: "2025-01-10",
-          to: "2025-01-15",
-          pickupLocation: "Chicago",
-          dropOffLocation: "Miami",
-          message: "Client requested a child seat.",
-        },
-      ];
-      setBookingHistory(data);
-    };
-
     fetchBookingHistory();
   }, []);
+
+  const fetchBookingHistory = async () => {
+    const token = Cookies.get("token");
+    try {
+      const bookingHistory = await apiService.post(
+        '/reservation/user',
+        {
+          status: true,
+          sort: "DESC",
+          limit: 10,
+          page: 1,
+          userId: profile.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Booking History:", bookingHistory.data);
+      setBookingHistory(bookingHistory.data)
+    } catch (error) {
+      console.error("Error fetching booking history:", error.response?.data || error.message);
+    }
+  }
+
 
   return (
     <div className="container my-4">
@@ -71,14 +66,14 @@ const BookingHistorySection = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {bookingHistory.map((booking, index) => (
-                    <tr key={booking.id}>
+                  {bookingHistory?.map((booking, index) => (
+                    <tr key={index}>
                       <td className="text-center fw-bold">{index + 1}</td>
                       <td>
                         <div className="d-flex align-items-center">
                           <img
-                            src={booking.carImage}
-                            alt={booking.carName}
+                            src={BASE_URL + `/user/image/${booking.car.image}`}
+                            alt={booking.car.name}
                             className="car-image rounded me-3"
                             style={{
                               width: "60px",
@@ -86,22 +81,22 @@ const BookingHistorySection = () => {
                               objectFit: "cover",
                             }}
                           />
-                          <span className="fw-semibold">{booking.carName}</span>
+                          <span className="fw-semibold">{booking.car.name}</span>
                         </div>
                       </td>
                       <td className="text-center">
-                        <span className="badge bg-info text-dark">{booking.from}</span>
+                        <span className="badge bg-info text-dark">{new Date(booking.createdAt).toLocaleString("en-US")}</span>
                       </td>
-                      <td className="text-center">{booking.pickupLocation}</td>
+                      <td className="text-center">{booking.pickUpLocation}</td>
                       <td className="text-center">{booking.dropOffLocation}</td>
                       <td className="text-center">
-                        {getStatus(booking) === "Completed" ? (
-                          <span className="badge bg-success">Completed</span>
+                        {booking.reservationApproval !== "completed" ? (
+                          <span className="badge bg-warning">{booking.reservationApproval}</span>
                         ) : (
-                          <span className="badge bg-warning">Pending</span>
+                          <span className="badge bg-success">{booking.reservationApproval}</span>
                         )}
                       </td>
-                      <td className="fst-italic text-primary">{booking.message}</td>
+                      <td className="fst-italic text-primary">{booking.clientRequest}</td>
                     </tr>
                   ))}
                 </tbody>

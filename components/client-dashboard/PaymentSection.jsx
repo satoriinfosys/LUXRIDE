@@ -1,6 +1,7 @@
 "use client";
 import apiService from "@/app/_api/apiService";
-import { useState } from "react";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
 export default function PaymentSection({ profile }) {
   const [showCardForm, setShowCardForm] = useState(false);
@@ -8,11 +9,7 @@ export default function PaymentSection({ profile }) {
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
   const [savedCards, setSavedCards] = useState(profile?.cardDetails || []);
-
-  const paymentHistory = [
-    { id: 1, carName: "Tesla Model S", amountPaid: "$500", date: "2025-01-01" },
-    { id: 2, carName: "BMW 5 Series", amountPaid: "$400", date: "2025-01-10" },
-  ];
+  const [paymentHistory, setPaymentHistory] = useState([]);
 
   const handleAddCard = (e) => {
     e.preventDefault();
@@ -31,6 +28,35 @@ export default function PaymentSection({ profile }) {
     })
     setShowCardForm(false);
   };
+
+  useEffect(() => {
+    fetchBookingHistory();
+  }, []);
+
+  const fetchBookingHistory = async () => {
+    const token = Cookies.get("token");
+    try {
+      const paymentHistory = await apiService.post(
+        '/reservation/user',
+        {
+          status: true,
+          sort: "DESC",
+          limit: 10,
+          page: 1,
+          userId: profile.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("payment History:", paymentHistory.data);
+      setPaymentHistory(paymentHistory.data)
+    } catch (error) {
+      console.error("Error fetching payment history:", error.response?.data || error.message);
+    }
+  }
 
   return (
     <div className="container my-4">
@@ -53,17 +79,19 @@ export default function PaymentSection({ profile }) {
                     <tr>
                       <th scope="col" style={{ width: "5%" }}>#</th>
                       <th scope="col" style={{ width: "25%" }}>Car</th>
-                      <th scope="col" style={{ width: "25%" }}>Amount Paid</th>
+                      <th scope="col" style={{ width: "25%" }}>Amount</th>
+                      <th scope="col" style={{ width: "25%" }}>Paid Status</th>
                       <th scope="col" style={{ width: "25%" }}>Date</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {paymentHistory.map((payment, index) => (
-                      <tr key={payment.id}>
+                    {paymentHistory?.map((payment, index) => (
+                      <tr key={index}>
                         <td className="text-center fw-bold">{index + 1}</td>
-                        <td>{payment.carName}</td>
-                        <td>{payment.amountPaid}</td>
-                        <td>{payment.date}</td>
+                        <td>{payment.car.name}</td>
+                        <td>${parseFloat(payment.paymentAmount).toFixed(2)}</td>
+                        <td>{payment.paymentStatus}</td>
+                        <td>{new Date(payment.createdAt).toLocaleString("en-US")}</td>
                       </tr>
                     ))}
                   </tbody>

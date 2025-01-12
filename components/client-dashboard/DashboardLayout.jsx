@@ -27,6 +27,7 @@ export default function DashboardLayout({ activeSection, setActiveSection, userD
   const isTabletOrUp = windowWidth >= 768;
 
   const handleLogout = () => {
+    console.log("here");
     localStorage.setItem("authToken", null);
     Cookies.remove("token", { secure: true, sameSite: "strict" });
     localStorage.removeItem("userDetails");

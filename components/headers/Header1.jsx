@@ -7,6 +7,7 @@ import Link from "next/link";
 import Language from "./components/Language";
 import { userLoggedInState } from "@/app/_state/states";
 import { useRecoilState } from "recoil";
+import Cookies from "js-cookie";
 
 export default function Header3() {
   const [scrolled, setScrolled] = useState(false);
