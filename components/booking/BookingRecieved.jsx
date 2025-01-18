@@ -1,27 +1,30 @@
-'use client';
+"use client";
 import { BASE_URL } from "@/app/_api/apiService";
 import { reservationDetails } from "@/app/_state/states";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
-
+import jsPDF from "jspdf";
 
 export default function BookingRecieved() {
   const [reservationData, setReservationData] = useRecoilState(reservationDetails);
 
   const infoData = [
-    { id: 1, label: "Rservation Id", value: reservationData?.id },
+    { id: 1, label: "Reservation Id", value: reservationData?.id },
     {
-      id: 2, label: "Date", value: reservationData?.createdAt
+      id: 2,
+      label: "Date",
+      value: reservationData?.createdAt
         ? new Date(reservationData.createdAt).toLocaleString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
         : "N/A",
     },
     { id: 3, label: "Total", value: "$ " + parseFloat(reservationData?.paymentAmount).toFixed(2) },
     { id: 4, label: "Payment Method", value: reservationData?.paymentType || "Card" },
   ];
+
   const rideData = [
     {
       id: 1,
@@ -34,39 +37,67 @@ export default function BookingRecieved() {
       bottomText: reservationData?.dropOffLocation,
     },
     {
-      id: 3, topText: "Pick Up Date", bottomText: reservationData?.pickUpDate
+      id: 3,
+      topText: "Pick Up Date",
+      bottomText: reservationData?.pickUpDate
         ? new Date(reservationData.pickUpDate).toLocaleString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
         : "N/A",
     },
     {
-      id: 4, topText: "Pick Up Time", bottomText: reservationData?.pickUpTime
+      id: 4,
+      topText: "Pick Up Time",
+      bottomText: reservationData?.pickUpTime
         ? new Date(reservationData.pickUpTime).toLocaleString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-        })
-        : "N/A"
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : "N/A",
     },
     { id: 5, topText: "Distance", bottomText: reservationData?.totalDistance },
-    { id: 6, topText: "Time", bottomText: reservationData?.totalHour +" Hr" },
+    { id: 6, topText: "Time", bottomText: reservationData?.totalHour + " Hr" },
   ];
+
   const personalData = [
     { id: 1, topText: "First name", bottomText: reservationData?.firstName },
     { id: 2, topText: "Last name", bottomText: reservationData?.lastName },
     { id: 3, topText: "Email", bottomText: reservationData?.email },
     { id: 4, topText: "Phone", bottomText: reservationData?.phone },
-    // { id: 5, topText: "Address line 1", bottomText: "" },
-    // { id: 6, topText: "Address line 2", bottomText: "" },
-    // { id: 7, topText: "City", bottomText: "London" },
-    // { id: 8, topText: "State/Province/Region", bottomText: "" },
-    // { id: 9, topText: "ZIP code/Postal code", bottomText: "95833" },
     { id: 10, topText: "Country", bottomText: "USA" },
     { id: 11, topText: "Special Requirements", bottomText: reservationData?.clientRequest },
   ];
 
+  const generatePDF = () => {
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text("Reservation Details", 10, 10);
+
+    doc.setFontSize(12);
+    infoData.forEach((info, index) => {
+      doc.text(`${info.label}: ${info.value}`, 10, 20 + index * 10);
+    });
+
+    doc.text("Ride Information", 10, 70);
+    rideData.forEach((ride, index) => {
+      doc.text(`${ride.topText}: ${ride.bottomText}`, 10, 80 + index * 10);
+    });
+
+    doc.text("Passenger Information", 10, 140);
+    personalData.forEach((person, index) => {
+      doc.text(`${person.topText}: ${person.bottomText}`, 10, 150 + index * 10);
+    });
+
+    doc.text("Selected Car", 10, 210);
+    doc.text(`Model: ${reservationData?.car?.model || "N/A"}`, 10, 220);
+    doc.text(`Car: ${reservationData?.car?.name || "N/A"}`, 10, 230);
+
+    // Save the PDF
+    doc.save("ReservationDetails.pdf");
+  };
 
   return (
     <section className="section">
@@ -84,7 +115,7 @@ export default function BookingRecieved() {
               Hi, your reservation was completed successfully!
             </h4>
             <p className="text-14 color-grey mb-40">
-              Booking details has been sent to: ${reservationData?.email}
+              Booking details have been sent to: {reservationData?.email}
             </p>
           </div>
           <div className="box-info-book-border wow fadeInUp">
@@ -96,6 +127,7 @@ export default function BookingRecieved() {
               </div>
             ))}
           </div>
+
           <div className="box-booking-border wow fadeInUp">
             <h6 className="heading-20-medium color-text">
               Reservation Information
@@ -143,6 +175,11 @@ export default function BookingRecieved() {
                 </li>
               ))}
             </ul>
+          </div>
+          <div className="text-center mt-30">
+            <button className="btn btn-primary" onClick={generatePDF}>
+              Download Reservation
+            </button>
           </div>
         </div>
       </div>
