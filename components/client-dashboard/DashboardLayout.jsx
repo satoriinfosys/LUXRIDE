@@ -3,9 +3,13 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { userLoggedInState } from "@/app/_state/states";
+import { useRecoilState } from "recoil";
 
 export default function DashboardLayout({ activeSection, setActiveSection, userDetails, children }) {
   const router = useRouter(); // Initialize the router
+  const [authUser, setAuthUserDetails] = useRecoilState(userLoggedInState);
+
 
   const menuItems = [
     { id: "overview", label: "Overview", icon: "bi-speedometer2" },
@@ -31,6 +35,7 @@ export default function DashboardLayout({ activeSection, setActiveSection, userD
     localStorage.setItem("authToken", null);
     Cookies.remove("token", { secure: true, sameSite: "strict" });
     localStorage.removeItem("userDetails");
+    setAuthUserDetails(null);
     router.push("/");
   }
 
@@ -91,7 +96,7 @@ export default function DashboardLayout({ activeSection, setActiveSection, userD
                 style={{ backgroundColor: "#000", borderRadius: "5px", padding: "10px 16px" }}
                 onClick={handleLogout}
               >
-                Logout
+                Logouts
               </button>
             </div>
           </div>
@@ -101,6 +106,7 @@ export default function DashboardLayout({ activeSection, setActiveSection, userD
             menuItems={menuItems}
             activeSection={activeSection}
             setActiveSection={setActiveSection}
+            setAuthUserDetails={setAuthUserDetails}
           />
         )}
 
@@ -173,7 +179,7 @@ export default function DashboardLayout({ activeSection, setActiveSection, userD
 }
 
 /* OffCanvasNav Component */
-function OffCanvasNav({ userName, menuItems, activeSection, setActiveSection }) {
+function OffCanvasNav({ userName, menuItems, activeSection, setActiveSection, setAuthUserDetails }) {
   const router = useRouter(); // Initialize the router
 
 
@@ -181,6 +187,7 @@ function OffCanvasNav({ userName, menuItems, activeSection, setActiveSection }) 
     localStorage.setItem("authToken", null);
     Cookies.remove("token", { secure: true, sameSite: "strict" });
     localStorage.removeItem("userDetails");
+    setAuthUserDetails(null);
     router.push("/");
   }
 

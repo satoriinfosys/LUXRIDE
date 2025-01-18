@@ -44,6 +44,17 @@ function PaymentForm() {
     return newErrors;
   };
 
+  const getLoggedInUserId = () => {
+    // Retrieve user details from localStorage
+    const savedUserDetails = JSON.parse(localStorage.getItem("userDetails"));
+    console.log({savedUserDetails})
+    if (savedUserDetails) {
+      return savedUserDetails.userId;
+    }
+    return null;
+  }
+
+
   const updateReservationStatus = async (clientSecret) => {
     try {
       const { totalPrice } = calculateCost({ selectedCar, rideExtra, bookingData });
@@ -73,7 +84,7 @@ function PaymentForm() {
         "isByHour": bookingData?.bookType === "hourly" ? true : false,
         "isRoundTrip": true,
         "carId": selectedCar?.id,
-        "userId": null,
+        "userId": getLoggedInUserId(),
         "totalSeating": rideExtra?.totalSeating,
         "totalLuggage": rideExtra?.totalLuggage,
         "cardType": null,

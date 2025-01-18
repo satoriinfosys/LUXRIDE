@@ -1,25 +1,37 @@
 "use client";
+import { userLoggedInState } from "@/app/_state/states";
 import { menuItems } from "@/data/menu";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 
 export default function MobileNav() {
   const pathname = usePathname();
   const [parentOpen, setParentOpen] = useState(-1);
+
+  const [authUser, setAuthUserDetails] = useRecoilState(userLoggedInState);
+
+  useEffect(() => {
+    // Retrieve user details from localStorage
+    const savedUserDetails = localStorage.getItem("userDetails");
+    if (savedUserDetails) {
+      setAuthUserDetails(JSON.parse(savedUserDetails));
+    }
+  }, []);
+
   return (
     <>
       {menuItems.map((elm, i) => (
         <li key={i} className="has-children">
           <a
             onClick={() => setParentOpen((pre) => (pre == i ? -1 : i))}
-            className={`active mobileMenuParent ${
-              elm.subMenu.some(
-                (elm3) => pathname.split("/")[1] == elm3.link.split("/")[1]
-              )
-                ? "active-link"
-                : ""
-            } ${parentOpen == i ? "parent-open" : ""}`}
+            className={`active mobileMenuParent ${elm.subMenu.some(
+              (elm3) => pathname.split("/")[1] == elm3.link.split("/")[1]
+            )
+              ? "active-link"
+              : ""
+              } ${parentOpen == i ? "parent-open" : ""}`}
           >
             <span>{elm.title}</span>
             <span className="menu-expand">
@@ -37,9 +49,8 @@ export default function MobileNav() {
             </span>
           </a>
           <ul
-            className={`sub-menu mobile-sub-menu ${
-              parentOpen == i ? "menu-open" : ""
-            }`}
+            className={`sub-menu mobile-sub-menu ${parentOpen == i ? "menu-open" : ""
+              }`}
           >
             {elm.subMenu.map((elm2, i2) => (
               <li key={i2}>
@@ -58,7 +69,17 @@ export default function MobileNav() {
           </ul>
         </li>
       ))}
-            <li>
+      {(authUser?.email) &&
+        <li>
+          <Link
+            className={`${"/service-grid" == pathname ? "active-link" : ""}`}
+            style={{ fontSize: "20px" }}
+            href="/dashboard"
+          >
+            Dashboard
+          </Link>
+        </li>}
+      <li>
         <Link
           className={`${"/service-grid" == pathname ? "active-link" : ""}`}
           style={{ fontSize: "20px" }}
@@ -101,6 +122,25 @@ export default function MobileNav() {
           href="/offline-form"
         >
           Book Offline
+        </Link>
+      </li>
+      {(!authUser?.email) &&
+        <li>
+          <Link
+            className={`${"/offline-form" == pathname ? "active-link" : ""}`}
+            style={{ fontSize: "20px" }}
+            href="/login"
+          >
+            Login
+          </Link>
+        </li>}
+      <li>
+        <Link
+          className={`${"/offline-form" == pathname ? "active-link" : ""}`}
+          style={{ fontSize: "20px" }}
+          href="/register"
+        >
+          Sign Up
         </Link>
       </li>
     </>

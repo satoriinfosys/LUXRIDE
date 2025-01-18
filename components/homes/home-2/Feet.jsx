@@ -38,7 +38,7 @@ export default function Feet() {
           <div className="row align-items-center">
             <div className="col-lg-6 col-7">
               <h2 className="heading-44-medium title-fleet wow fadeInUp">
-                Our Fleet
+                Our Fleets
               </h2>
             </div>
             <div className="col-lg-6 col-5 text-end">
@@ -68,7 +68,7 @@ export default function Feet() {
           <div className="row mt-50">
             {cars
               .filter((elm) => elm.isFeatured) // Filter for featured items
-              .slice(0, 3).map((elm, i) => (
+              .slice(0, 6).map((elm, i) => (
                 <div key={i} className="col-lg-4">
                   <div className="cardFleet cardFleetStyle2 wow fadeInUp">
                     <div className="cardInfo">

@@ -19,7 +19,8 @@ import DownloadApp from "@/components/common/downloadApp/DownloadApp";
 export default function Main() {
   return (
     <>
-      <Header1 /> <MobailHeader1 />
+      <Header1 /> 
+      <MobailHeader1 />
       <main className="main">
         <Hero />
         <Partners />

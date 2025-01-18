@@ -4,6 +4,7 @@ import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("token");
+  console.log({token})
 
   // If no token, redirect to login
   if (!token) {
