@@ -47,7 +47,7 @@ function PaymentForm() {
   const getLoggedInUserId = () => {
     // Retrieve user details from localStorage
     const savedUserDetails = JSON.parse(localStorage.getItem("userDetails"));
-    console.log({savedUserDetails})
+
     if (savedUserDetails) {
       return savedUserDetails.userId;
     }

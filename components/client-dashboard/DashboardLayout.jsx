@@ -31,7 +31,6 @@ export default function DashboardLayout({ activeSection, setActiveSection, userD
   const isTabletOrUp = windowWidth >= 768;
 
   const handleLogout = () => {
-    console.log("here");
     localStorage.setItem("authToken", null);
     Cookies.remove("token", { secure: true, sameSite: "strict" });
     localStorage.removeItem("userDetails");
@@ -96,7 +95,7 @@ export default function DashboardLayout({ activeSection, setActiveSection, userD
                 style={{ backgroundColor: "#000", borderRadius: "5px", padding: "10px 16px" }}
                 onClick={handleLogout}
               >
-                Logouts
+                Logout
               </button>
             </div>
           </div>

@@ -16,7 +16,7 @@ const BookingHistorySection = ({ profile }) => {
       const bookingHistory = await apiService.post(
         '/reservation/user',
         {
-          status: true,
+          // status: true,
           sort: "DESC",
           limit: 10,
           page: 1,
@@ -28,7 +28,6 @@ const BookingHistorySection = ({ profile }) => {
           },
         }
       );
-      console.log("Booking History:", bookingHistory.data);
       setBookingHistory(bookingHistory.data)
     } catch (error) {
       console.error("Error fetching booking history:", error.response?.data || error.message);

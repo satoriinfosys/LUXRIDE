@@ -51,7 +51,6 @@ export default function PaymentSection({ profile }) {
           },
         }
       );
-      console.log("payment History:", paymentHistory.data);
       setPaymentHistory(paymentHistory.data)
     } catch (error) {
       console.error("Error fetching payment history:", error.response?.data || error.message);

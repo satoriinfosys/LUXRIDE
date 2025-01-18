@@ -1,5 +1,7 @@
 "use client";
-import { useEffect } from "react";
+import apiService from "@/app/_api/apiService";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
 const generatePlaceholderData = () => {
   const data = [];
@@ -9,11 +11,68 @@ const generatePlaceholderData = () => {
   return data;
 };
 
-export default function OverviewSection() {
+export default function OverviewSection({ profile }) {
+  const [bookingHistory, setBookingHistory] = useState([]);
+  const [totalPaid, setTotalPaid] = useState(0);
+  const [totalPendingPayment, setPendingPayment] = useState(0);
+  const [mostBookedVehicle, setMostBookedVehicle] = useState(null);
+
   useEffect(() => {
-    console.log("Placeholder Bar Chart Data:", generatePlaceholderData());
-    console.log("Placeholder Line Chart Data:", generatePlaceholderData());
+    fetchBookingHistory();
   }, []);
+
+  const fetchBookingHistory = async () => {
+    const token = Cookies.get("token");
+    try {
+      const bookingHistory = await apiService.post(
+        '/reservation/user',
+        {
+          // status: true,
+          sort: "DESC",
+          limit: 10,
+          page: 1,
+          userId: profile.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setBookingHistory(bookingHistory.data)
+      setPaymentHistory(bookingHistory.data)
+    } catch (error) {
+      console.error("Error fetching booking history:", error.response?.data || error.message);
+    }
+  }
+
+  const setPaymentHistory = (bookingDetails) => {
+    const totalPaid = bookingDetails
+      .filter((data) => data.paymentStatus === "success")
+      .reduce((sum, data) => sum + parseFloat(data.paymentAmount), 0);
+
+    const pendingPayment = bookingDetails
+      .filter((data) => data.paymentStatus === "pending")
+      .reduce((sum, data) => sum + parseFloat(data.paymentAmount), 0);
+
+    const mostFrequentCar = bookingDetails.reduce((acc, data) => {
+      const carName = data.car.model;
+      acc[carName] = (acc[carName] || 0) + 1;
+      return acc;
+    }, {});
+
+
+    const mostRepeatedCarName = Object.entries(mostFrequentCar).reduce(
+      (max, [name, count]) => (count > max.count ? { name, count } : max),
+      { name: null, count: 0 }
+    );
+
+
+    setTotalPaid(totalPaid);
+    setPendingPayment(pendingPayment);
+    setMostBookedVehicle(mostRepeatedCarName.name)
+  }
 
   return (
     <div className="container my-4">
@@ -32,7 +91,7 @@ export default function OverviewSection() {
                   <i className="bi bi-calendar-check fs-1 me-3"></i>
                   <div>
                     <h5 className="card-title mb-1">Total Bookings</h5>
-                    <h6 className="fw-bold mb-0">1,234</h6>
+                    <h6 className="fw-bold mb-0">{bookingHistory?.length}</h6>
                   </div>
                 </div>
               </div>
@@ -43,8 +102,20 @@ export default function OverviewSection() {
                 <div className="card-body d-flex align-items-center">
                   <i className="bi bi-currency-dollar fs-1 me-3"></i>
                   <div>
-                    <h5 className="card-title mb-1">Total Payments</h5>
-                    <h6 className="fw-bold mb-0">$45,000</h6>
+                    <h5 className="card-title mb-1">Total Payments Paid</h5>
+                    <h6 className="fw-bold mb-0">{totalPaid?.toFixed()}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-3">
+              <div className="card h-100 border-0 shadow-sm stat-card" style={{ backgroundColor: "#1B263B", color: "#E0E1DD" }}>
+                <div className="card-body d-flex align-items-center">
+                  <i className="bi bi-currency-dollar fs-1 me-3"></i>
+                  <div>
+                    <h5 className="card-title mb-1">Total Pending Payments</h5>
+                    <h6 className="fw-bold mb-0">{parseFloat(totalPendingPayment).toFixed(2)}</h6>
                   </div>
                 </div>
               </div>
@@ -55,20 +126,8 @@ export default function OverviewSection() {
                 <div className="card-body d-flex align-items-center">
                   <i className="bi bi-truck fs-1 me-3"></i>
                   <div>
-                    <h5 className="card-title mb-1">Most Booked Car</h5>
-                    <h6 className="fw-bold mb-0">Tesla Model S</h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-3">
-              <div className="card h-100 border-0 shadow-sm stat-card" style={{ backgroundColor: "#1B263B", color: "#E0E1DD" }}>
-                <div className="card-body d-flex align-items-center">
-                  <i className="bi bi-graph-up-arrow fs-1 me-3"></i>
-                  <div>
-                    <h5 className="card-title mb-1">Monthly Revenue</h5>
-                    <h6 className="fw-bold mb-0">$8,500</h6>
+                    <h5 className="card-title mb-1">Most Booked Vehicle</h5>
+                    <h6 className="fw-bold mb-0">{mostBookedVehicle}</h6>
                   </div>
                 </div>
               </div>
@@ -78,7 +137,7 @@ export default function OverviewSection() {
           {/* Row with Graphs/Analytics */}
           <div className="row g-4">
             {/* Bar Chart Placeholder */}
-            <div className="col-md-6">
+            {/* <div className="col-md-6">
               <div className="card border-0 shadow-sm h-100">
                 <div className="card-header" style={{ backgroundColor: "#1B263B", color: "#E0E1DD" }}>
                   <h5 className="mb-0">Bookings Bar Chart</h5>
@@ -93,10 +152,10 @@ export default function OverviewSection() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Line Chart Placeholder */}
-            <div className="col-md-6">
+            {/* <div className="col-md-6">
               <div className="card border-0 shadow-sm h-100">
                 <div className="card-header" style={{ backgroundColor: "#1B263B", color: "#E0E1DD" }}>
                   <h5 className="mb-0">Payments Line Chart</h5>
@@ -111,7 +170,7 @@ export default function OverviewSection() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -33,7 +33,7 @@ export default function DashboardPage() {
 
     // Section components mapping
     const sections = {
-        overview: <OverviewSection />,
+        overview: <OverviewSection profile={userDetails}/>,
         profile: <ProfileSection profile={userDetails} />,
         history: <BookingHistorySection profile={userDetails} />,
         payment: <PaymentSection profile={userDetails} />,
@@ -42,7 +42,7 @@ export default function DashboardPage() {
     return (
         <DashboardLayout activeSection={activeSection} setActiveSection={setActiveSection} userDetails={userDetails}>
             {/* Call the function to render the correct section */}
-            {sections[activeSection] || <OverviewSection />}
+            {sections[activeSection] || <OverviewSection profile={userDetails}/>}
         </DashboardLayout>
     );
 }
